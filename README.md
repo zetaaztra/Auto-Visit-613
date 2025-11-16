@@ -1,3 +1,332 @@
+# 🎯 Ad Fraud Detection Engine - Testing Suite
+
+Automated behavior-based testing system for your prediction and fraud detection engine with anti-detection capabilities.
+
+## 📁 Project Structure
+
+```
+ad-fraud-testing/
+├── .github/
+│   └── workflows/
+│       └── fraud-testing.yml       # GitHub Actions workflow (cron scheduling)
+├── fraud_detection_tester.py       # Main testing script
+├── requirements.txt                # Python dependencies
+├── README.md                       # This file
+├── .gitignore                      # Git ignore rules
+└── logs/
+    └── fraud_detection_test.log    # Generated logs (auto-created)
+```
+
+## 🚀 Quick Start
+
+### 1. Repository Setup
+
+```bash
+# Create new repository
+mkdir ad-fraud-testing
+cd ad-fraud-testing
+git init
+
+# Add files
+touch fraud_detection_tester.py
+touch requirements.txt
+mkdir -p .github/workflows
+touch .github/workflows/fraud-testing.yml
+
+# Copy the provided code into each file
+```
+
+### 2. Configure Your Websites
+
+Edit `fraud_detection_tester.py` and update the `WEBSITES` list:
+
+```python
+WEBSITES = [
+    "https://your-actual-site-1.com",
+    "https://your-actual-site-2.com",
+    "https://your-actual-site-3.com",
+    "https://your-actual-site-4.com",
+    "https://your-actual-site-5.com",
+]
+```
+
+### 3. GitHub Repository Setup
+
+```bash
+# Create public repository (for free unlimited runs)
+gh repo create ad-fraud-testing --public --source=. --remote=origin
+
+# Or use GitHub web interface
+# Make sure it's PUBLIC to use unlimited free minutes
+```
+
+### 4. Enable GitHub Actions
+
+1. Go to your repository → **Settings** → **Actions** → **General**
+2. Enable "Allow all actions and reusable workflows"
+3. Enable "Read and write permissions" for workflows
+
+### 5. Test Locally (Optional)
+
+```bash
+# Install dependencies
+pip install -r requirements.txt
+
+# Run single test
+python fraud_detection_tester.py
+
+# Check logs
+cat fraud_detection_test.log
+```
+
+### 6. Deploy to GitHub Actions
+
+```bash
+# Commit and push
+git add .
+git commit -m "Initial setup: Ad fraud detection testing"
+git push origin main
+
+# Workflows will start automatically based on cron schedule
+```
+
+## ⏰ Cron Schedule Breakdown
+
+The workflow runs **every 30 minutes** with built-in jitter:
+
+| Cron Expression | Execution Times (UTC) | Daily Runs |
+|----------------|----------------------|------------|
+| `0,30 * * * *` | :00, :30 every hour | 48 times |
+| `5,35 * * * *` | :05, :35 every hour | 48 times |
+| `10,40 * * * *` | :10, :40 every hour | 48 times |
+
+**Total potential executions:** 144 per day (but only 25 visits will complete due to rate limiting)
+
+## 🔧 Customization Options
+
+### Adjust Visit Frequency
+
+Edit `.github/workflows/fraud-testing.yml`:
+
+```yaml
+# Every 1 hour instead of 30 minutes
+- cron: '0 * * * *'
+
+# Every 2 hours (12 runs/day)
+- cron: '0 */2 * * *'
+
+# Business hours only (9am-5pm UTC, Mon-Fri)
+- cron: '0,30 9-17 * * 1-5'
+```
+
+### Change Visits Per Day
+
+Set environment variable in workflow:
+
+```yaml
+env:
+  DAILY_VISITS: 10  # Reduce to 10 visits/day
+```
+
+### Modify Behavioral Patterns
+
+Edit `HUMAN_BEHAVIOR` dictionary in `fraud_detection_tester.py`:
+
+```python
+HUMAN_BEHAVIOR = {
+    "scroll_delay": (1.0, 5.0),     # Slower scrolling
+    "read_time": (5, 15),            # Longer reading time
+    "mouse_jitter": True,
+    "random_clicks": False,          # Disable random clicks
+}
+```
+
+## 📊 Monitoring & Logs
+
+### View Workflow Runs
+
+1. Go to **Actions** tab in your repository
+2. Click on latest "Ad Fraud Detection Testing" workflow
+3. View logs for each batch/matrix job
+
+### Download Logs
+
+Logs are stored as artifacts for 7 days:
+
+```bash
+# Using GitHub CLI
+gh run list --workflow=fraud-testing.yml
+gh run download <run-id>
+
+# Or download from web interface
+# Actions → Workflow run → Artifacts section
+```
+
+### Parse Log Statistics
+
+```bash
+# Count successful visits
+grep "Visit completed successfully" logs/*.log | wc -l
+
+# Count failed visits
+grep "Visit failed" logs/*.log | wc -l
+
+# View proxy usage
+grep "Using proxy" logs/*.log | tail -20
+```
+
+## 🔐 Anti-Detection Features
+
+### ✅ Implemented Evasions
+
+| Detection Method | Our Solution |
+|-----------------|--------------|
+| WebDriver detection | `undetected-chromedriver` + CDP commands |
+| Perfect timing | Random jitter (±5 minutes) between visits |
+| Uniform scrolling | Variable scroll speeds & pauses |
+| Mouse patterns | Random mouse jitter & movements |
+| Browser fingerprinting | Randomized viewports, user-agents |
+| Datacenter IPs | Free proxy rotation (25 uses each) |
+| Canvas fingerprinting | Browser profile randomization |
+| Plugin detection | Simulated plugin presence |
+
+### 🛡️ How It Bypasses Detection
+
+1. **Navigator.webdriver override** - Removes automation flag
+2. **CDP injection** - Modifies browser properties before page load
+3. **Human-like delays** - Random pauses between actions (0.5-8s)
+4. **Scroll randomization** - Variable speeds and read pauses
+5. **Viewport variations** - Rotates through 4 common resolutions
+6. **User-agent rotation** - 5 different browser signatures
+7. **Proxy rotation** - New IP every 25 visits (max)
+
+## 💰 Cost Analysis
+
+### GitHub Actions Free Tier
+
+- **Public repos:** ✅ Unlimited runs, 2,000 free minutes/month
+- **Private repos:** 2,000 minutes/month (then $0.008/min)
+
+### Your Usage
+
+- **Runs per day:** 48 (via cron schedule)
+- **Minutes per run:** ~5 minutes average
+- **Daily usage:** 240 minutes (48 × 5)
+- **Monthly usage:** 7,200 minutes (240 × 30)
+
+### Cost Scenarios
+
+| Repository Type | Monthly Cost | Annual Cost |
+|----------------|--------------|-------------|
+| **Public** (recommended) | **$0** | **$0** |
+| Private (over free tier) | ~$42 | ~$504 |
+
+**💡 Keep your repo PUBLIC to use unlimited free minutes!**
+
+## 🚨 Known Limitations
+
+### Free Proxies
+
+- ❌ 10-15% failure rate expected
+- ❌ Slower response times (500-3000ms)
+- ❌ Some proxies may be blacklisted
+- ❌ No guaranteed geolocation
+- ✅ FREE with automatic rotation
+
+### GitHub Actions
+
+- ⏱️ 6-hour maximum workflow runtime
+- 🔄 5-minute minimum cron interval
+- 📦 Limited to 20 concurrent jobs (free tier)
+- 💾 500MB artifact storage (per workflow)
+
+## 🔄 Upgrade Path
+
+### Phase 1: FREE Tier (Months 1-3)
+```
+Cost: $0/month
+Success Rate: 85-90%
+Purpose: Validate detection engine
+```
+
+### Phase 2: Paid Proxies (Months 4-6)
+```
+Cost: $75/month
+Success Rate: 95%+
+Add: Premium residential proxies
+```
+
+### Phase 3: Cloud VPS (Production)
+```
+Cost: $105/month
+Success Rate: 95%+
+Add: Dedicated infrastructure
+```
+
+## 🐛 Troubleshooting
+
+### Workflow Not Running
+
+```bash
+# Check cron syntax
+cat .github/workflows/fraud-testing.yml
+
+# Verify Actions are enabled
+# Settings → Actions → Allow all actions
+
+# Manual trigger
+gh workflow run fraud-testing.yml
+```
+
+### High Failure Rate
+
+```python
+# Increase retry logic
+def visit_website(self, url: str, max_retries: int = 3):
+    for attempt in range(max_retries):
+        try:
+            # ... existing code ...
+        except Exception as e:
+            if attempt < max_retries - 1:
+                continue
+```
+
+### Proxy Issues
+
+```python
+# Use fewer proxies but validate them
+def fetch_fresh_proxies(self) -> List[str]:
+    proxies = []
+    # Add proxy validation before adding to list
+    for proxy in raw_proxies:
+        if self.validate_proxy(proxy):
+            proxies.append(proxy)
+```
+
+## 📚 Resources
+
+- [GitHub Actions Documentation](https://docs.github.com/en/actions)
+- [Selenium Documentation](https://www.selenium.dev/documentation/)
+- [Undetected ChromeDriver](https://github.com/ultrafunkamsterdam/undetected-chromedriver)
+- [Free Proxy Lists](https://github.com/TheSpeedX/PROXY-List)
+
+## 📄 License
+
+MIT License - Feel free to modify for your needs
+
+## 🤝 Contributing
+
+1. Fork the repository
+2. Create feature branch (`git checkout -b feature/improvement`)
+3. Commit changes (`git commit -am 'Add new feature'`)
+4. Push to branch (`git push origin feature/improvement`)
+5. Open Pull Request
+
+---
+
+**⚠️ Disclaimer:** This tool is for testing your own fraud detection systems. Ensure you have proper authorization before testing on any websites.
+
+
 # 🎯 Ad Fraud Detection - Final Implementation Guide
 
 ## 📊 Current vs New Configuration
