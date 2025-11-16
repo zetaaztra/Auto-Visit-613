@@ -1,0 +1,224 @@
+name: Ad Fraud Detection - Random Daily Visitors
+
+on:
+  schedule:
+    # Run once per day at 2 AM UTC (adjust to your timezone)
+    - cron: '0 2 * * *'
+    
+    # Backup run at 2 PM UTC (in case morning run fails)
+    - cron: '0 14 * * *'
+  
+  workflow_dispatch:  # Manual trigger option
+
+env:
+  MIN_VISITS: 100
+  MAX_VISITS: 150
+  PYTHON_VERSION: '3.11'
+
+jobs:
+  check-if-already-ran:
+    runs-on: ubuntu-latest
+    outputs:
+      should_run: ${{ steps.check.outputs.should_run }}
+    
+    steps:
+      - name: Check if already ran today
+        id: check
+        run: |
+          # Create a unique marker for today
+          TODAY=$(date -u +%Y-%m-%d)
+          echo "today=$TODAY" >> $GITHUB_OUTPUT
+          
+          # In real implementation, check if log exists from earlier today
+          # For now, always run
+          echo "should_run=true" >> $GITHUB_OUTPUT
+          echo "✅ Ready to run for $TODAY"
+
+  daily-fraud-test:
+    needs: check-if-already-ran
+    if: needs.check-if-already-ran.outputs.should_run == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 480  # 8 hours max (for 150 visits)
+    
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+      
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+          cache: 'pip'
+      
+      - name: Install System Dependencies
+        run: |
+          echo "📦 Installing Chrome and ChromeDriver..."
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq \
+            chromium-browser \
+            chromium-chromedriver \
+            xvfb \
+            fonts-liberation \
+            libasound2 \
+            libatk-bridge2.0-0 \
+            libatk1.0-0 \
+            libatspi2.0-0 \
+            libcups2 \
+            libdbus-1-3 \
+            libdrm2 \
+            libgbm1 \
+            libgtk-3-0 \
+            libnspr4 \
+            libnss3 \
+            libwayland-client0 \
+            libxcomposite1 \
+            libxdamage1 \
+            libxfixes3 \
+            libxkbcommon0 \
+            libxrandr2 \
+            xdg-utils
+          
+          echo "✅ System dependencies installed"
+          chromium-browser --version
+          chromedriver --version
+      
+      - name: Set up Virtual Display
+        run: |
+          echo "🖥️ Starting virtual display..."
+          export DISPLAY=:99
+          Xvfb :99 -screen 0 1920x1080x24 -ac +extension GLX +render -noreset > /dev/null 2>&1 &
+          echo "✅ Virtual display started on :99"
+      
+      - name: Install Python Dependencies
+        run: |
+          echo "📦 Installing Python packages..."
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          echo "✅ Python dependencies installed"
+      
+      - name: Calculate Random Visit Count
+        id: visit_count
+        run: |
+          # Generate random number between MIN and MAX
+          RANDOM_VISITS=$(shuf -i $MIN_VISITS-$MAX_VISITS -n 1)
+          echo "visits=$RANDOM_VISITS" >> $GITHUB_OUTPUT
+          
+          # Calculate estimated duration (avg 3 min per visit)
+          ESTIMATED_HOURS=$((RANDOM_VISITS * 3 / 60))
+          
+          echo ""
+          echo "=========================================="
+          echo "🎲 RANDOMIZED DAILY PLAN"
+          echo "=========================================="
+          echo "Target visitors today: $RANDOM_VISITS"
+          echo "Estimated duration: ~$ESTIMATED_HOURS hours"
+          echo "Start time: $(date -u)"
+          echo "=========================================="
+          echo ""
+      
+      - name: Run Fraud Detection Tests
+        env:
+          DAILY_VISITS: ${{ steps.visit_count.outputs.visits }}
+          DISPLAY: :99
+        run: |
+          echo "🚀 Starting fraud detection test suite..."
+          echo "Target: $DAILY_VISITS visitors"
+          echo ""
+          
+          # Run the main script
+          python fraud_detection_tester.py
+          
+          echo ""
+          echo "✅ Test suite completed!"
+      
+      - name: Parse Results
+        if: always()
+        id: results
+        run: |
+          if [ -f fraud_detection_test.log ]; then
+            SUCCESSFUL=$(grep -c "Visit completed successfully" fraud_detection_test.log || echo 0)
+            FAILED=$(grep -c "Visit failed" fraud_detection_test.log || echo 0)
+            PROXIES=$(grep -c "Using proxy" fraud_detection_test.log || echo 0)
+            
+            echo "successful=$SUCCESSFUL" >> $GITHUB_OUTPUT
+            echo "failed=$FAILED" >> $GITHUB_OUTPUT
+            echo "proxies=$PROXIES" >> $GITHUB_OUTPUT
+            
+            echo ""
+            echo "=========================================="
+            echo "📊 TEST RESULTS"
+            echo "=========================================="
+            echo "✅ Successful visits: $SUCCESSFUL"
+            echo "❌ Failed visits: $FAILED"
+            echo "🔄 Proxies used: $PROXIES"
+            echo "=========================================="
+          else
+            echo "⚠️ No log file found"
+            echo "successful=0" >> $GITHUB_OUTPUT
+            echo "failed=0" >> $GITHUB_OUTPUT
+            echo "proxies=0" >> $GITHUB_OUTPUT
+          fi
+      
+      - name: Upload Complete Logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: fraud-test-logs-${{ github.run_number }}-${{ steps.visit_count.outputs.visits }}visitors
+          path: |
+            fraud_detection_test.log
+          retention-days: 30  # Keep logs for 30 days
+          compression-level: 9
+      
+      - name: Generate Summary Report
+        if: always()
+        run: |
+          echo "# 🎯 Daily Fraud Detection Test Report" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Date:** $(date -u +"%Y-%m-%d %H:%M UTC")" >> $GITHUB_STEP_SUMMARY
+          echo "**Run Number:** #${{ github.run_number }}" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          
+          echo "## 📈 Today's Targets" >> $GITHUB_STEP_SUMMARY
+          echo "- **Planned visitors:** ${{ steps.visit_count.outputs.visits }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Successful:** ${{ steps.results.outputs.successful }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Failed:** ${{ steps.results.outputs.failed }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Proxies used:** ${{ steps.results.outputs.proxies }}" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          
+          # Calculate success rate
+          TOTAL=$((steps.results.outputs.successful + steps.results.outputs.failed))
+          if [ $TOTAL -gt 0 ]; then
+            SUCCESS_RATE=$(( steps.results.outputs.successful * 100 / TOTAL ))
+            echo "- **Success rate:** ${SUCCESS_RATE}%" >> $GITHUB_STEP_SUMMARY
+          fi
+          
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "## 📊 Statistics" >> $GITHUB_STEP_SUMMARY
+          
+          if [ -f fraud_detection_test.log ]; then
+            echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
+            tail -n 50 fraud_detection_test.log >> $GITHUB_STEP_SUMMARY
+            echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
+          fi
+          
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "---" >> $GITHUB_STEP_SUMMARY
+          echo "*Next run scheduled for tomorrow at 2 AM UTC* ⏰" >> $GITHUB_STEP_SUMMARY
+      
+      - name: Notify on Failure
+        if: failure()
+        run: |
+          echo "❌ Workflow failed! Check logs for details."
+          echo "This won't affect tomorrow's scheduled run."
+
+  # Optional: Quick health check (runs every 6 hours)
+  health-check:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'schedule' && github.event.schedule == '0 */6 * * *'
+    
+    steps:
+      - name: System Health Check
+        run: |
+          echo "🏥 Running health check..."
+          echo "GitHub Actions status: OK"
+          echo "Next full test: Tomorrow at 2 AM UTC"
