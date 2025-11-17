@@ -29,7 +29,7 @@ import undetected_chromedriver as uc
 # ============================================================================
 
 # Test mode - set to True to use direct connection without proxies for testing
-TEST_MODE = True
+TEST_MODE = False
 
 WEBSITES = [
     "https://pravinmathew613.netlify.app/",
