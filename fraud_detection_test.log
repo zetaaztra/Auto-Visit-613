@@ -1,0 +1,871 @@
+2025-11-17 12:33:19,432 - INFO - Start Time: 2025-11-17 12:33:19
+2025-11-17 12:33:19,441 - INFO - Refreshing proxy list...
+2025-11-17 12:33:21,190 - INFO - Fetched 1 proxies from https://api.proxyscrape.com/v2/?request=get&protoc
+2025-11-17 12:33:23,109 - INFO - Fetched 90 proxies from https://www.proxy-list.download/api/v1/get?type=ht
+2025-11-17 12:33:23,292 - INFO - Fetched 2899 proxies from https://raw.githubusercontent.com/TheSpeedX/PROXY-
+2025-11-17 12:33:23,476 - INFO - Fetched 40 proxies from https://raw.githubusercontent.com/ShiftyTR/Proxy-L
+2025-11-17 12:33:23,675 - INFO - Fetched 81 proxies from https://raw.githubusercontent.com/monosans/proxy-l
+2025-11-17 12:33:23,679 - INFO - Total unique proxies available: 3045
+2025-11-17 12:33:23,680 - INFO - Using proxy: 27.254.217.116:8081 (Usage: 1/25)
+2025-11-17 12:33:23,680 - INFO - 
+============================================================
+2025-11-17 12:33:23,680 - INFO - Visit 1/25 - https://pravinmathew613.netlify.app/
+2025-11-17 12:33:23,681 - INFO - Proxy: 27.254.217.116:8081
+2025-11-17 12:33:23,682 - INFO - ============================================================
+2025-11-17 12:33:23,682 - INFO - Starting visit to: https://pravinmathew613.netlify.app/
+2025-11-17 12:33:28,831 - INFO - patching driver executable C:\Users\hp\appdata\roaming\undetected_chromedriver\undetected_chromedriver.exe
+2025-11-17 12:33:31,651 - ERROR - Failed to create driver: Message: unknown error: cannot connect to chrome at 127.0.0.1:57944
+from session not created: This version of ChromeDriver only supports Chrome version 120
+Current browser version is 142.0.7444.163
+Stacktrace:
+	GetHandleVerifier [0x011B6EE3+174339]
+	(No symbol) [0x010E0A51]
+	(No symbol) [0x00DF6FF6]
+	(No symbol) [0x00E1E912]
+	(No symbol) [0x00E1E150]
+	(No symbol) [0x00E17B12]
+	(No symbol) [0x00E17927]
+	(No symbol) [0x00E4E259]
+	(No symbol) [0x00E4DBBA]
+	(No symbol) [0x00E46DA6]
+	(No symbol) [0x00E21034]
+	(No symbol) [0x00E21F8D]
+	GetHandleVerifier [0x01254B1C+820540]
+	sqlite3_dbdata_init [0x013153EE+653550]
+	sqlite3_dbdata_init [0x01314E09+652041]
+	sqlite3_dbdata_init [0x013097CC+605388]
+	sqlite3_dbdata_init [0x01315D9B+656027]
+	(No symbol) [0x010EFE6C]
+	(No symbol) [0x010E83B8]
+	(No symbol) [0x010E84DD]
+	(No symbol) [0x010D5818]
+	BaseThreadInitThunk [0x75FCFCC9+25]
+	RtlGetAppContainerNamedObjectPath [0x779F82AE+286]
+	RtlGetAppContainerNamedObjectPath [0x779F827E+238]
+
+2025-11-17 12:33:31,787 - WARNING - Blacklisted proxy: 27.254.217.116:8081
+2025-11-17 12:34:19,578 - INFO - 
+============================================================
+2025-11-17 12:34:19,603 - INFO - ============================================================
+2025-11-17 12:34:19,604 - INFO - Total Visits: 1
+2025-11-17 12:34:19,658 - INFO - ============================================================
+
+2025-11-17 12:35:46,625 - INFO - 🎯 Ad Fraud Detection Engine - Testing Suite
+2025-11-17 12:35:46,626 - INFO - Start Time: 2025-11-17 12:35:46
+2025-11-17 12:35:46,627 - INFO - 🚀 Starting daily visit cycle (Target: 25 visits)
+2025-11-17 12:35:46,627 - INFO - Refreshing proxy list...
+2025-11-17 12:35:46,982 - INFO - Fetched 1 proxies from https://api.proxyscrape.com/v2/?request=get&protoc
+2025-11-17 12:35:47,996 - INFO - Fetched 90 proxies from https://www.proxy-list.download/api/v1/get?type=ht
+2025-11-17 12:35:48,221 - INFO - Fetched 2899 proxies from https://raw.githubusercontent.com/TheSpeedX/PROXY-
+2025-11-17 12:35:48,399 - INFO - Fetched 40 proxies from https://raw.githubusercontent.com/ShiftyTR/Proxy-L
+2025-11-17 12:35:48,605 - INFO - Fetched 81 proxies from https://raw.githubusercontent.com/monosans/proxy-l
+2025-11-17 12:35:48,608 - INFO - Total unique proxies available: 3045
+2025-11-17 12:35:48,609 - INFO - Using proxy: 46.101.210.101:48684 (Usage: 1/25)
+2025-11-17 12:35:48,609 - INFO - 
+============================================================
+2025-11-17 12:35:48,609 - INFO - Visit 1/25 - https://pravinmathew613.netlify.app/
+2025-11-17 12:35:48,609 - INFO - Proxy: 46.101.210.101:48684
+2025-11-17 12:35:48,610 - INFO - ============================================================
+2025-11-17 12:35:48,610 - INFO - Starting visit to: https://pravinmathew613.netlify.app/
+2025-11-17 12:35:52,186 - INFO - patching driver executable C:\Users\hp\appdata\roaming\undetected_chromedriver\undetected_chromedriver.exe
+2025-11-17 12:36:02,518 - INFO - Browser created successfully
+2025-11-17 12:36:19,496 - INFO - Page loaded: https://pravinmathew613.netlify.app/
+2025-11-17 12:39:08,174 - INFO - 🎯 Ad Fraud Detection Engine - Testing Suite
+2025-11-17 12:39:08,174 - INFO - Start Time: 2025-11-17 12:39:08
+2025-11-17 12:39:08,174 - INFO - 🚀 Starting daily visit cycle (Target: 25 visits)
+2025-11-17 12:39:08,174 - INFO - Refreshing proxy list...
+2025-11-17 12:39:08,621 - INFO - Fetched 1 proxies from https://api.proxyscrape.com/v2/?request=get&protoc
+2025-11-17 12:39:09,625 - INFO - Fetched 90 proxies from https://www.proxy-list.download/api/v1/get?type=ht
+2025-11-17 12:39:09,821 - INFO - Fetched 2899 proxies from https://raw.githubusercontent.com/TheSpeedX/PROXY-
+2025-11-17 12:39:09,980 - INFO - Fetched 40 proxies from https://raw.githubusercontent.com/ShiftyTR/Proxy-L
+2025-11-17 12:39:10,142 - INFO - Fetched 65 proxies from https://raw.githubusercontent.com/monosans/proxy-l
+2025-11-17 12:39:10,157 - INFO - Total unique proxies available: 3031
+2025-11-17 12:39:10,157 - INFO - Using proxy: 47.238.130.212:3129 (Usage: 1/25)
+2025-11-17 12:39:10,157 - INFO - 
+============================================================
+2025-11-17 12:39:10,157 - INFO - Visit 1/25 - https://pravinmathew613.netlify.app/
+2025-11-17 12:39:10,157 - INFO - Proxy: 47.238.130.212:3129
+2025-11-17 12:39:10,157 - INFO - ============================================================
+2025-11-17 12:39:10,161 - INFO - Starting visit to: https://pravinmathew613.netlify.app/
+2025-11-17 12:39:13,546 - INFO - patching driver executable C:\Users\hp\appdata\roaming\undetected_chromedriver\undetected_chromedriver.exe
+2025-11-17 12:39:18,333 - INFO - Browser created successfully
+2025-11-17 12:39:33,892 - INFO - Page loaded: https://pravinmathew613.netlify.app/
+2025-11-17 12:39:47,943 - ERROR - ❌ Visit failed for https://pravinmathew613.netlify.app/: Message: invalid session id: session deleted as the browser has closed the connection
+from disconnected: unable to send message to renderer
+  (Session info: chrome=142.0.7444.163)
+Stacktrace:
+Symbols not available. Dumping unresolved backtrace:
+	0x364093
+	0x3640d4
+	0x16e71d
+	0x15deb9
+	0x15de36
+	0x15c5f7
+	0x15d3c7
+	0x173687
+	0x173e38
+	0x177864
+	0x1778f8
+	0x1b9886
+	0x1ba41b
+	0x2017f2
+	0x1dc954
+	0x1fee17
+	0x1dc706
+	0x1ada30
+	0x1aed54
+	0x5d5744
+	0x5d091a
+	0x38c322
+	0x37c458
+	0x3831dd
+	0x36c408
+	0x36c5cc
+	0x35675a
+	0x75fcfcc9
+	0x779f82ae
+	0x779f827e
+	0
+
+2025-11-17 12:39:47,961 - WARNING - Blacklisted proxy: 47.238.130.212:3129
+2025-11-17 12:39:48,380 - INFO - 💤 Sleeping 14s before next visit...
+2025-11-17 12:40:02,392 - INFO - ⏳ Waiting 41s before next visit...
+2025-11-17 12:40:43,393 - INFO - ⏳ Waiting 87s before next visit...
+2025-11-17 12:42:10,394 - INFO - ⏳ Waiting 42s before next visit...
+2025-11-17 12:42:13,080 - INFO - 
+⚠️ Manual interruption detected
+2025-11-17 12:42:13,080 - INFO - 
+============================================================
+2025-11-17 12:42:13,080 - INFO - 📊 SESSION REPORT
+2025-11-17 12:42:13,080 - INFO - ============================================================
+2025-11-17 12:42:13,080 - INFO - Total Visits: 1
+2025-11-17 12:42:13,080 - INFO - ✅ Successful: 0
+2025-11-17 12:42:13,080 - INFO - ❌ Failed: 1
+2025-11-17 12:42:13,080 - INFO - 🔄 Proxies Used: 1
+2025-11-17 12:42:13,080 - INFO - ⏱️ Duration: 3.1 minutes
+2025-11-17 12:42:13,080 - INFO - ============================================================
+
+2025-11-17 12:42:13,080 - INFO - 🏁 Testing session completed
+2025-11-17 12:44:26,538 - INFO - 🎯 Ad Fraud Detection Engine - Testing Suite
+2025-11-17 12:44:26,538 - INFO - Start Time: 2025-11-17 12:44:26
+2025-11-17 12:44:26,538 - INFO - 🔍 Checking website connectivity...
+2025-11-17 12:44:26,829 - INFO - ✅ Website reachable: https://pravinmathew613.netlify.app/ (Status: 200)
+2025-11-17 12:44:26,829 - INFO - 🚀 Starting daily visit cycle (Target: 25 visits)
+2025-11-17 12:44:26,829 - INFO - ⚠️ TEST MODE ENABLED - Using direct connection (no proxies)
+2025-11-17 12:44:26,829 - INFO - 
+============================================================
+2025-11-17 12:44:26,829 - INFO - Visit 1/25 - https://pravinmathew613.netlify.app/
+2025-11-17 12:44:26,829 - INFO - Proxy: Direct connection
+2025-11-17 12:44:26,829 - INFO - ============================================================
+2025-11-17 12:44:26,829 - INFO - Starting visit to: https://pravinmathew613.netlify.app/
+2025-11-17 12:44:31,233 - INFO - patching driver executable C:\Users\hp\appdata\roaming\undetected_chromedriver\undetected_chromedriver.exe
+2025-11-17 12:44:33,106 - INFO - Browser created successfully
+2025-11-17 12:44:36,218 - INFO - Page loaded: https://pravinmathew613.netlify.app/
+2025-11-17 12:45:08,308 - ERROR - ❌ Visit failed for https://pravinmathew613.netlify.app/: ('Connection aborted.', ConnectionResetError(10054, 'An existing connection was forcibly closed by the remote host', None, 10054, None))
+2025-11-17 12:45:08,782 - INFO - 💤 Sleeping 57s before next visit...
+2025-11-17 12:45:27,343 - INFO - 
+⚠️ Manual interruption detected
+2025-11-17 12:45:27,343 - INFO - 
+============================================================
+2025-11-17 12:45:27,343 - INFO - 📊 SESSION REPORT
+2025-11-17 12:45:27,343 - INFO - ============================================================
+2025-11-17 12:45:36,410 - INFO - 🎯 Ad Fraud Detection Engine - Testing Suite
+2025-11-17 12:45:36,410 - INFO - Start Time: 2025-11-17 12:45:36
+2025-11-17 12:45:36,410 - INFO - 🔍 Checking website connectivity...
+2025-11-17 12:45:36,709 - INFO - ✅ Website reachable: https://pravinmathew613.netlify.app/ (Status: 200)
+2025-11-17 12:45:36,710 - INFO - 🚀 Starting daily visit cycle (Target: 25 visits)
+2025-11-17 12:45:36,710 - INFO - ⚠️ TEST MODE ENABLED - Using direct connection (no proxies)
+2025-11-17 12:45:36,710 - INFO - 
+============================================================
+2025-11-17 12:45:36,710 - INFO - Visit 1/25 - https://pravinmathew613.netlify.app/
+2025-11-17 12:45:36,710 - INFO - Proxy: Direct connection
+2025-11-17 12:45:36,710 - INFO - ============================================================
+2025-11-17 12:45:36,710 - INFO - Starting visit to: https://pravinmathew613.netlify.app/
+2025-11-17 12:45:41,493 - INFO - patching driver executable C:\Users\hp\appdata\roaming\undetected_chromedriver\undetected_chromedriver.exe
+2025-11-17 12:45:43,691 - INFO - Browser created successfully
+2025-11-17 12:45:49,695 - INFO - Page loaded: https://pravinmathew613.netlify.app/
+2025-11-17 12:46:38,595 - ERROR - ❌ Visit failed for https://pravinmathew613.netlify.app/: ('Connection aborted.', ConnectionResetError(10054, 'An existing connection was forcibly closed by the remote host', None, 10054, None))
+2025-11-17 12:46:38,783 - INFO - 💤 Sleeping 25s before next visit...
+2025-11-17 12:46:47,830 - INFO - 
+⚠️ Manual interruption detected
+2025-11-17 12:46:47,830 - INFO - 
+============================================================
+2025-11-17 12:47:23,128 - INFO - 🎯 Ad Fraud Detection Engine - Testing Suite
+2025-11-17 12:47:23,128 - INFO - Start Time: 2025-11-17 12:47:23
+2025-11-17 12:47:23,129 - INFO - 🔍 Checking website connectivity...
+2025-11-17 12:47:23,420 - INFO - ✅ Website reachable: https://pravinmathew613.netlify.app/ (Status: 200)
+2025-11-17 12:47:23,420 - INFO - 🚀 Starting daily visit cycle (Target: 25 visits)
+2025-11-17 12:47:23,420 - INFO - ⚠️ TEST MODE ENABLED - Using direct connection (no proxies)
+2025-11-17 12:47:23,420 - INFO - 
+============================================================
+2025-11-17 12:47:23,420 - INFO - Visit 1/25 - https://pravinmathew613.netlify.app/
+2025-11-17 12:47:23,420 - INFO - Proxy: Direct connection
+2025-11-17 12:47:23,420 - INFO - ============================================================
+2025-11-17 12:47:23,420 - INFO - Starting visit to: https://pravinmathew613.netlify.app/
+2025-11-17 12:47:26,258 - INFO - patching driver executable C:\Users\hp\appdata\roaming\undetected_chromedriver\undetected_chromedriver.exe
+2025-11-17 12:47:27,799 - INFO - Browser created successfully
+2025-11-17 12:47:32,471 - INFO - Page loaded: https://pravinmathew613.netlify.app/
+2025-11-17 12:48:32,237 - ERROR - ❌ Visit failed for https://pravinmathew613.netlify.app/: ('Connection aborted.', ConnectionResetError(10054, 'An existing connection was forcibly closed by the remote host', None, 10054, None))
+2025-11-17 12:48:32,455 - INFO - 💤 Sleeping 28s before next visit...
+2025-11-17 12:49:00,467 - INFO - ⏳ Waiting 38s before next visit...
+2025-11-17 12:49:38,469 - INFO - ⏳ Waiting 31s before next visit...
+2025-11-17 12:50:09,471 - INFO - ⏳ Waiting 74s before next visit...
+2025-11-17 12:51:23,472 - INFO - ⏳ Waiting 39s before next visit...
+2025-11-17 12:51:55,752 - INFO - 
+⚠️ Manual interruption detected
+2025-11-17 12:51:55,752 - INFO - 
+============================================================
+2025-11-17 12:51:55,752 - INFO - 📊 SESSION REPORT
+2025-11-17 12:51:55,767 - INFO - ============================================================
+2025-11-17 12:51:55,767 - INFO - Total Visits: 1
+2025-11-17 12:51:55,767 - INFO - ✅ Successful: 0
+2025-11-17 12:51:55,767 - INFO - ❌ Failed: 1
+2025-11-17 12:51:55,767 - INFO - 🔄 Proxies Used: 0
+2025-11-17 12:51:55,767 - INFO - ⏱️ Duration: 4.5 minutes
+2025-11-17 12:51:55,767 - INFO - ============================================================
+
+2025-11-17 12:51:55,767 - INFO - 🏁 Testing session completed
+2025-11-17 12:53:32,657 - INFO - 🎯 Ad Fraud Detection Engine - Testing Suite
+2025-11-17 12:53:32,657 - INFO - Start Time: 2025-11-17 12:53:32
+2025-11-17 12:53:32,657 - INFO - 🔍 Checking website connectivity...
+2025-11-17 12:53:33,084 - INFO - ✅ Website reachable: https://pravinmathew613.netlify.app/ (Status: 200)
+2025-11-17 12:53:33,084 - INFO - 🚀 Starting daily visit cycle (Target: 25 visits)
+2025-11-17 12:53:33,084 - INFO - ⚠️ TEST MODE ENABLED - Using direct connection (no proxies)
+2025-11-17 12:53:33,084 - INFO - 
+============================================================
+2025-11-17 12:53:33,084 - INFO - Visit 1/25 - https://pravinmathew613.netlify.app/
+2025-11-17 12:53:33,084 - INFO - Proxy: Direct connection
+2025-11-17 12:53:33,084 - INFO - ============================================================
+2025-11-17 12:53:33,084 - INFO - Starting visit to: https://pravinmathew613.netlify.app/
+2025-11-17 12:53:36,341 - INFO - patching driver executable C:\Users\hp\appdata\roaming\undetected_chromedriver\undetected_chromedriver.exe
+2025-11-17 12:53:38,539 - INFO - Browser created successfully
+2025-11-17 12:53:43,949 - INFO - Page loaded: https://pravinmathew613.netlify.app/
+2025-11-17 12:54:02,354 - INFO - 
+⚠️ Manual interruption detected
+2025-11-17 12:54:02,354 - INFO - 
+============================================================
+2025-11-17 12:54:02,354 - INFO - 📊 SESSION REPORT
+2025-11-17 12:54:02,354 - INFO - ============================================================
+2025-11-17 12:54:02,354 - INFO - Total Visits: 0
+2025-11-17 12:54:02,354 - INFO - ✅ Successful: 0
+2025-11-17 12:54:02,354 - INFO - ❌ Failed: 0
+2025-11-17 12:54:02,354 - INFO - 🔄 Proxies Used: 0
+2025-11-17 12:54:02,354 - INFO - ⏱️ Duration: 0.5 minutes
+2025-11-17 12:54:02,354 - INFO - ============================================================
+
+2025-11-17 12:54:02,354 - INFO - 🏁 Testing session completed
+2025-11-17 12:54:32,627 - INFO - 🎯 Ad Fraud Detection Engine - Testing Suite
+2025-11-17 12:54:32,627 - INFO - Start Time: 2025-11-17 12:54:32
+2025-11-17 12:54:32,627 - INFO - 🔍 Checking website connectivity...
+2025-11-17 12:54:32,908 - INFO - ✅ Website reachable: https://pravinmathew613.netlify.app/ (Status: 200)
+2025-11-17 12:54:32,908 - INFO - 🚀 Starting daily visit cycle (Target: 25 visits)
+2025-11-17 12:54:32,908 - INFO - Refreshing proxy list...
+2025-11-17 12:54:33,737 - INFO - Fetched 1 proxies from https://api.proxyscrape.com/v2/?request=get&protoc
+2025-11-17 12:54:34,803 - INFO - Fetched 90 proxies from https://www.proxy-list.download/api/v1/get?type=ht
+2025-11-17 12:54:34,985 - INFO - Fetched 2899 proxies from https://raw.githubusercontent.com/TheSpeedX/PROXY-
+2025-11-17 12:54:35,188 - INFO - Fetched 40 proxies from https://raw.githubusercontent.com/ShiftyTR/Proxy-L
+2025-11-17 12:54:35,377 - INFO - Fetched 65 proxies from https://raw.githubusercontent.com/monosans/proxy-l
+2025-11-17 12:54:35,778 - INFO - Total unique proxies available: 3031
+2025-11-17 12:54:35,779 - INFO - Using proxy: 8.213.215.187:8001 (Usage: 1/25)
+2025-11-17 12:54:35,779 - INFO - 
+============================================================
+2025-11-17 12:54:35,779 - INFO - Visit 1/25 - https://pravinmathew613.netlify.app/
+2025-11-17 12:54:35,779 - INFO - Proxy: 8.213.215.187:8001
+2025-11-17 12:54:35,780 - INFO - ============================================================
+2025-11-17 12:54:35,780 - INFO - Starting visit to: https://pravinmathew613.netlify.app/
+2025-11-17 12:54:39,003 - INFO - patching driver executable C:\Users\hp\appdata\roaming\undetected_chromedriver\undetected_chromedriver.exe
+2025-11-17 12:54:45,965 - INFO - Browser created successfully
+2025-11-17 12:54:48,747 - INFO - Page loaded: https://pravinmathew613.netlify.app/
+2025-11-17 12:55:11,451 - ERROR - ❌ Visit failed for https://pravinmathew613.netlify.app/: Message: invalid session id: session deleted as the browser has closed the connection
+from disconnected: unable to send message to renderer
+  (Session info: chrome=142.0.7444.163)
+Stacktrace:
+Symbols not available. Dumping unresolved backtrace:
+	0x814093
+	0x8140d4
+	0x61e71d
+	0x60deb9
+	0x60de36
+	0x60c5f7
+	0x60d3c7
+	0x623687
+	0x623e38
+	0x627864
+	0x6278f8
+	0x669886
+	0x66a41b
+	0x6b17f2
+	0x68c954
+	0x6aee17
+	0x68c706
+	0x65da30
+	0x65ed54
+	0xa85744
+	0xa8091a
+	0x83c322
+	0x82c458
+	0x8331dd
+	0x81c408
+	0x81c5cc
+	0x80675a
+	0x75fcfcc9
+	0x779f82ae
+	0x779f827e
+
+2025-11-17 12:55:11,451 - WARNING - Blacklisted proxy: 8.213.215.187:8001
+2025-11-17 12:55:11,755 - INFO - 💤 Sleeping 23s before next visit...
+2025-11-17 12:55:34,757 - INFO - ⏳ Waiting 81s before next visit...
+2025-11-17 12:55:40,066 - INFO - 
+⚠️ Manual interruption detected
+2025-11-17 12:55:40,066 - INFO - 
+============================================================
+2025-11-17 12:55:40,082 - INFO - 📊 SESSION REPORT
+2025-11-17 12:55:40,082 - INFO - ============================================================
+2025-11-17 12:55:40,083 - INFO - Total Visits: 1
+2025-11-17 12:55:40,083 - INFO - ✅ Successful: 0
+2025-11-17 12:55:40,083 - INFO - ❌ Failed: 1
+2025-11-17 12:55:40,083 - INFO - 🔄 Proxies Used: 1
+2025-11-17 12:55:40,084 - INFO - ⏱️ Duration: 1.1 minutes
+2025-11-17 12:55:53,687 - INFO - 🎯 Ad Fraud Detection Engine - Testing Suite
+2025-11-17 12:55:53,688 - INFO - Start Time: 2025-11-17 12:55:53
+2025-11-17 12:55:53,688 - INFO - 🔍 Checking website connectivity...
+2025-11-17 12:55:54,033 - INFO - ✅ Website reachable: https://pravinmathew613.netlify.app/ (Status: 200)
+2025-11-17 12:55:54,049 - INFO - 🚀 Starting daily visit cycle (Target: 1 visits)
+2025-11-17 12:55:54,049 - INFO - Refreshing proxy list...
+2025-11-17 12:55:54,496 - INFO - Fetched 1 proxies from https://api.proxyscrape.com/v2/?request=get&protoc
+2025-11-17 12:55:55,547 - INFO - Fetched 90 proxies from https://www.proxy-list.download/api/v1/get?type=ht
+2025-11-17 12:55:55,784 - INFO - Fetched 2899 proxies from https://raw.githubusercontent.com/TheSpeedX/PROXY-
+2025-11-17 12:55:55,965 - INFO - Fetched 40 proxies from https://raw.githubusercontent.com/ShiftyTR/Proxy-L
+2025-11-17 12:55:56,168 - INFO - Fetched 65 proxies from https://raw.githubusercontent.com/monosans/proxy-l
+2025-11-17 12:55:56,183 - INFO - Total unique proxies available: 3031
+2025-11-17 12:55:56,183 - INFO - Using proxy: 46.101.102.134:3128 (Usage: 1/25)
+2025-11-17 12:55:56,183 - INFO - 
+============================================================
+2025-11-17 12:55:56,183 - INFO - Visit 1/1 - https://pravinmathew613.netlify.app/
+2025-11-17 12:55:56,183 - INFO - Proxy: 46.101.102.134:3128
+2025-11-17 12:55:56,183 - INFO - ============================================================
+2025-11-17 12:55:56,188 - INFO - Starting visit to: https://pravinmathew613.netlify.app/
+2025-11-17 12:56:00,821 - INFO - patching driver executable C:\Users\hp\appdata\roaming\undetected_chromedriver\undetected_chromedriver.exe
+2025-11-17 12:56:05,944 - INFO - Browser created successfully
+2025-11-17 12:56:12,090 - INFO - 
+⚠️ Manual interruption detected
+2025-11-17 12:56:12,090 - INFO - 
+============================================================
+2025-11-17 12:56:12,090 - INFO - 📊 SESSION REPORT
+2025-11-17 12:56:12,090 - INFO - ============================================================
+2025-11-17 12:56:12,090 - INFO - Total Visits: 0
+2025-11-17 12:56:12,090 - INFO - ✅ Successful: 0
+2025-11-17 12:56:12,090 - INFO - ❌ Failed: 0
+2025-11-17 12:56:12,090 - INFO - 🔄 Proxies Used: 1
+2025-11-17 12:56:12,090 - INFO - ⏱️ Duration: 0.3 minutes
+2025-11-17 12:56:12,090 - INFO - ============================================================
+
+2025-11-17 12:56:12,098 - INFO - 🏁 Testing session completed
+2025-11-17 12:57:50,316 - INFO - 🎯 Ad Fraud Detection Engine - Testing Suite
+2025-11-17 12:57:50,317 - INFO - Start Time: 2025-11-17 12:57:50
+2025-11-17 12:57:50,317 - INFO - 🔍 Checking website connectivity...
+2025-11-17 12:57:50,598 - INFO - ✅ Website reachable: https://pravinmathew613.netlify.app/ (Status: 200)
+2025-11-17 12:57:50,598 - INFO - 🚀 Starting daily visit cycle (Target: 2 visits)
+2025-11-17 12:57:50,598 - INFO - ⚠️ TEST MODE ENABLED - Using direct connection (no proxies)
+2025-11-17 12:57:50,598 - INFO - 
+============================================================
+2025-11-17 12:57:50,598 - INFO - Visit 1/2 - https://pravinmathew613.netlify.app/
+2025-11-17 12:57:50,598 - INFO - Proxy: Direct connection
+2025-11-17 12:57:50,598 - INFO - ============================================================
+2025-11-17 12:57:50,598 - INFO - Starting visit to: https://pravinmathew613.netlify.app/
+2025-11-17 12:57:54,190 - INFO - patching driver executable C:\Users\hp\appdata\roaming\undetected_chromedriver\undetected_chromedriver.exe
+2025-11-17 12:57:56,288 - INFO - Browser created successfully
+2025-11-17 12:57:59,618 - INFO - Page loaded: https://pravinmathew613.netlify.app/
+2025-11-17 12:58:16,195 - INFO - 
+⚠️ Manual interruption detected
+2025-11-17 12:58:16,196 - INFO - 
+============================================================
+2025-11-17 12:58:16,196 - INFO - 📊 SESSION REPORT
+2025-11-17 12:58:16,197 - INFO - ============================================================
+2025-11-17 12:58:16,198 - INFO - Total Visits: 0
+2025-11-17 12:58:16,198 - INFO - ✅ Successful: 0
+2025-11-17 12:58:16,199 - INFO - ❌ Failed: 0
+2025-11-17 12:58:16,199 - INFO - 🔄 Proxies Used: 0
+2025-11-17 12:58:16,199 - INFO - ⏱️ Duration: 0.4 minutes
+2025-11-17 12:58:16,200 - INFO - ============================================================
+
+2025-11-17 12:58:16,200 - INFO - 🏁 Testing session completed
+2025-11-17 12:58:46,815 - INFO - 🎯 Ad Fraud Detection Engine - Testing Suite
+2025-11-17 12:58:46,815 - INFO - Start Time: 2025-11-17 12:58:46
+2025-11-17 12:58:46,815 - INFO - 🔍 Checking website connectivity...
+2025-11-17 12:58:47,127 - INFO - ✅ Website reachable: https://pravinmathew613.netlify.app/ (Status: 200)
+2025-11-17 12:58:47,127 - INFO - 🚀 Starting daily visit cycle (Target: 3 visits)
+2025-11-17 12:58:47,127 - INFO - ⚠️ TEST MODE ENABLED - Using direct connection (no proxies)
+2025-11-17 12:58:47,127 - INFO - 
+============================================================
+2025-11-17 12:58:47,127 - INFO - Visit 1/3 - https://pravinmathew613.netlify.app/
+2025-11-17 12:58:47,127 - INFO - Proxy: Direct connection
+2025-11-17 12:58:47,127 - INFO - ============================================================
+2025-11-17 12:58:47,127 - INFO - Starting visit to: https://pravinmathew613.netlify.app/
+2025-11-17 12:58:50,270 - INFO - patching driver executable C:\Users\hp\appdata\roaming\undetected_chromedriver\undetected_chromedriver.exe
+2025-11-17 12:58:51,863 - INFO - Browser created successfully
+2025-11-17 12:58:54,807 - INFO - Page loaded: https://pravinmathew613.netlify.app/
+2025-11-17 12:58:56,094 - INFO - ✅ Visit completed successfully: https://pravinmathew613.netlify.app/
+2025-11-17 12:58:56,806 - INFO - 💤 Sleeping 19s before next visit...
+2025-11-17 12:59:15,809 - INFO - ⏳ Waiting 30s before next visit...
+2025-11-17 12:59:45,810 - INFO - ⏳ Waiting 39s before next visit...
+2025-11-17 13:00:24,811 - INFO - ⏳ Waiting 55s before next visit...
+2025-11-17 13:02:17,378 - INFO - 🎯 Ad Fraud Detection Engine - Testing Suite
+2025-11-17 13:02:17,378 - INFO - Start Time: 2025-11-17 13:02:17
+2025-11-17 13:02:17,378 - INFO - 🔍 Checking website connectivity...
+2025-11-17 13:02:17,659 - INFO - ✅ Website reachable: https://pravinmathew613.netlify.app/ (Status: 200)
+2025-11-17 13:02:17,659 - INFO - 🚀 Starting daily visit cycle (Target: 5 visits)
+2025-11-17 13:02:17,659 - INFO - ⚠️ TEST MODE ENABLED - Using direct connection (no proxies)
+2025-11-17 13:02:17,659 - INFO - 
+============================================================
+2025-11-17 13:02:17,659 - INFO - Visit 1/5 - https://pravinmathew613.netlify.app/
+2025-11-17 13:02:17,659 - INFO - Proxy: Direct connection
+2025-11-17 13:02:17,659 - INFO - ============================================================
+2025-11-17 13:02:17,659 - INFO - Starting visit to: https://pravinmathew613.netlify.app/
+2025-11-17 13:02:21,705 - INFO - patching driver executable C:\Users\hp\appdata\roaming\undetected_chromedriver\undetected_chromedriver.exe
+2025-11-17 13:02:23,244 - INFO - Browser created successfully
+2025-11-17 13:02:25,502 - INFO - Page loaded: https://pravinmathew613.netlify.app/
+2025-11-17 13:02:48,074 - WARNING - Retrying (Retry(total=2, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('<urllib3.connection.HTTPConnection object at 0x00000228918DC5F0>: Failed to establish a new connection: [WinError 10061] No connection could be made because the target machine actively refused it')': /session/2a876bb143008840a6b4d5c352cefc51/elements
+2025-11-17 13:02:52,372 - WARNING - Retrying (Retry(total=1, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('<urllib3.connection.HTTPConnection object at 0x00000228918DC770>: Failed to establish a new connection: [WinError 10061] No connection could be made because the target machine actively refused it')': /session/2a876bb143008840a6b4d5c352cefc51/elements
+2025-11-17 13:02:56,425 - WARNING - Retrying (Retry(total=0, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('<urllib3.connection.HTTPConnection object at 0x00000228918DC320>: Failed to establish a new connection: [WinError 10061] No connection could be made because the target machine actively refused it')': /session/2a876bb143008840a6b4d5c352cefc51/elements
+2025-11-17 13:03:04,575 - WARNING - Retrying (Retry(total=2, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('<urllib3.connection.HTTPConnection object at 0x00000228918DCBC0>: Failed to establish a new connection: [WinError 10061] No connection could be made because the target machine actively refused it')': /session/2a876bb143008840a6b4d5c352cefc51/elements
+2025-11-17 13:03:08,640 - WARNING - Retrying (Retry(total=1, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('<urllib3.connection.HTTPConnection object at 0x00000228918DCE00>: Failed to establish a new connection: [WinError 10061] No connection could be made because the target machine actively refused it')': /session/2a876bb143008840a6b4d5c352cefc51/elements
+2025-11-17 13:03:12,720 - WARNING - Retrying (Retry(total=0, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('<urllib3.connection.HTTPConnection object at 0x00000228918DD040>: Failed to establish a new connection: [WinError 10061] No connection could be made because the target machine actively refused it')': /session/2a876bb143008840a6b4d5c352cefc51/elements
+2025-11-17 13:03:20,893 - WARNING - Retrying (Retry(total=2, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('<urllib3.connection.HTTPConnection object at 0x0000022891873B60>: Failed to establish a new connection: [WinError 10061] No connection could be made because the target machine actively refused it')': /session/2a876bb143008840a6b4d5c352cefc51/elements
+2025-11-17 13:03:24,971 - WARNING - Retrying (Retry(total=1, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('<urllib3.connection.HTTPConnection object at 0x00000228918DC9E0>: Failed to establish a new connection: [WinError 10061] No connection could be made because the target machine actively refused it')': /session/2a876bb143008840a6b4d5c352cefc51/elements
+2025-11-17 13:03:29,034 - WARNING - Retrying (Retry(total=0, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('<urllib3.connection.HTTPConnection object at 0x00000228918DC0B0>: Failed to establish a new connection: [WinError 10061] No connection could be made because the target machine actively refused it')': /session/2a876bb143008840a6b4d5c352cefc51/elements
+2025-11-17 13:03:37,205 - WARNING - Retrying (Retry(total=2, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('<urllib3.connection.HTTPConnection object at 0x00000228918DC650>: Failed to establish a new connection: [WinError 10061] No connection could be made because the target machine actively refused it')': /session/2a876bb143008840a6b4d5c352cefc51/elements
+2025-11-17 13:03:41,252 - WARNING - Retrying (Retry(total=1, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('<urllib3.connection.HTTPConnection object at 0x00000228918DD370>: Failed to establish a new connection: [WinError 10061] No connection could be made because the target machine actively refused it')': /session/2a876bb143008840a6b4d5c352cefc51/elements
+2025-11-17 13:03:45,319 - WARNING - Retrying (Retry(total=0, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('<urllib3.connection.HTTPConnection object at 0x00000228918DD5B0>: Failed to establish a new connection: [WinError 10061] No connection could be made because the target machine actively refused it')': /session/2a876bb143008840a6b4d5c352cefc51/elements
+2025-11-17 13:03:53,472 - WARNING - Retrying (Retry(total=2, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('<urllib3.connection.HTTPConnection object at 0x00000228918DDAC0>: Failed to establish a new connection: [WinError 10061] No connection could be made because the target machine actively refused it')': /session/2a876bb143008840a6b4d5c352cefc51/elements
+2025-11-17 13:03:57,565 - WARNING - Retrying (Retry(total=1, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('<urllib3.connection.HTTPConnection object at 0x00000228918DDD00>: Failed to establish a new connection: [WinError 10061] No connection could be made because the target machine actively refused it')': /session/2a876bb143008840a6b4d5c352cefc51/elements
+2025-11-17 13:04:01,657 - WARNING - Retrying (Retry(total=0, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('<urllib3.connection.HTTPConnection object at 0x00000228918DDF40>: Failed to establish a new connection: [WinError 10061] No connection could be made because the target machine actively refused it')': /session/2a876bb143008840a6b4d5c352cefc51/elements
+2025-11-17 13:04:09,851 - WARNING - Retrying (Retry(total=2, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('<urllib3.connection.HTTPConnection object at 0x00000228918DE450>: Failed to establish a new connection: [WinError 10061] No connection could be made because the target machine actively refused it')': /session/2a876bb143008840a6b4d5c352cefc51/elements
+2025-11-17 13:04:13,939 - WARNING - Retrying (Retry(total=1, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('<urllib3.connection.HTTPConnection object at 0x0000022891873B90>: Failed to establish a new connection: [WinError 10061] No connection could be made because the target machine actively refused it')': /session/2a876bb143008840a6b4d5c352cefc51/elements
+2025-11-17 13:04:18,050 - WARNING - Retrying (Retry(total=0, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('<urllib3.connection.HTTPConnection object at 0x0000022891873C20>: Failed to establish a new connection: [WinError 10061] No connection could be made because the target machine actively refused it')': /session/2a876bb143008840a6b4d5c352cefc51/elements
+2025-11-17 13:04:26,174 - WARNING - Retrying (Retry(total=2, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('<urllib3.connection.HTTPConnection object at 0x00000228918DE0C0>: Failed to establish a new connection: [WinError 10061] No connection could be made because the target machine actively refused it')': /session/2a876bb143008840a6b4d5c352cefc51/elements
+2025-11-17 13:04:30,268 - WARNING - Retrying (Retry(total=1, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('<urllib3.connection.HTTPConnection object at 0x00000228918DE0F0>: Failed to establish a new connection: [WinError 10061] No connection could be made because the target machine actively refused it')': /session/2a876bb143008840a6b4d5c352cefc51/elements
+2025-11-17 13:04:34,377 - WARNING - Retrying (Retry(total=0, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('<urllib3.connection.HTTPConnection object at 0x00000228918DDD90>: Failed to establish a new connection: [WinError 10061] No connection could be made because the target machine actively refused it')': /session/2a876bb143008840a6b4d5c352cefc51/elements
+2025-11-17 13:04:42,504 - WARNING - Retrying (Retry(total=2, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('<urllib3.connection.HTTPConnection object at 0x00000228918DD790>: Failed to establish a new connection: [WinError 10061] No connection could be made because the target machine actively refused it')': /session/2a876bb143008840a6b4d5c352cefc51/elements
+2025-11-17 13:04:46,596 - WARNING - Retrying (Retry(total=1, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('<urllib3.connection.HTTPConnection object at 0x00000228918DD5B0>: Failed to establish a new connection: [WinError 10061] No connection could be made because the target machine actively refused it')': /session/2a876bb143008840a6b4d5c352cefc51/elements
+2025-11-17 13:04:50,706 - WARNING - Retrying (Retry(total=0, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('<urllib3.connection.HTTPConnection object at 0x00000228918DD340>: Failed to establish a new connection: [WinError 10061] No connection could be made because the target machine actively refused it')': /session/2a876bb143008840a6b4d5c352cefc51/elements
+2025-11-17 13:04:58,877 - WARNING - Retrying (Retry(total=2, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('<urllib3.connection.HTTPConnection object at 0x00000228918DC9B0>: Failed to establish a new connection: [WinError 10061] No connection could be made because the target machine actively refused it')': /session/2a876bb143008840a6b4d5c352cefc51/elements
+2025-11-17 13:05:02,925 - WARNING - Retrying (Retry(total=1, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('<urllib3.connection.HTTPConnection object at 0x00000228918DC9E0>: Failed to establish a new connection: [WinError 10061] No connection could be made because the target machine actively refused it')': /session/2a876bb143008840a6b4d5c352cefc51/elements
+2025-11-17 13:05:07,003 - WARNING - Retrying (Retry(total=0, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('<urllib3.connection.HTTPConnection object at 0x00000228918DD040>: Failed to establish a new connection: [WinError 10061] No connection could be made because the target machine actively refused it')': /session/2a876bb143008840a6b4d5c352cefc51/elements
+2025-11-17 13:05:15,128 - WARNING - Retrying (Retry(total=2, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('<urllib3.connection.HTTPConnection object at 0x00000228918DE9C0>: Failed to establish a new connection: [WinError 10061] No connection could be made because the target machine actively refused it')': /session/2a876bb143008840a6b4d5c352cefc51/elements
+2025-11-17 13:05:19,206 - WARNING - Retrying (Retry(total=1, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('<urllib3.connection.HTTPConnection object at 0x000002289133D010>: Failed to establish a new connection: [WinError 10061] No connection could be made because the target machine actively refused it')': /session/2a876bb143008840a6b4d5c352cefc51/elements
+2025-11-17 13:05:23,269 - WARNING - Retrying (Retry(total=0, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('<urllib3.connection.HTTPConnection object at 0x0000022891873920>: Failed to establish a new connection: [WinError 10061] No connection could be made because the target machine actively refused it')': /session/2a876bb143008840a6b4d5c352cefc51/elements
+2025-11-17 13:05:31,440 - WARNING - Retrying (Retry(total=2, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('<urllib3.connection.HTTPConnection object at 0x00000228918DE630>: Failed to establish a new connection: [WinError 10061] No connection could be made because the target machine actively refused it')': /session/2a876bb143008840a6b4d5c352cefc51/elements
+2025-11-17 13:05:35,518 - WARNING - Retrying (Retry(total=1, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('<urllib3.connection.HTTPConnection object at 0x00000228918DE660>: Failed to establish a new connection: [WinError 10061] No connection could be made because the target machine actively refused it')': /session/2a876bb143008840a6b4d5c352cefc51/elements
+2025-11-17 13:05:39,610 - WARNING - Retrying (Retry(total=0, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('<urllib3.connection.HTTPConnection object at 0x00000228918DCB00>: Failed to establish a new connection: [WinError 10061] No connection could be made because the target machine actively refused it')': /session/2a876bb143008840a6b4d5c352cefc51/elements
+2025-11-17 13:05:47,784 - WARNING - Retrying (Retry(total=2, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('<urllib3.connection.HTTPConnection object at 0x00000228918DC650>: Failed to establish a new connection: [WinError 10061] No connection could be made because the target machine actively refused it')': /session/2a876bb143008840a6b4d5c352cefc51/elements
+2025-11-17 13:05:51,828 - WARNING - Retrying (Retry(total=1, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('<urllib3.connection.HTTPConnection object at 0x00000228918DC5F0>: Failed to establish a new connection: [WinError 10061] No connection could be made because the target machine actively refused it')': /session/2a876bb143008840a6b4d5c352cefc51/elements
+2025-11-17 13:05:55,909 - WARNING - Retrying (Retry(total=0, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('<urllib3.connection.HTTPConnection object at 0x00000228918DD580>: Failed to establish a new connection: [WinError 10061] No connection could be made because the target machine actively refused it')': /session/2a876bb143008840a6b4d5c352cefc51/elements
+2025-11-17 13:06:04,054 - WARNING - Retrying (Retry(total=2, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('<urllib3.connection.HTTPConnection object at 0x00000228918DDBE0>: Failed to establish a new connection: [WinError 10061] No connection could be made because the target machine actively refused it')': /session/2a876bb143008840a6b4d5c352cefc51/elements
+2025-11-17 13:06:08,092 - WARNING - Retrying (Retry(total=1, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('<urllib3.connection.HTTPConnection object at 0x00000228918DDB50>: Failed to establish a new connection: [WinError 10061] No connection could be made because the target machine actively refused it')': /session/2a876bb143008840a6b4d5c352cefc51/elements
+2025-11-17 13:06:12,146 - WARNING - Retrying (Retry(total=0, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('<urllib3.connection.HTTPConnection object at 0x00000228918DDFD0>: Failed to establish a new connection: [WinError 10061] No connection could be made because the target machine actively refused it')': /session/2a876bb143008840a6b4d5c352cefc51/elements
+2025-11-17 13:06:20,228 - WARNING - Retrying (Retry(total=2, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('<urllib3.connection.HTTPConnection object at 0x00000228918DECF0>: Failed to establish a new connection: [WinError 10061] No connection could be made because the target machine actively refused it')': /session/2a876bb143008840a6b4d5c352cefc51/elements
+2025-11-17 13:06:24,257 - WARNING - Retrying (Retry(total=1, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('<urllib3.connection.HTTPConnection object at 0x00000228918DEF30>: Failed to establish a new connection: [WinError 10061] No connection could be made because the target machine actively refused it')': /session/2a876bb143008840a6b4d5c352cefc51/elements
+2025-11-17 13:06:28,290 - WARNING - Retrying (Retry(total=0, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('<urllib3.connection.HTTPConnection object at 0x0000022891873B60>: Failed to establish a new connection: [WinError 10061] No connection could be made because the target machine actively refused it')': /session/2a876bb143008840a6b4d5c352cefc51/elements
+2025-11-17 13:06:36,360 - WARNING - Retrying (Retry(total=2, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('<urllib3.connection.HTTPConnection object at 0x00000228918DDFA0>: Failed to establish a new connection: [WinError 10061] No connection could be made because the target machine actively refused it')': /session/2a876bb143008840a6b4d5c352cefc51/elements
+2025-11-17 13:06:40,402 - WARNING - Retrying (Retry(total=1, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('<urllib3.connection.HTTPConnection object at 0x00000228918DE0C0>: Failed to establish a new connection: [WinError 10061] No connection could be made because the target machine actively refused it')': /session/2a876bb143008840a6b4d5c352cefc51/elements
+2025-11-17 13:06:44,439 - WARNING - Retrying (Retry(total=0, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('<urllib3.connection.HTTPConnection object at 0x00000228918DE180>: Failed to establish a new connection: [WinError 10061] No connection could be made because the target machine actively refused it')': /session/2a876bb143008840a6b4d5c352cefc51/elements
+2025-11-17 13:06:52,507 - WARNING - Retrying (Retry(total=2, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('<urllib3.connection.HTTPConnection object at 0x00000228918DD460>: Failed to establish a new connection: [WinError 10061] No connection could be made because the target machine actively refused it')': /session/2a876bb143008840a6b4d5c352cefc51/elements
+2025-11-17 13:06:56,549 - WARNING - Retrying (Retry(total=1, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('<urllib3.connection.HTTPConnection object at 0x00000228918DD790>: Failed to establish a new connection: [WinError 10061] No connection could be made because the target machine actively refused it')': /session/2a876bb143008840a6b4d5c352cefc51/elements
+2025-11-17 13:07:00,585 - WARNING - Retrying (Retry(total=0, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('<urllib3.connection.HTTPConnection object at 0x00000228918DD850>: Failed to establish a new connection: [WinError 10061] No connection could be made because the target machine actively refused it')': /session/2a876bb143008840a6b4d5c352cefc51/elements
+2025-11-17 13:07:08,660 - WARNING - Retrying (Retry(total=2, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('<urllib3.connection.HTTPConnection object at 0x00000228918DCFE0>: Failed to establish a new connection: [WinError 10061] No connection could be made because the target machine actively refused it')': /session/2a876bb143008840a6b4d5c352cefc51/elements
+2025-11-17 13:07:12,708 - WARNING - Retrying (Retry(total=1, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('<urllib3.connection.HTTPConnection object at 0x00000228918DC9B0>: Failed to establish a new connection: [WinError 10061] No connection could be made because the target machine actively refused it')': /session/2a876bb143008840a6b4d5c352cefc51/elements
+2025-11-17 13:07:16,740 - WARNING - Retrying (Retry(total=0, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('<urllib3.connection.HTTPConnection object at 0x00000228918DC980>: Failed to establish a new connection: [WinError 10061] No connection could be made because the target machine actively refused it')': /session/2a876bb143008840a6b4d5c352cefc51/elements
+2025-11-17 13:07:24,818 - WARNING - Retrying (Retry(total=2, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('<urllib3.connection.HTTPConnection object at 0x00000228918DF020>: Failed to establish a new connection: [WinError 10061] No connection could be made because the target machine actively refused it')': /session/2a876bb143008840a6b4d5c352cefc51/elements
+2025-11-17 13:07:28,852 - WARNING - Retrying (Retry(total=1, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('<urllib3.connection.HTTPConnection object at 0x00000228918DF260>: Failed to establish a new connection: [WinError 10061] No connection could be made because the target machine actively refused it')': /session/2a876bb143008840a6b4d5c352cefc51/elements
+2025-11-17 13:07:32,886 - WARNING - Retrying (Retry(total=0, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('<urllib3.connection.HTTPConnection object at 0x000002289148DDF0>: Failed to establish a new connection: [WinError 10061] No connection could be made because the target machine actively refused it')': /session/2a876bb143008840a6b4d5c352cefc51/elements
+2025-11-17 13:07:40,949 - WARNING - Retrying (Retry(total=2, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('<urllib3.connection.HTTPConnection object at 0x00000228918DC080>: Failed to establish a new connection: [WinError 10061] No connection could be made because the target machine actively refused it')': /session/2a876bb143008840a6b4d5c352cefc51/elements
+2025-11-17 13:07:44,987 - WARNING - Retrying (Retry(total=1, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('<urllib3.connection.HTTPConnection object at 0x00000228918DE660>: Failed to establish a new connection: [WinError 10061] No connection could be made because the target machine actively refused it')': /session/2a876bb143008840a6b4d5c352cefc51/elements
+2025-11-17 13:07:49,029 - WARNING - Retrying (Retry(total=0, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('<urllib3.connection.HTTPConnection object at 0x00000228918DD0A0>: Failed to establish a new connection: [WinError 10061] No connection could be made because the target machine actively refused it')': /session/2a876bb143008840a6b4d5c352cefc51/elements
+2025-11-17 13:07:57,093 - WARNING - Retrying (Retry(total=2, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('<urllib3.connection.HTTPConnection object at 0x00000228918DD250>: Failed to establish a new connection: [WinError 10061] No connection could be made because the target machine actively refused it')': /session/2a876bb143008840a6b4d5c352cefc51/elements
+2025-11-17 13:08:01,136 - WARNING - Retrying (Retry(total=1, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('<urllib3.connection.HTTPConnection object at 0x00000228918DC1A0>: Failed to establish a new connection: [WinError 10061] No connection could be made because the target machine actively refused it')': /session/2a876bb143008840a6b4d5c352cefc51/elements
+2025-11-17 13:08:05,166 - WARNING - Retrying (Retry(total=0, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('<urllib3.connection.HTTPConnection object at 0x00000228918DD5B0>: Failed to establish a new connection: [WinError 10061] No connection could be made because the target machine actively refused it')': /session/2a876bb143008840a6b4d5c352cefc51/elements
+2025-11-17 13:08:13,256 - WARNING - Retrying (Retry(total=2, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('<urllib3.connection.HTTPConnection object at 0x00000228918DDF10>: Failed to establish a new connection: [WinError 10061] No connection could be made because the target machine actively refused it')': /session/2a876bb143008840a6b4d5c352cefc51/elements
+2025-11-17 13:13:37,912 - INFO - 🎯 Ad Fraud Detection Engine - Testing Suite
+2025-11-17 13:13:37,913 - INFO - Start Time: 2025-11-17 13:13:37
+2025-11-17 13:13:37,913 - INFO - 🔍 Checking website connectivity...
+2025-11-17 13:13:38,211 - INFO - ✅ Website reachable: https://pravinmathew613.netlify.app/ (Status: 200)
+2025-11-17 13:13:38,212 - INFO - 🚀 Starting daily visit cycle (Target: 3 visits)
+2025-11-17 13:13:38,212 - INFO - ⚠️ TEST MODE ENABLED - Using direct connection (no proxies)
+2025-11-17 13:13:38,213 - INFO - 
+============================================================
+2025-11-17 13:13:38,213 - INFO - Visit 1/3 - https://pravinmathew613.netlify.app/
+2025-11-17 13:13:38,214 - INFO - Proxy: Direct connection
+2025-11-17 13:13:38,214 - INFO - ============================================================
+2025-11-17 13:13:38,215 - INFO - Starting visit to: https://pravinmathew613.netlify.app/
+2025-11-17 13:13:43,409 - INFO - patching driver executable C:\Users\hp\appdata\roaming\undetected_chromedriver\undetected_chromedriver.exe
+2025-11-17 13:13:45,209 - INFO - Browser created successfully
+2025-11-17 13:13:48,325 - INFO - Page loaded: https://pravinmathew613.netlify.app/
+2025-11-17 13:13:59,968 - WARNING - Retrying (Retry(total=2, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('<urllib3.connection.HTTPConnection object at 0x0000029C62D97620>: Failed to establish a new connection: [WinError 10061] No connection could be made because the target machine actively refused it')': /session/a9079835b959a56ad54818b5af15b263/elements
+2025-11-17 13:14:04,016 - WARNING - Retrying (Retry(total=1, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('<urllib3.connection.HTTPConnection object at 0x0000029C62D97530>: Failed to establish a new connection: [WinError 10061] No connection could be made because the target machine actively refused it')': /session/a9079835b959a56ad54818b5af15b263/elements
+2025-11-17 13:14:08,065 - WARNING - Retrying (Retry(total=0, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('<urllib3.connection.HTTPConnection object at 0x0000029C62DFC140>: Failed to establish a new connection: [WinError 10061] No connection could be made because the target machine actively refused it')': /session/a9079835b959a56ad54818b5af15b263/elements
+2025-11-17 13:14:16,141 - WARNING - Retrying (Retry(total=2, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('<urllib3.connection.HTTPConnection object at 0x0000029C62DFC650>: Failed to establish a new connection: [WinError 10061] No connection could be made because the target machine actively refused it')': /session/a9079835b959a56ad54818b5af15b263/elements
+2025-11-17 13:14:20,190 - WARNING - Retrying (Retry(total=1, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('<urllib3.connection.HTTPConnection object at 0x0000029C62DFC890>: Failed to establish a new connection: [WinError 10061] No connection could be made because the target machine actively refused it')': /session/a9079835b959a56ad54818b5af15b263/elements
+2025-11-17 13:14:24,231 - WARNING - Retrying (Retry(total=0, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('<urllib3.connection.HTTPConnection object at 0x0000029C62DFCAD0>: Failed to establish a new connection: [WinError 10061] No connection could be made because the target machine actively refused it')': /session/a9079835b959a56ad54818b5af15b263/elements
+2025-11-17 13:14:32,295 - WARNING - Retrying (Retry(total=2, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('<urllib3.connection.HTTPConnection object at 0x0000029C62D979E0>: Failed to establish a new connection: [WinError 10061] No connection could be made because the target machine actively refused it')': /session/a9079835b959a56ad54818b5af15b263/elements
+2025-11-17 13:14:36,338 - WARNING - Retrying (Retry(total=1, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('<urllib3.connection.HTTPConnection object at 0x0000029C62D97B90>: Failed to establish a new connection: [WinError 10061] No connection could be made because the target machine actively refused it')': /session/a9079835b959a56ad54818b5af15b263/elements
+2025-11-17 13:14:40,386 - WARNING - Retrying (Retry(total=0, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('<urllib3.connection.HTTPConnection object at 0x0000029C62D97B00>: Failed to establish a new connection: [WinError 10061] No connection could be made because the target machine actively refused it')': /session/a9079835b959a56ad54818b5af15b263/elements
+2025-11-17 13:14:44,427 - INFO - No buttons found - proceeding normally
+2025-11-17 13:14:51,655 - WARNING - Retrying (Retry(total=2, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('<urllib3.connection.HTTPConnection object at 0x0000029C62DFC1A0>: Failed to establish a new connection: [WinError 10061] No connection could be made because the target machine actively refused it')': /session/a9079835b959a56ad54818b5af15b263/execute/sync
+2025-11-17 13:14:55,698 - WARNING - Retrying (Retry(total=1, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('<urllib3.connection.HTTPConnection object at 0x0000029C62DFCE30>: Failed to establish a new connection: [WinError 10061] No connection could be made because the target machine actively refused it')': /session/a9079835b959a56ad54818b5af15b263/execute/sync
+2025-11-17 13:14:59,724 - WARNING - Retrying (Retry(total=0, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('<urllib3.connection.HTTPConnection object at 0x0000029C62DFD070>: Failed to establish a new connection: [WinError 10061] No connection could be made because the target machine actively refused it')': /session/a9079835b959a56ad54818b5af15b263/execute/sync
+2025-11-17 13:15:03,760 - WARNING - Scroll error: HTTPConnectionPool(host='localhost', port=59188): Max retries exceeded with url: /session/a9079835b959a56ad54818b5af15b263/execute/sync (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x0000029C62DFD2B0>: Failed to establish a new connection: [WinError 10061] No connection could be made because the target machine actively refused it'))
+2025-11-17 13:15:04,989 - INFO - ✅ Visit completed successfully: https://pravinmathew613.netlify.app/
+2025-11-17 13:15:09,029 - WARNING - Retrying (Retry(total=2, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('<urllib3.connection.HTTPConnection object at 0x0000029C62DFD520>: Failed to establish a new connection: [WinError 10061] No connection could be made because the target machine actively refused it')': /session/a9079835b959a56ad54818b5af15b263/window
+2025-11-17 13:15:13,064 - WARNING - Retrying (Retry(total=1, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('<urllib3.connection.HTTPConnection object at 0x0000029C62DFD700>: Failed to establish a new connection: [WinError 10061] No connection could be made because the target machine actively refused it')': /session/a9079835b959a56ad54818b5af15b263/window
+2025-11-17 13:15:17,104 - WARNING - Retrying (Retry(total=0, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('<urllib3.connection.HTTPConnection object at 0x0000029C62DFD8B0>: Failed to establish a new connection: [WinError 10061] No connection could be made because the target machine actively refused it')': /session/a9079835b959a56ad54818b5af15b263/window
+2025-11-17 13:15:21,359 - INFO - 💤 Sleeping 10s before next visit...
+2025-11-17 13:15:31,360 - INFO - ⏳ Waiting 78s before next visit...
+2025-11-17 13:16:49,362 - INFO - ⏳ Waiting 46s before next visit...
+2025-11-17 13:17:35,364 - INFO - ⏳ Waiting 56s before next visit...
+2025-11-17 13:18:22,453 - INFO - 
+⚠️ Manual interruption detected
+2025-11-17 13:18:22,454 - INFO - 
+============================================================
+2025-11-17 13:18:22,455 - INFO - 📊 SESSION REPORT
+2025-11-17 13:18:22,455 - INFO - ============================================================
+2025-11-17 13:18:22,456 - INFO - Total Visits: 1
+2025-11-17 13:18:22,456 - INFO - ✅ Successful: 1
+2025-11-17 13:18:22,457 - INFO - ❌ Failed: 0
+2025-11-17 13:18:22,457 - INFO - 🔄 Proxies Used: 0
+2025-11-17 13:18:22,457 - INFO - ⏱️ Duration: 4.7 minutes
+2025-11-17 13:18:22,458 - INFO - ============================================================
+
+2025-11-17 13:18:22,458 - INFO - 🏁 Testing session completed
+2025-11-17 13:18:55,204 - INFO - 🎯 Ad Fraud Detection Engine - Testing Suite
+2025-11-17 13:18:55,204 - INFO - Start Time: 2025-11-17 13:18:55
+2025-11-17 13:18:55,205 - INFO - 🔍 Checking website connectivity...
+2025-11-17 13:18:55,473 - INFO - ✅ Website reachable: https://pravinmathew613.netlify.app/ (Status: 200)
+2025-11-17 13:18:55,474 - INFO - 🚀 Starting daily visit cycle (Target: 5 visits)
+2025-11-17 13:18:55,474 - INFO - ⚠️ TEST MODE ENABLED - Using direct connection (no proxies)
+2025-11-17 13:18:55,475 - INFO - 
+============================================================
+2025-11-17 13:18:55,475 - INFO - Visit 1/5 - https://pravinmathew613.netlify.app/
+2025-11-17 13:18:55,476 - INFO - Proxy: Direct connection
+2025-11-17 13:18:55,476 - INFO - ============================================================
+2025-11-17 13:18:55,476 - INFO - Starting visit to: https://pravinmathew613.netlify.app/
+2025-11-17 13:18:59,480 - INFO - patching driver executable C:\Users\hp\appdata\roaming\undetected_chromedriver\undetected_chromedriver.exe
+2025-11-17 13:19:02,440 - INFO - Browser created successfully
+2025-11-17 13:19:05,916 - INFO - Page loaded: https://pravinmathew613.netlify.app/
+2025-11-17 13:19:29,849 - WARNING - Retrying (Retry(total=2, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('<urllib3.connection.HTTPConnection object at 0x000002488087B5F0>: Failed to establish a new connection: [WinError 10061] No connection could be made because the target machine actively refused it')': /session/4d892a4026407437a9ff8f06ac9c8f94/elements
+2025-11-17 13:19:33,912 - WARNING - Retrying (Retry(total=1, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('<urllib3.connection.HTTPConnection object at 0x000002488087B5C0>: Failed to establish a new connection: [WinError 10061] No connection could be made because the target machine actively refused it')': /session/4d892a4026407437a9ff8f06ac9c8f94/elements
+2025-11-17 13:19:37,949 - WARNING - Retrying (Retry(total=0, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('<urllib3.connection.HTTPConnection object at 0x000002488087BD70>: Failed to establish a new connection: [WinError 10061] No connection could be made because the target machine actively refused it')': /session/4d892a4026407437a9ff8f06ac9c8f94/elements
+2025-11-17 13:19:46,064 - WARNING - Retrying (Retry(total=2, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('<urllib3.connection.HTTPConnection object at 0x00000248808C8260>: Failed to establish a new connection: [WinError 10061] No connection could be made because the target machine actively refused it')': /session/4d892a4026407437a9ff8f06ac9c8f94/elements
+2025-11-17 13:19:50,105 - WARNING - Retrying (Retry(total=1, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('<urllib3.connection.HTTPConnection object at 0x00000248808C84A0>: Failed to establish a new connection: [WinError 10061] No connection could be made because the target machine actively refused it')': /session/4d892a4026407437a9ff8f06ac9c8f94/elements
+2025-11-17 13:19:54,136 - WARNING - Retrying (Retry(total=0, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('<urllib3.connection.HTTPConnection object at 0x00000248808C86E0>: Failed to establish a new connection: [WinError 10061] No connection could be made because the target machine actively refused it')': /session/4d892a4026407437a9ff8f06ac9c8f94/elements
+2025-11-17 13:19:58,181 - INFO - No buttons found - proceeding normally
+2025-11-17 13:20:02,436 - INFO - ✅ Visit completed successfully: https://pravinmathew613.netlify.app/
+2025-11-17 13:20:06,488 - WARNING - Retrying (Retry(total=2, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('<urllib3.connection.HTTPConnection object at 0x000002488087BE60>: Failed to establish a new connection: [WinError 10061] No connection could be made because the target machine actively refused it')': /session/4d892a4026407437a9ff8f06ac9c8f94/window
+2025-11-17 13:20:10,533 - WARNING - Retrying (Retry(total=1, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('<urllib3.connection.HTTPConnection object at 0x000002488087BD10>: Failed to establish a new connection: [WinError 10061] No connection could be made because the target machine actively refused it')': /session/4d892a4026407437a9ff8f06ac9c8f94/window
+2025-11-17 13:20:14,585 - WARNING - Retrying (Retry(total=0, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('<urllib3.connection.HTTPConnection object at 0x000002488087B5C0>: Failed to establish a new connection: [WinError 10061] No connection could be made because the target machine actively refused it')': /session/4d892a4026407437a9ff8f06ac9c8f94/window
+2025-11-17 13:20:18,832 - INFO - 💤 Sleeping 46s before next visit...
+2025-11-17 13:21:04,834 - INFO - ⏳ Waiting 83s before next visit...
+2025-11-17 13:21:45,488 - INFO - 
+⚠️ Manual interruption detected
+2025-11-17 13:21:45,489 - INFO - 
+============================================================
+2025-11-17 13:21:45,489 - INFO - 📊 SESSION REPORT
+2025-11-17 13:21:45,490 - INFO - ============================================================
+2025-11-17 13:21:45,490 - INFO - Total Visits: 1
+2025-11-17 13:21:45,491 - INFO - ✅ Successful: 1
+2025-11-17 13:21:45,491 - INFO - ❌ Failed: 0
+2025-11-17 13:21:45,491 - INFO - 🔄 Proxies Used: 0
+2025-11-17 13:21:45,492 - INFO - ⏱️ Duration: 2.8 minutes
+2025-11-17 13:21:45,492 - INFO - ============================================================
+
+2025-11-17 13:21:45,493 - INFO - 🏁 Testing session completed
+2025-11-17 13:24:37,307 - INFO - 🎯 Ad Fraud Detection Engine - Testing Suite
+2025-11-17 13:24:37,313 - INFO - Start Time: 2025-11-17 13:24:37
+2025-11-17 13:24:37,314 - INFO - 🔍 Checking website connectivity...
+2025-11-17 13:24:37,638 - INFO - ✅ Website reachable: https://pravinmathew613.netlify.app/ (Status: 200)
+2025-11-17 13:24:37,638 - INFO - 🚀 Starting daily visit cycle (Target: 5 visits)
+2025-11-17 13:24:37,639 - INFO - ⚠️ TEST MODE ENABLED - Using direct connection (no proxies)
+2025-11-17 13:24:37,639 - INFO - 
+============================================================
+2025-11-17 13:24:37,640 - INFO - Visit 1/5 - https://pravinmathew613.netlify.app/
+2025-11-17 13:24:37,641 - INFO - Proxy: Direct connection
+2025-11-17 13:24:37,641 - INFO - ============================================================
+2025-11-17 13:24:37,642 - INFO - Starting visit to: https://pravinmathew613.netlify.app/
+2025-11-17 13:24:42,367 - INFO - patching driver executable C:\Users\hp\appdata\roaming\undetected_chromedriver\undetected_chromedriver.exe
+2025-11-17 13:24:44,475 - INFO - Browser created successfully
+2025-11-17 13:24:47,606 - INFO - Page loaded: https://pravinmathew613.netlify.app/
+2025-11-17 13:25:29,359 - INFO - No buttons found - proceeding normally
+2025-11-17 13:25:43,835 - INFO - Completed human-like scroll (4 scrolls) - evasion intact
+2025-11-17 13:25:50,672 - INFO - ✅ Visit completed successfully: https://pravinmathew613.netlify.app/
+2025-11-17 13:25:51,110 - INFO - 💤 Sleeping 51s before next visit...
+2025-11-17 13:26:42,112 - INFO - ⏳ Waiting 36s before next visit...
+2025-11-17 13:27:18,113 - INFO - ⏳ Waiting 90s before next visit...
+2025-11-17 13:28:48,115 - INFO - ⏳ Waiting 33s before next visit...
+2025-11-17 13:29:21,116 - INFO - ⏳ Waiting 89s before next visit...
+2025-11-17 13:30:50,117 - INFO - ⏳ Waiting 65s before next visit...
+2025-11-17 13:31:55,118 - INFO - ⏳ Waiting 58s before next visit...
+2025-11-17 13:32:53,120 - INFO - ⏳ Waiting 48s before next visit...
+2025-11-17 13:33:41,121 - INFO - ⏳ Waiting 85s before next visit...
+2025-11-17 13:35:06,123 - INFO - ⏳ Waiting 39s before next visit...
+2025-11-17 13:35:45,124 - INFO - ⏳ Waiting 43s before next visit...
+2025-11-17 13:36:28,125 - INFO - ⏳ Waiting 74s before next visit...
+2025-11-17 13:37:03,987 - INFO - 
+⚠️ Manual interruption detected
+2025-11-17 13:37:03,987 - INFO - 
+============================================================
+2025-11-17 13:37:03,988 - INFO - 📊 SESSION REPORT
+2025-11-17 13:37:03,988 - INFO - ============================================================
+2025-11-17 13:37:03,989 - INFO - Total Visits: 1
+2025-11-17 13:37:03,989 - INFO - ✅ Successful: 1
+2025-11-17 13:37:03,990 - INFO - ❌ Failed: 0
+2025-11-17 13:37:03,990 - INFO - 🔄 Proxies Used: 0
+2025-11-17 13:37:03,991 - INFO - ⏱️ Duration: 12.4 minutes
+2025-11-17 13:37:03,991 - INFO - ============================================================
+
+2025-11-17 13:37:03,991 - INFO - 🏁 Testing session completed
+2025-11-17 13:38:21,768 - INFO - 🎯 Ad Fraud Detection Engine - Testing Suite
+2025-11-17 13:38:21,768 - INFO - Start Time: 2025-11-17 13:38:21
+2025-11-17 13:38:21,769 - INFO - 🔍 Checking website connectivity...
+2025-11-17 13:38:22,258 - INFO - ✅ Website reachable: https://pravinmathew613.netlify.app/ (Status: 200)
+2025-11-17 13:38:22,259 - INFO - 🚀 Starting daily visit cycle (Target: 3 visits)
+2025-11-17 13:38:22,259 - INFO - ⚠️ TEST MODE ENABLED - Using direct connection (no proxies)
+2025-11-17 13:38:22,260 - INFO - 
+============================================================
+2025-11-17 13:38:22,260 - INFO - Visit 1/3 - https://pravinmathew613.netlify.app/
+2025-11-17 13:38:22,260 - INFO - Proxy: Direct connection
+2025-11-17 13:38:22,261 - INFO - ============================================================
+2025-11-17 13:38:22,261 - INFO - Starting visit to: https://pravinmathew613.netlify.app/
+2025-11-17 13:38:28,160 - INFO - patching driver executable C:\Users\hp\appdata\roaming\undetected_chromedriver\undetected_chromedriver.exe
+2025-11-17 13:38:29,990 - INFO - Browser created successfully
+2025-11-17 13:38:34,058 - INFO - Page loaded: https://pravinmathew613.netlify.app/
+2025-11-17 13:39:16,089 - INFO - No buttons found - proceeding normally
+2025-11-17 13:39:27,598 - INFO - Completed human-like scroll (4 scrolls) - evasion intact
+2025-11-17 13:39:29,385 - INFO - ✅ Visit completed successfully: https://pravinmathew613.netlify.app/
+2025-11-17 13:39:29,885 - INFO - 💤 Sleeping 31s before next visit...
+2025-11-17 13:40:00,886 - INFO - ⏳ Waiting 67s before next visit...
+2025-11-17 13:41:07,887 - INFO - 
+============================================================
+2025-11-17 13:41:07,887 - INFO - Visit 2/3 - https://pravinmathew613.netlify.app/
+2025-11-17 13:41:07,888 - INFO - Proxy: Direct connection
+2025-11-17 13:41:07,888 - INFO - ============================================================
+2025-11-17 13:41:07,889 - INFO - Starting visit to: https://pravinmathew613.netlify.app/
+2025-11-17 13:41:11,208 - INFO - patching driver executable C:\Users\hp\appdata\roaming\undetected_chromedriver\undetected_chromedriver.exe
+2025-11-17 13:41:13,134 - INFO - Browser created successfully
+2025-11-17 13:41:16,203 - INFO - Page loaded: https://pravinmathew613.netlify.app/
+2025-11-17 13:41:58,101 - INFO - No buttons found - proceeding normally
+2025-11-17 13:42:08,652 - INFO - Completed human-like scroll (4 scrolls) - evasion intact
+2025-11-17 13:42:10,295 - INFO - ✅ Visit completed successfully: https://pravinmathew613.netlify.app/
+2025-11-17 13:42:10,943 - INFO - 💤 Sleeping 55s before next visit...
+2025-11-17 13:43:05,945 - INFO - ⏳ Waiting 44s before next visit...
+2025-11-17 13:43:49,946 - INFO - 
+============================================================
+2025-11-17 13:43:49,947 - INFO - Visit 3/3 - https://pravinmathew613.netlify.app/
+2025-11-17 13:43:49,947 - INFO - Proxy: Direct connection
+2025-11-17 13:43:49,947 - INFO - ============================================================
+2025-11-17 13:43:49,948 - INFO - Starting visit to: https://pravinmathew613.netlify.app/
+2025-11-17 13:43:54,358 - INFO - patching driver executable C:\Users\hp\appdata\roaming\undetected_chromedriver\undetected_chromedriver.exe
+2025-11-17 13:43:56,072 - INFO - Browser created successfully
+2025-11-17 13:43:58,779 - INFO - Page loaded: https://pravinmathew613.netlify.app/
+2025-11-17 13:44:40,304 - INFO - No buttons found - proceeding normally
+2025-11-17 13:44:53,087 - INFO - Completed human-like scroll (3 scrolls) - evasion intact
+2025-11-17 13:44:54,285 - INFO - ✅ Visit completed successfully: https://pravinmathew613.netlify.app/
+2025-11-17 13:44:54,808 - INFO - 
+============================================================
+2025-11-17 13:44:54,808 - INFO - 📊 SESSION REPORT
+2025-11-17 13:44:54,809 - INFO - ============================================================
+2025-11-17 13:44:54,809 - INFO - Total Visits: 3
+2025-11-17 13:44:54,809 - INFO - ✅ Successful: 3
+2025-11-17 13:44:54,810 - INFO - ❌ Failed: 0
+2025-11-17 13:44:54,810 - INFO - 🔄 Proxies Used: 0
+2025-11-17 13:44:54,810 - INFO - ⏱️ Duration: 6.5 minutes
+2025-11-17 13:44:54,811 - INFO - ============================================================
+
+2025-11-17 13:44:54,811 - INFO - 🏁 Testing session completed
+2025-11-17 13:46:49,450 - INFO - 🎯 Ad Fraud Detection Engine - Testing Suite
+2025-11-17 13:46:49,450 - INFO - Start Time: 2025-11-17 13:46:49
+2025-11-17 13:46:49,451 - INFO - 🔍 Checking website connectivity...
+2025-11-17 13:46:49,774 - INFO - ✅ Website reachable: https://pravinmathew613.netlify.app/ (Status: 200)
+2025-11-17 13:46:49,775 - INFO - 🚀 Starting daily visit cycle (Target: 5 visits)
+2025-11-17 13:46:49,775 - INFO - ⚠️ TEST MODE ENABLED - Using direct connection (no proxies)
+2025-11-17 13:46:49,776 - INFO - 
+============================================================
+2025-11-17 13:46:49,777 - INFO - Visit 1/5 - https://pravinmathew613.netlify.app/
+2025-11-17 13:46:49,778 - INFO - Proxy: Direct connection
+2025-11-17 13:46:49,778 - INFO - ============================================================
+2025-11-17 13:46:49,779 - INFO - Starting visit to: https://pravinmathew613.netlify.app/
+2025-11-17 13:46:54,746 - INFO - patching driver executable C:\Users\hp\appdata\roaming\undetected_chromedriver\undetected_chromedriver.exe
+2025-11-17 13:46:57,885 - INFO - Browser created successfully
+2025-11-17 13:47:02,016 - INFO - Page loaded: https://pravinmathew613.netlify.app/
+2025-11-17 13:47:43,781 - INFO - No buttons found - proceeding normally
+2025-11-17 13:47:56,221 - INFO - Completed human-like scroll (4 scrolls) - evasion intact
+2025-11-17 13:47:56,974 - INFO - ✅ Visit completed successfully: https://pravinmathew613.netlify.app/
+2025-11-17 13:47:57,317 - INFO - 💤 Sleeping 18s before next visit...
+2025-11-17 13:48:15,318 - INFO - ⏳ Waiting 67s before next visit...
+2025-11-17 13:49:22,319 - INFO - 
+============================================================
+2025-11-17 13:49:22,320 - INFO - Visit 2/5 - https://pravinmathew613.netlify.app/
+2025-11-17 13:49:22,320 - INFO - Proxy: Direct connection
+2025-11-17 13:49:22,321 - INFO - ============================================================
+2025-11-17 13:49:22,321 - INFO - Starting visit to: https://pravinmathew613.netlify.app/
+2025-11-17 13:49:29,070 - INFO - patching driver executable C:\Users\hp\appdata\roaming\undetected_chromedriver\undetected_chromedriver.exe
+2025-11-17 13:49:30,892 - INFO - Browser created successfully
+2025-11-17 13:49:34,364 - INFO - Page loaded: https://pravinmathew613.netlify.app/
+2025-11-17 13:50:16,308 - INFO - No buttons found - proceeding normally
+2025-11-17 13:50:29,628 - INFO - Completed human-like scroll (4 scrolls) - evasion intact
+2025-11-17 13:50:32,430 - INFO - ✅ Visit completed successfully: https://pravinmathew613.netlify.app/
+2025-11-17 13:50:33,105 - INFO - 💤 Sleeping 46s before next visit...
+2025-11-17 13:51:19,107 - INFO - ⏳ Waiting 81s before next visit...
+2025-11-17 13:52:40,108 - INFO - 
+============================================================
+2025-11-17 13:52:40,109 - INFO - Visit 3/5 - https://pravinmathew613.netlify.app/
+2025-11-17 13:52:40,110 - INFO - Proxy: Direct connection
+2025-11-17 13:52:40,110 - INFO - ============================================================
+2025-11-17 13:52:40,110 - INFO - Starting visit to: https://pravinmathew613.netlify.app/
+2025-11-17 13:52:44,860 - INFO - patching driver executable C:\Users\hp\appdata\roaming\undetected_chromedriver\undetected_chromedriver.exe
+2025-11-17 13:52:46,668 - INFO - Browser created successfully
+2025-11-17 13:52:49,328 - INFO - Page loaded: https://pravinmathew613.netlify.app/
+2025-11-17 13:53:30,602 - INFO - No buttons found - proceeding normally
+2025-11-17 13:53:38,966 - INFO - Completed human-like scroll (3 scrolls) - evasion intact
+2025-11-17 13:53:42,119 - INFO - ✅ Visit completed successfully: https://pravinmathew613.netlify.app/
+2025-11-17 13:53:42,644 - INFO - 💤 Sleeping 47s before next visit...
+2025-11-17 13:54:29,649 - INFO - ⏳ Waiting 64s before next visit...
+2025-11-17 13:55:33,650 - INFO - 
+============================================================
+2025-11-17 13:55:33,650 - INFO - Visit 4/5 - https://pravinmathew613.netlify.app/
+2025-11-17 13:55:33,650 - INFO - Proxy: Direct connection
+2025-11-17 13:55:33,650 - INFO - ============================================================
+2025-11-17 13:55:33,650 - INFO - Starting visit to: https://pravinmathew613.netlify.app/
+2025-11-17 13:55:39,113 - INFO - patching driver executable C:\Users\hp\appdata\roaming\undetected_chromedriver\undetected_chromedriver.exe
+2025-11-17 13:55:40,864 - INFO - Browser created successfully
+2025-11-17 13:55:44,356 - INFO - Page loaded: https://pravinmathew613.netlify.app/
+2025-11-17 13:56:25,765 - INFO - No buttons found - proceeding normally
+2025-11-17 13:56:33,361 - INFO - Completed human-like scroll (3 scrolls) - evasion intact
+2025-11-17 13:56:39,759 - INFO - ✅ Visit completed successfully: https://pravinmathew613.netlify.app/
+2025-11-17 13:56:40,161 - INFO - 💤 Sleeping 28s before next visit...
+2025-11-17 13:57:08,170 - INFO - ⏳ Waiting 40s before next visit...
+2025-11-17 13:57:48,171 - INFO - 
+============================================================
+2025-11-17 13:57:48,171 - INFO - Visit 5/5 - https://pravinmathew613.netlify.app/
+2025-11-17 13:57:48,171 - INFO - Proxy: Direct connection
+2025-11-17 13:57:48,171 - INFO - ============================================================
+2025-11-17 13:57:48,171 - INFO - Starting visit to: https://pravinmathew613.netlify.app/
+2025-11-17 13:57:50,406 - INFO - patching driver executable C:\Users\hp\appdata\roaming\undetected_chromedriver\undetected_chromedriver.exe
+2025-11-17 13:57:52,150 - INFO - Browser created successfully
+2025-11-17 13:57:54,793 - INFO - Page loaded: https://pravinmathew613.netlify.app/
+2025-11-17 13:58:36,372 - INFO - No buttons found - proceeding normally
+2025-11-17 13:58:47,622 - INFO - Completed human-like scroll (4 scrolls) - evasion intact
+2025-11-17 13:58:55,135 - INFO - ✅ Visit completed successfully: https://pravinmathew613.netlify.app/
+2025-11-17 13:58:55,532 - INFO - 
+============================================================
+2025-11-17 13:58:55,532 - INFO - 📊 SESSION REPORT
+2025-11-17 13:58:55,532 - INFO - ============================================================
+2025-11-17 13:58:55,532 - INFO - Total Visits: 5
+2025-11-17 13:58:55,532 - INFO - ✅ Successful: 5
+2025-11-17 13:58:55,532 - INFO - ❌ Failed: 0
+2025-11-17 13:58:55,532 - INFO - 🔄 Proxies Used: 0
+2025-11-17 13:58:55,532 - INFO - ⏱️ Duration: 12.1 minutes
+2025-11-17 13:58:55,532 - INFO - ============================================================
+
+2025-11-17 13:58:55,532 - INFO - 🏁 Testing session completed
+2025-11-17 14:00:48,518 - INFO - 🎯 Ad Fraud Detection Engine - Testing Suite
+2025-11-17 14:00:48,519 - INFO - Start Time: 2025-11-17 14:00:48
+2025-11-17 14:00:48,519 - INFO - 🔍 Checking website connectivity...
+2025-11-17 14:00:48,847 - INFO - ✅ Website reachable: https://pravinmathew613.netlify.app/ (Status: 200)
+2025-11-17 14:00:48,847 - INFO - 🚀 Starting daily visit cycle (Target: 3 visits)
+2025-11-17 14:00:48,847 - INFO - ⚠️ TEST MODE ENABLED - Using direct connection (no proxies)
+2025-11-17 14:00:48,847 - INFO - 
+============================================================
+2025-11-17 14:00:48,847 - INFO - Visit 1/3 - https://pravinmathew613.netlify.app/
+2025-11-17 14:00:48,847 - INFO - Proxy: Direct connection
+2025-11-17 14:00:48,847 - INFO - ============================================================
+2025-11-17 14:00:48,847 - INFO - Starting visit to: https://pravinmathew613.netlify.app/
+2025-11-17 14:00:53,854 - INFO - patching driver executable C:\Users\hp\appdata\roaming\undetected_chromedriver\undetected_chromedriver.exe
+2025-11-17 14:00:55,605 - INFO - Browser created successfully
+2025-11-17 14:00:58,221 - INFO - Page loaded: https://pravinmathew613.netlify.app/
+2025-11-17 14:01:39,835 - INFO - No buttons found - proceeding normally
+2025-11-17 14:01:51,878 - INFO - Completed human-like scroll (4 scrolls) - evasion intact
+2025-11-17 14:01:53,028 - INFO - ✅ Visit completed successfully: https://pravinmathew613.netlify.app/
+2025-11-17 14:01:53,317 - INFO - 💤 Sleeping 49s before next visit...
+2025-11-17 14:02:42,328 - INFO - ⏳ Waiting 86s before next visit...
+2025-11-17 14:04:08,328 - INFO - 
+============================================================
+2025-11-17 14:04:08,329 - INFO - Visit 2/3 - https://pravinmathew613.netlify.app/
+2025-11-17 14:04:08,329 - INFO - Proxy: Direct connection
+2025-11-17 14:04:08,329 - INFO - ============================================================
+2025-11-17 14:04:08,329 - INFO - Starting visit to: https://pravinmathew613.netlify.app/
+2025-11-17 14:04:12,088 - INFO - patching driver executable C:\Users\hp\appdata\roaming\undetected_chromedriver\undetected_chromedriver.exe
+2025-11-17 14:04:13,553 - INFO - Browser created successfully
+2025-11-17 14:04:16,734 - INFO - Page loaded: https://pravinmathew613.netlify.app/
+2025-11-17 14:04:57,945 - INFO - No buttons found - proceeding normally
+2025-11-17 14:05:07,900 - INFO - Completed human-like scroll (3 scrolls) - evasion intact
+2025-11-17 14:05:08,962 - INFO - ✅ Visit completed successfully: https://pravinmathew613.netlify.app/
+2025-11-17 14:05:09,394 - INFO - 💤 Sleeping 31s before next visit...
+2025-11-17 14:05:40,403 - INFO - ⏳ Waiting 34s before next visit...
+2025-11-17 14:06:14,403 - INFO - 
+============================================================
+2025-11-17 14:06:14,403 - INFO - Visit 3/3 - https://pravinmathew613.netlify.app/
+2025-11-17 14:06:14,403 - INFO - Proxy: Direct connection
+2025-11-17 14:06:14,403 - INFO - ============================================================
+2025-11-17 14:06:14,403 - INFO - Starting visit to: https://pravinmathew613.netlify.app/
+2025-11-17 14:06:17,199 - INFO - patching driver executable C:\Users\hp\appdata\roaming\undetected_chromedriver\undetected_chromedriver.exe
+2025-11-17 14:06:18,620 - INFO - Browser created successfully
+2025-11-17 14:06:21,416 - INFO - Page loaded: https://pravinmathew613.netlify.app/
+2025-11-17 14:07:02,715 - INFO - No buttons found - proceeding normally
+2025-11-17 14:07:08,083 - INFO - Completed human-like scroll (2 scrolls) - evasion intact
+2025-11-17 14:07:09,902 - INFO - ✅ Visit completed successfully: https://pravinmathew613.netlify.app/
+2025-11-17 14:07:10,759 - INFO - 
+============================================================
+2025-11-17 14:07:10,759 - INFO - 📊 SESSION REPORT
+2025-11-17 14:07:10,759 - INFO - ============================================================
+2025-11-17 14:07:10,759 - INFO - Total Visits: 3
+2025-11-17 14:07:10,760 - INFO - ✅ Successful: 3
+2025-11-17 14:07:10,760 - INFO - ❌ Failed: 0
+2025-11-17 14:07:10,760 - INFO - 🔄 Proxies Used: 0
+2025-11-17 14:07:10,760 - INFO - ⏱️ Duration: 6.4 minutes
+2025-11-17 14:07:10,760 - INFO - ============================================================
+
+2025-11-17 14:07:10,761 - INFO - 🏁 Testing session completed
+2025-11-17 14:08:23,958 - INFO - 🎯 Ad Fraud Detection Engine - Testing Suite
+2025-11-17 14:08:23,959 - INFO - Start Time: 2025-11-17 14:08:23
+2025-11-17 14:08:23,960 - INFO - 🔍 Checking website connectivity...
+2025-11-17 14:08:24,253 - INFO - ✅ Website reachable: https://pravinmathew613.netlify.app/ (Status: 200)
+2025-11-17 14:08:24,254 - INFO - 🚀 Starting daily visit cycle (Target: 2 visits)
+2025-11-17 14:08:24,254 - INFO - ⚠️ TEST MODE ENABLED - Using direct connection (no proxies)
+2025-11-17 14:08:24,255 - INFO - 
+============================================================
+2025-11-17 14:08:24,256 - INFO - Visit 1/2 - https://pravinmathew613.netlify.app/
+2025-11-17 14:08:24,256 - INFO - Proxy: Direct connection
+2025-11-17 14:08:24,257 - INFO - ============================================================
+2025-11-17 14:08:24,257 - INFO - Starting visit to: https://pravinmathew613.netlify.app/
+2025-11-17 14:08:26,660 - INFO - patching driver executable C:\Users\hp\appdata\roaming\undetected_chromedriver\undetected_chromedriver.exe
+2025-11-17 14:08:28,473 - INFO - Browser created successfully
+2025-11-17 14:08:31,121 - INFO - Page loaded: https://pravinmathew613.netlify.app/
+2025-11-17 14:09:13,006 - INFO - No buttons found - proceeding normally
+2025-11-17 14:09:18,316 - INFO - Completed human-like scroll (2 scrolls) - evasion intact
+2025-11-17 14:09:19,057 - INFO - ✅ Visit completed successfully: https://pravinmathew613.netlify.app/
+2025-11-17 14:09:19,348 - INFO - 💤 Sleeping 35s before next visit...
+2025-11-17 14:09:54,351 - INFO - ⏳ Waiting 41s before next visit...
+2025-11-17 14:10:35,352 - INFO - 
+============================================================
+2025-11-17 14:10:35,352 - INFO - Visit 2/2 - https://pravinmathew613.netlify.app/
+2025-11-17 14:10:35,353 - INFO - Proxy: Direct connection
+2025-11-17 14:10:35,353 - INFO - ============================================================
+2025-11-17 14:10:35,354 - INFO - Starting visit to: https://pravinmathew613.netlify.app/
+2025-11-17 14:10:39,519 - INFO - patching driver executable C:\Users\hp\appdata\roaming\undetected_chromedriver\undetected_chromedriver.exe
+2025-11-17 14:10:41,109 - INFO - Browser created successfully
+2025-11-17 14:10:44,607 - INFO - Page loaded: https://pravinmathew613.netlify.app/
+2025-11-17 14:11:26,259 - INFO - No buttons found - proceeding normally
+2025-11-17 14:11:31,920 - INFO - Completed human-like scroll (2 scrolls) - evasion intact
+2025-11-17 14:11:32,935 - INFO - ✅ Visit completed successfully: https://pravinmathew613.netlify.app/
+2025-11-17 14:11:33,322 - INFO - 
+============================================================
+2025-11-17 14:11:33,323 - INFO - 📊 SESSION REPORT
+2025-11-17 14:11:33,325 - INFO - ============================================================
+2025-11-17 14:11:33,326 - INFO - Total Visits: 2
+2025-11-17 14:11:33,326 - INFO - ✅ Successful: 2
+2025-11-17 14:11:33,327 - INFO - ❌ Failed: 0
+2025-11-17 14:11:33,327 - INFO - 🔄 Proxies Used: 0
+2025-11-17 14:11:33,328 - INFO - ⏱️ Duration: 3.2 minutes
+2025-11-17 14:11:33,328 - INFO - ============================================================
+
+2025-11-17 14:11:33,329 - INFO - 🏁 Testing session completed

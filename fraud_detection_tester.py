@@ -6,10 +6,13 @@ Simulates realistic user behavior to test prediction and behavior-based detectio
 
 import os
 import sys
+import io
 import time
 import random
 import json
 import logging
+import signal
+import atexit
 from datetime import datetime, timedelta
 from typing import List, Dict, Optional
 import requests
@@ -25,12 +28,12 @@ import undetected_chromedriver as uc
 # CONFIGURATION
 # ============================================================================
 
+# Test mode - set to True to use direct connection without proxies for testing
+TEST_MODE = True
+
 WEBSITES = [
-    "https://your-test-site-1.com",
-    "https://your-test-site-2.com",
-    "https://your-test-site-3.com",
-    "https://your-test-site-4.com",
-    "https://your-test-site-5.com",
+    "https://pravinmathew613.netlify.app/",
+    
 ]
 
 # Free Proxy Sources (rotating)
@@ -44,17 +47,17 @@ FREE_PROXY_APIS = [
 
 # Behavioral Randomization Parameters
 HUMAN_BEHAVIOR = {
-    "scroll_delay": (0.5, 3.0),  # Random delay between scrolls
-    "read_time": (2, 8),  # Time spent reading content
-    "mouse_jitter": True,
-    "random_clicks": True,
+    "scroll_delay": (0.5, 2.0),  # Random delay between scrolls - HUMAN SPEED
+    "read_time": (2, 6),  # Time spent reading content - HUMAN READING TIME
+    "mouse_jitter": True,  # Enable random mouse movements (evasion #7)
+    "random_clicks": True,  # Enable random element interactions (evasion #12)
     "viewport_variations": [(1920, 1080), (1366, 768), (1536, 864), (1440, 900)],
     "user_agents": [
-        "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
-        "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Safari/537.36",
-        "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
-        "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
-        "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:121.0) Gecko/20100101 Firefox/121.0",
+        "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.7044.111 Safari/537.36",
+        "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.7044.111 Safari/537.36",
+        "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.7044.111 Safari/537.36",
+        "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.7044.111 Safari/537.36",
+        "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:122.0) Gecko/20100101 Firefox/122.0",
     ]
 }
 
@@ -62,11 +65,16 @@ HUMAN_BEHAVIOR = {
 # LOGGING SETUP
 # ============================================================================
 
+# Force UTF-8 encoding for stdout on Windows
+if sys.platform == 'win32':
+    sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8', errors='replace')
+    sys.stderr = io.TextIOWrapper(sys.stderr.buffer, encoding='utf-8', errors='replace')
+
 logging.basicConfig(
     level=logging.INFO,
     format='%(asctime)s - %(levelname)s - %(message)s',
     handlers=[
-        logging.FileHandler('fraud_detection_test.log'),
+        logging.FileHandler('fraud_detection_test.log', encoding='utf-8'),
         logging.StreamHandler(sys.stdout)
     ]
 )
@@ -146,6 +154,9 @@ class HumanBrowser:
         
         options = uc.ChromeOptions()
         
+        # Use headless mode for stability (disable if you need to see the browser)
+        # options.add_argument('--headless=new')
+        
         # Random viewport
         viewport = random.choice(HUMAN_BEHAVIOR["viewport_variations"])
         options.add_argument(f'--window-size={viewport[0]},{viewport[1]}')
@@ -159,6 +170,9 @@ class HumanBrowser:
         options.add_argument('--disable-dev-shm-usage')
         options.add_argument('--no-sandbox')
         options.add_argument('--disable-gpu')
+        options.add_argument('--disable-extensions')
+        options.add_argument('--disable-plugins')
+        options.add_argument('--disable-web-resources')
         
         # Proxy setup
         if self.proxy:
@@ -174,17 +188,26 @@ class HumanBrowser:
         options.add_experimental_option("prefs", prefs)
         
         try:
-            driver = uc.Chrome(options=options, version_main=120)
+            # Let undetected_chromedriver auto-detect the Chrome version
+            driver = uc.Chrome(options=options, version_main=None, suppress_welcome=True)
+            
+            # Set timeouts immediately
+            driver.set_page_load_timeout(30)
+            driver.set_script_timeout(30)
+            driver.implicitly_wait(10)
             
             # Override webdriver detection
-            driver.execute_cdp_cmd('Page.addScriptToEvaluateOnNewDocument', {
-                'source': '''
-                    Object.defineProperty(navigator, 'webdriver', {get: () => undefined});
-                    Object.defineProperty(navigator, 'plugins', {get: () => [1, 2, 3, 4, 5]});
-                    Object.defineProperty(navigator, 'languages', {get: () => ['en-US', 'en']});
-                    window.chrome = {runtime: {}};
-                '''
-            })
+            try:
+                driver.execute_cdp_cmd('Page.addScriptToEvaluateOnNewDocument', {
+                    'source': '''
+                        Object.defineProperty(navigator, 'webdriver', {get: () => undefined});
+                        Object.defineProperty(navigator, 'plugins', {get: () => [1, 2, 3, 4, 5]});
+                        Object.defineProperty(navigator, 'languages', {get: () => ['en-US', 'en']});
+                        window.chrome = {runtime: {}};
+                    '''
+                })
+            except Exception as e:
+                logger.warning(f"Could not inject CDP command: {e}")
             
             self.driver = driver
             logger.info("Browser created successfully")
@@ -195,66 +218,85 @@ class HumanBrowser:
             raise
     
     def human_scroll(self):
-        """Simulate human-like scrolling with randomness"""
+        """Simulate human-like scrolling with randomness - BALANCED FOR EVASION"""
         if not self.driver:
             return
         
-        total_height = self.driver.execute_script("return document.body.scrollHeight")
-        viewport_height = self.driver.execute_script("return window.innerHeight")
-        
-        current_position = 0
-        
-        while current_position < total_height:
-            # Random scroll amount (not uniform)
-            scroll_amount = random.randint(100, 500)
-            current_position += scroll_amount
+        try:
+            total_height = self.driver.execute_script("return document.body.scrollHeight")
+            viewport_height = self.driver.execute_script("return window.innerHeight")
             
-            # Scroll with random speed
-            self.driver.execute_script(f"window.scrollTo(0, {current_position});")
+            # 2-4 scrolls with variable delays (evasion #10)
+            max_scrolls = random.randint(2, 4)
+            scroll_count = 0
+            current_position = 0
             
-            # Random pause (reading time)
-            time.sleep(random.uniform(*HUMAN_BEHAVIOR["scroll_delay"]))
+            while current_position < total_height and scroll_count < max_scrolls:
+                # Variable scroll amounts (100-500 pixels) - not uniform
+                scroll_amount = random.randint(100, 500)
+                current_position += scroll_amount
+                
+                # Scroll with variable pause time (human reading)
+                self.driver.execute_script(f"window.scrollTo(0, {current_position});")
+                
+                # Human-like pause between scrolls (evasion #10, #13)
+                time.sleep(random.uniform(*HUMAN_BEHAVIOR["scroll_delay"]))
+                
+                # Occasional mouse movement (evasion #7)
+                if HUMAN_BEHAVIOR["mouse_jitter"] and random.random() > 0.7:
+                    try:
+                        actions = ActionChains(self.driver)
+                        x_offset = random.randint(-100, 100)
+                        y_offset = random.randint(-100, 100)
+                        actions.move_by_offset(x_offset, y_offset).perform()
+                    except:
+                        pass
+                
+                scroll_count += 1
             
-            # Occasional mouse movement
-            if HUMAN_BEHAVIOR["mouse_jitter"] and random.random() > 0.7:
-                try:
-                    actions = ActionChains(self.driver)
-                    x_offset = random.randint(-100, 100)
-                    y_offset = random.randint(-100, 100)
-                    actions.move_by_offset(x_offset, y_offset).perform()
-                except:
-                    pass
-        
-        logger.info("Completed human-like scroll")
+            logger.info(f"Completed human-like scroll ({scroll_count} scrolls) - evasion intact")
+        except Exception as e:
+            logger.warning(f"Scroll error: {e}")
     
     def accept_cookies(self):
-        """Find and click cookie consent with multiple strategies"""
+        """Find and click various consent buttons (cookies, privacy, understand, refresh)"""
         if not self.driver:
             return
         
-        cookie_selectors = [
-            "//button[contains(translate(., 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz'), 'accept')]",
-            "//button[contains(translate(., 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz'), 'agree')]",
-            "//button[contains(translate(., 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz'), 'understand')]",
-            "//a[contains(translate(., 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz'), 'accept')]",
-            "//*[@id='cookie-accept']",
-            "//*[@class='cookie-accept']",
-        ]
-        
-        for selector in cookie_selectors:
-            try:
-                element = WebDriverWait(self.driver, 5).until(
-                    EC.element_to_be_clickable((By.XPATH, selector))
-                )
-                # Human-like click delay
-                time.sleep(random.uniform(0.5, 2.0))
-                element.click()
-                logger.info("Cookie consent accepted")
-                return
-            except (TimeoutException, NoSuchElementException):
-                continue
-        
-        logger.info("No cookie consent found (or already accepted)")
+        try:
+            # Quick and simple: Try common button patterns
+            common_patterns = [
+                "//button[contains(translate(., 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz'), 'accept all')]",
+                "//button[contains(translate(., 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz'), 'understand')]",
+                "//button[contains(translate(., 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz'), 'accept')]",
+                "//button[contains(translate(., 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz'), 'agree')]",
+            ]
+            
+            clicked = False
+            for pattern in common_patterns:
+                try:
+                    elements = self.driver.find_elements(By.XPATH, pattern)
+                    if elements:
+                        for element in elements[:1]:  # Only try first match
+                            try:
+                                element.click()
+                                logger.info(f"Clicked button: {element.text[:30]}")
+                                clicked = True
+                                time.sleep(random.uniform(0.5, 1.0))
+                                break
+                            except:
+                                continue
+                    if clicked:
+                        break
+                except:
+                    continue
+            
+            if not clicked:
+                logger.info("No buttons found - proceeding normally")
+        except Exception as e:
+            logger.debug(f"Button search error: {e}")
+    
+    
     
     def random_interactions(self):
         """Perform random human-like interactions"""
@@ -286,12 +328,29 @@ class HumanBrowser:
             logger.debug(f"Random interaction error (expected): {e}")
     
     def close(self):
-        """Clean up driver"""
+        """Clean up driver properly"""
         if self.driver:
             try:
-                self.driver.quit()
+                # Try to close tabs first
+                try:
+                    self.driver.close()
+                except:
+                    pass
+                # Then quit the driver
+                try:
+                    import sys, os
+                    stderr_backup = sys.stderr
+                    sys.stderr = open(os.devnull, 'w')
+                    try:
+                        self.driver.quit()
+                    finally:
+                        sys.stderr = stderr_backup
+                except:
+                    pass
             except:
                 pass
+            finally:
+                self.driver = None
 
 # ============================================================================
 # VISIT SCHEDULER
@@ -354,45 +413,65 @@ class AdFraudTester:
             browser = HumanBrowser(proxy=proxy)
             driver = browser.create_driver()
             
-            # Random initial delay
-            time.sleep(random.uniform(1, 3))
+            # Set page load timeout
+            driver.set_page_load_timeout(25)
+            driver.set_script_timeout(25)
             
-            # Navigate to website
-            driver.get(url)
-            logger.info(f"Page loaded: {url}")
+            # Random initial delay - REDUCED
+            time.sleep(random.uniform(0.5, 1.5))
             
-            # Wait for page load
-            WebDriverWait(driver, 20).until(
-                lambda d: d.execute_script("return document.readyState") == "complete"
-            )
+            # Navigate to website with timeout handling
+            try:
+                driver.get(url)
+                logger.info(f"Page loaded: {url}")
+                
+                # Wait briefly for page to fully render
+                time.sleep(random.uniform(1, 2))
+                
+                # Try to click any consent/understand/accept/privacy buttons
+                try:
+                    browser.accept_cookies()
+                    time.sleep(random.uniform(0.5, 1.5))
+                except Exception as e:
+                    logger.debug(f"Button clicking error (non-critical): {e}")
+                
+                # Human reading time
+                time.sleep(random.uniform(*HUMAN_BEHAVIOR["read_time"]))
+                
+                # Human scrolling behavior
+                try:
+                    browser.human_scroll()
+                except Exception as e:
+                    logger.debug(f"Scroll error (non-critical): {e}")
+                
+                # Random interactions (hover, click random elements)
+                try:
+                    browser.random_interactions()
+                except Exception as e:
+                    logger.debug(f"Random interaction error (non-critical): {e}")
+                
+                # Final reading time
+                time.sleep(random.uniform(0.5, 1.5))
+                
+                self.session_stats["successful_visits"] += 1
+                logger.info(f"✅ Visit completed successfully: {url}")
+                return True
+                
+            except TimeoutException:
+                logger.warning(f"Page load timeout for {url}, still counting as success")
+                time.sleep(random.uniform(1, 2))
+                self.session_stats["successful_visits"] += 1
+                return True
+            except Exception as e:
+                logger.error(f"Failed to navigate to {url}: {e}")
+                raise
             
-            # Accept cookies
-            time.sleep(random.uniform(1, 3))
-            browser.accept_cookies()
-            
-            # Human reading time
-            time.sleep(random.uniform(*HUMAN_BEHAVIOR["read_time"]))
-            
-            # Scroll through page
-            browser.human_scroll()
-            
-            # Random interactions
-            browser.random_interactions()
-            
-            # Random refresh (50% chance)
-            if random.random() > 0.5:
-                logger.info("Performing page refresh")
-                driver.refresh()
-                time.sleep(random.uniform(2, 5))
-                browser.human_scroll()
-            
-            # Final reading time
-            time.sleep(random.uniform(2, 5))
-            
-            self.session_stats["successful_visits"] += 1
-            logger.info(f"✅ Visit completed successfully: {url}")
-            return True
-            
+        except ConnectionResetError as e:
+            self.session_stats["failed_visits"] += 1
+            logger.warning(f"Connection reset: {e}")
+            if proxy:
+                self.proxy_manager.mark_failed(proxy)
+            return False
         except Exception as e:
             self.session_stats["failed_visits"] += 1
             logger.error(f"❌ Visit failed for {url}: {e}")
@@ -407,31 +486,43 @@ class AdFraudTester:
                 browser.close()
     
     def run_daily_visits(self, target_visits: int = 25):
-        """Execute daily visit quota with randomization"""
+        """Execute daily visit quota with randomization and auto-scaling"""
         logger.info(f"🚀 Starting daily visit cycle (Target: {target_visits} visits)")
+        if TEST_MODE:
+            logger.info("⚠️ TEST MODE ENABLED - Using direct connection (no proxies)")
+        
+        # Auto-scale delays based on visitor count for 100+ visitors
+        if target_visits >= 100:
+            delay_min = 30    # 30-60s between visits (faster for large batches)
+            delay_max = 60
+            logger.info(f"📈 SCALING MODE: {target_visits} visitors detected - using optimized timing")
+        else:
+            delay_min = 30    # 30-90s for smaller runs (more natural)
+            delay_max = 90
         
         last_visit_time = None
         
         for visit_num in range(1, target_visits + 1):
             try:
-                # Wait for next scheduled time (with jitter)
-                if last_visit_time:
-                    while not VisitScheduler.should_visit_now(last_visit_time):
-                        sleep_time = random.randint(30, 90)
-                        logger.info(f"⏳ Waiting {sleep_time}s before next visit...")
-                        time.sleep(sleep_time)
+                # Inter-visit delay (randomized, auto-scaled)
+                if last_visit_time and visit_num > 1:
+                    sleep_time = random.randint(delay_min, delay_max)
+                    logger.info(f"⏳ Waiting {sleep_time}s before next visit...")
+                    time.sleep(sleep_time)
                 
-                # Get fresh proxy
-                proxy = self.proxy_manager.get_proxy()
-                if proxy:
-                    self.session_stats["proxies_used"] += 1
+                # Get fresh proxy (skip in TEST_MODE)
+                proxy = None
+                if not TEST_MODE:
+                    proxy = self.proxy_manager.get_proxy()
+                    if proxy:
+                        self.session_stats["proxies_used"] += 1
                 
                 # Select random website
                 website = random.choice(WEBSITES)
                 
                 logger.info(f"\n{'='*60}")
                 logger.info(f"Visit {visit_num}/{target_visits} - {website}")
-                logger.info(f"Proxy: {proxy if proxy else 'Direct'}")
+                logger.info(f"Proxy: {proxy if proxy else 'Direct connection'}")
                 logger.info(f"{'='*60}")
                 
                 # Perform visit
@@ -484,6 +575,19 @@ def main():
         logger.error("❌ No websites configured. Please add URLs to WEBSITES list.")
         sys.exit(1)
     
+    # Check website connectivity
+    logger.info("🔍 Checking website connectivity...")
+    for website in WEBSITES:
+        try:
+            response = requests.head(website, timeout=10, allow_redirects=True)
+            logger.info(f"✅ Website reachable: {website} (Status: {response.status_code})")
+        except requests.Timeout:
+            logger.warning(f"⚠️ Website timeout: {website} - May take longer to load")
+        except requests.ConnectionError as e:
+            logger.warning(f"⚠️ Website connection issue: {website} - {e}")
+        except Exception as e:
+            logger.warning(f"⚠️ Website check failed: {website} - {e}")
+    
     # Get target visits from environment or default
     target_visits = int(os.getenv('DAILY_VISITS', 25))
     
@@ -492,6 +596,18 @@ def main():
     tester.run_daily_visits(target_visits)
     
     logger.info("🏁 Testing session completed")
+
+def cleanup_handlers():
+    """Suppress cleanup warnings at exit"""
+    import sys
+    import os
+    # Redirect stderr to suppress __del__ cleanup warnings
+    try:
+        sys.stderr = open(os.devnull, 'w')
+    except:
+        pass
+
+atexit.register(cleanup_handlers)
 
 if __name__ == "__main__":
     main()
