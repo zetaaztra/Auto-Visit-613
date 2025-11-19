@@ -33,6 +33,7 @@ TEST_MODE = False
 
 WEBSITES = [
     "https://pravinmathew613.netlify.app/",
+    "https://pravinmathew.vercel.app/",
     
 ]
 
