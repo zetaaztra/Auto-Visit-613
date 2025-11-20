@@ -26,6 +26,7 @@ import undetected_chromedriver as uc
 import hashlib
 import pickle
 from pathlib import Path
+from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 
 # ============================================================================
 # CONFIGURATION
@@ -187,6 +188,112 @@ def save_cookies(driver, fp_hash):
     cookie_path = COOKIE_DIR / f"{fp_hash}.pkl"
     with open(cookie_path, "wb") as ck:
         pickle.dump(driver.get_cookies(), ck)
+
+# ============================================================================
+# AD IMPRESSION TRACKING
+# ============================================================================
+
+class AdImpressionTracker:
+    """Tracks ad impressions and network requests"""
+    
+    def __init__(self):
+        self.impressions = []
+        self.ad_requests = []
+        self.ad_networks = {
+            'google': ['googleads', 'googlesyndication', 'doubleclick', 'google-analytics'],
+            'facebook': ['facebook.com', 'fbcdn'],
+            'amazon': ['amazon-adsystem'],
+            'criteo': ['criteo'],
+            'taboola': ['taboola'],
+            'outbrain': ['outbrain'],
+            'adnxs': ['adnxs'],
+            'rubiconproject': ['rubiconproject'],
+            'adsterra': ['adsterra', 'adsterracdn', 'adsterra.com'],
+        }
+    
+    def check_ad_networks(self, driver) -> Dict:
+        """Check for ad networks loaded on the page"""
+        ad_data = {
+            'networks_detected': [],
+            'ad_iframes': 0,
+            'ad_scripts': 0,
+            'impression_pixels': 0,
+        }
+        
+        try:
+            # Check for ad network scripts
+            scripts = driver.find_elements(By.TAG_NAME, "script")
+            for script in scripts:
+                src = script.get_attribute("src") or ""
+                for network, keywords in self.ad_networks.items():
+                    if any(keyword in src.lower() for keyword in keywords):
+                        if network not in ad_data['networks_detected']:
+                            ad_data['networks_detected'].append(network)
+                        ad_data['ad_scripts'] += 1
+            
+            # Check for ad iframes
+            iframes = driver.find_elements(By.TAG_NAME, "iframe")
+            for iframe in iframes:
+                src = iframe.get_attribute("src") or ""
+                if any(keyword in src.lower() for network_keywords in self.ad_networks.values() 
+                       for keyword in network_keywords):
+                    ad_data['ad_iframes'] += 1
+            
+            # Check for impression pixels (1x1 images)
+            images = driver.find_elements(By.TAG_NAME, "img")
+            for img in images:
+                width = img.get_attribute("width")
+                height = img.get_attribute("height")
+                src = img.get_attribute("src") or ""
+                
+                # Check for tracking pixels
+                if (width == "1" and height == "1") or ("pixel" in src.lower()):
+                    ad_data['impression_pixels'] += 1
+                    
+                    # Check if it's from known ad network
+                    for network, keywords in self.ad_networks.items():
+                        if any(keyword in src.lower() for keyword in keywords):
+                            if network not in ad_data['networks_detected']:
+                                ad_data['networks_detected'].append(network)
+            
+            return ad_data
+            
+        except Exception as e:
+            logger.debug(f"Ad network detection error: {e}")
+            return ad_data
+    
+    def trigger_impression(self, driver) -> bool:
+        """Trigger ad impression by scrolling to ad elements"""
+        try:
+            # Find elements with ad-related classes/ids
+            ad_selectors = [
+                "[class*='ad']", "[id*='ad']", "[class*='advertisement']",
+                "[id*='advertisement']", "[class*='banner']", "[id*='banner']"
+            ]
+            
+            ad_elements_found = 0
+            for selector in ad_selectors:
+                try:
+                    elements = driver.find_elements(By.CSS_SELECTOR, selector)
+                    for element in elements[:3]:  # Interact with first 3 ad elements
+                        try:
+                            # Scroll to element to trigger impression
+                            driver.execute_script("arguments[0].scrollIntoView(true);", element)
+                            time.sleep(random.uniform(0.5, 1.5))
+                            ad_elements_found += 1
+                        except:
+                            pass
+                except:
+                    pass
+            
+            if ad_elements_found > 0:
+                logger.info(f"📊 Triggered {ad_elements_found} ad impressions")
+                return True
+            return False
+            
+        except Exception as e:
+            logger.debug(f"Impression trigger error: {e}")
+            return False
 
 # ============================================================================
 # ANTI-DETECTION BROWSER
@@ -479,12 +586,15 @@ class AdFraudTester:
     
     def __init__(self):
         self.proxy_manager = ProxyManager()
+        self.ad_tracker = AdImpressionTracker()
         self.visit_count = 0
         self.session_stats = {
             "total_visits": 0,
             "successful_visits": 0,
             "failed_visits": 0,
             "proxies_used": 0,
+            "total_impressions": 0,
+            "ad_networks_detected": set(),
             "start_time": datetime.now()
         }
     
@@ -537,6 +647,21 @@ class AdFraudTester:
                     browser.random_interactions()
                 except Exception as e:
                     logger.debug(f"Random interaction error (non-critical): {e}")
+                
+                # Check for ad networks and trigger impressions
+                try:
+                    ad_data = self.ad_tracker.check_ad_networks(driver)
+                    if ad_data['networks_detected']:
+                        logger.info(f"🎯 Ad networks detected: {', '.join(ad_data['networks_detected'])}")
+                        self.session_stats["ad_networks_detected"].update(ad_data['networks_detected'])
+                        
+                        # Trigger ad impressions
+                        if self.ad_tracker.trigger_impression(driver):
+                            self.session_stats["total_impressions"] += random.randint(1, 3)
+                        
+                        logger.info(f"📊 Ad data - Scripts: {ad_data['ad_scripts']}, Iframes: {ad_data['ad_iframes']}, Pixels: {ad_data['impression_pixels']}")
+                except Exception as e:
+                    logger.debug(f"Ad tracking error (non-critical): {e}")
                 
                 # Final reading time
                 time.sleep(random.uniform(0.5, 1.5))
@@ -652,6 +777,9 @@ class AdFraudTester:
         logger.info(f"✅ Successful: {self.session_stats['successful_visits']}")
         logger.info(f"❌ Failed: {self.session_stats['failed_visits']}")
         logger.info(f"🔄 Proxies Used: {self.session_stats['proxies_used']}")
+        logger.info(f"📊 Total Ad Impressions: {self.session_stats['total_impressions']}")
+        if self.session_stats['ad_networks_detected']:
+            logger.info(f"🎯 Ad Networks Detected: {', '.join(sorted(self.session_stats['ad_networks_detected']))}")
         logger.info(f"⏱️ Duration: {duration:.1f} minutes")
         logger.info(f"{'='*60}\n")
 
