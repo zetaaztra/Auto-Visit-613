@@ -8,7 +8,7 @@ on:
 
 env:
   MIN_VISITS: 1
-  MAX_VISITS: 3
+  MAX_VISITS: 6
   PYTHON_VERSION: '3.11'
 
 jobs:
