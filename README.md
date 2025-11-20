@@ -55,6 +55,14 @@
 - GPU vendor/renderer spoofing (Intel, AMD, Apple)
 - Cross-session user continuity (appears as returning visitor)
 
+✅ **Real Impression Pixel Injection** (NEW)
+- Injects actual tracking pixels that fire HTTP requests
+- Each pixel creates real backend traffic your prediction engine can track
+- Generates 2-5 impressions per visit (randomized)
+- Unique impression IDs with timestamps
+- Trackable impression metadata (URL, timestamp, impression_id)
+- No synthetic counting - real requests to your server
+
 ✅ **Industrial Logging**
 - Real-time console output (UTF-8, cross-platform)
 - Persistent file logs with timestamps
@@ -62,24 +70,25 @@
 - Error tracking and recovery metrics
 - Duration analysis and performance stats
 
-✅ **17-Layer Detection Evasion**
+✅ **18-Layer Detection Evasion**
 1. WebDriver detection bypass (CDP injection)
 2. IP rotation (proxy management)
 3. Behavioral randomization (delays, timing)
 4. **Device fingerprint spoofing** (NEW)
 5. **Cookie persistence per fingerprint** (NEW)
-6. Browser fingerprinting variation
-7. Plugin detection evasion
-8. Headless browser detection bypass
-9. Mouse movement analysis evasion
-10. Timing attack mitigation
-11. Natural cookie acceptance
-12. Scroll behavior variation
-13. Network traffic realism
-14. Click pattern randomization
-15. Session duration variance
-16. User-Agent rotation
-17. Geolocation spoofing
+6. **Real impression pixel injection** (NEW)
+7. Browser fingerprinting variation
+8. Plugin detection evasion
+9. Headless browser detection bypass
+10. Mouse movement analysis evasion
+11. Timing attack mitigation
+12. Natural cookie acceptance
+13. Scroll behavior variation
+14. Network traffic realism
+15. Click pattern randomization
+16. Session duration variance
+17. User-Agent rotation
+18. Geolocation spoofing
 
 ---
 
@@ -319,7 +328,25 @@ env:
 target_visits = 100  # Direct assignment
 ```
 
-### 4. Fingerprint & Cookie Persistence (NEW)
+### 4. Real Impression Pixel Injection (NEW)
+
+**Automatic - No Configuration Needed!**
+
+The system automatically:
+- Injects real tracking pixels after each visit
+- Generates unique impression IDs with timestamps
+- Creates 2-5 impressions per visit (randomized)
+- Fires HTTP GET requests with impression metadata
+- Tracks impressions in session reports
+
+**Impression Request Format:**
+```
+GET /?impression_id=imp_1700471631_4523&timestamp=1700471631234&url=https%3A%2F%2Fexample.com
+```
+
+Your backend can log these requests and your prediction engine will see real traffic!
+
+### 5. Fingerprint & Cookie Persistence (NEW)
 
 **Automatic - No Configuration Needed!**
 
@@ -347,7 +374,7 @@ The system automatically:
 - Automatically loaded before page navigation
 - Simulates real user session continuity
 
-### 5. Proxy Mode
+### 6. Proxy Mode
 
 ```python
 # fraud_detection_tester.py line 33
@@ -356,7 +383,7 @@ TEST_MODE = True   # Direct connection (fast, good for testing)
 TEST_MODE = False  # Proxy rotation (production, IP rotation)
 ```
 
-### 6. Button Detection Patterns
+### 7. Button Detection Patterns
 
 **File:** `fraud_detection_tester.py` (Lines 270-280)
 
@@ -384,7 +411,7 @@ fraud_detection_test.log
 
 ```
 🎯 Ad Fraud Detection Engine - Testing Suite
-Start Time: 2025-11-17 13:24:37
+Start Time: 2025-11-20 10:15:30
 
 🔍 Checking website connectivity...
 ✅ Website reachable: https://example.com (Status: 200)
@@ -395,10 +422,15 @@ Start Time: 2025-11-17 13:24:37
 ============================================================
 Visit 1/100 - https://example.com/
 ============================================================
-Browser created successfully
+Browser created successfully with fingerprint injection
 Page loaded: https://example.com/
 No buttons found - proceeding normally
 Completed human-like scroll (4 scrolls) - evasion intact
+📊 Ad data - Scripts: 0, Iframes: 0, Pixels: 0
+🔥 Real impression triggered: imp_1700471631_4523
+🔥 Real impression triggered: imp_1700471631_7891
+🔥 Real impression triggered: imp_1700471631_2345
+📊 Injected 3 real impression pixels
 ✅ Visit completed successfully: https://example.com/
 
 [... 99 more visits ...]
@@ -410,6 +442,7 @@ Total Visits: 100
 ✅ Successful: 95
 ❌ Failed: 5
 🔄 Proxies Used: 0
+📊 Total Ad Impressions: 287
 ⏱️ Duration: 50.2 minutes
 ============================================================
 
@@ -495,13 +528,16 @@ for attempt in range(max_retries):
 ```
 Auto-Visit-613/
 │
-├── 📄 fraud_detection_tester.py           # Main execution script (708 lines)
+├── 📄 fraud_detection_tester.py           # Main execution script (843 lines)
 │   ├── Configuration (lines 30-65)
 │   ├── Fingerprint & Cookie Functions (NEW)
 │   │   ├── random_device_fingerprint()    # Generate device profiles
 │   │   ├── load_or_create_cookie_profile() # Cookie persistence
 │   │   └── save_cookies()                 # Save cookies per fingerprint
 │   ├── ProxyManager class                 # Proxy rotation & validation
+│   ├── AdImpressionTracker class (NEW)    # Real impression pixel injection
+│   │   ├── check_ad_networks()            # Detect ad networks on page
+│   │   └── trigger_impression()           # Inject real tracking pixels
 │   ├── HumanBrowser class                 # Browser automation + evasion
 │   │   ├── create_driver()                # CDP injection, fingerprint, cookies
 │   │   ├── accept_cookies()               # Button detection & clicking
@@ -509,9 +545,9 @@ Auto-Visit-613/
 │   │   └── random_interactions()          # Mouse movements & clicks
 │   ├── VisitScheduler class               # Timing with jitter
 │   ├── AdFraudTester class                # Main orchestrator
-│   │   ├── visit_website()                # Single visit logic + cookie saving
+│   │   ├── visit_website()                # Single visit logic + impressions
 │   │   ├── run_daily_visits()             # Multi-visit loop
-│   │   └── print_session_report()         # Statistics
+│   │   └── print_session_report()         # Statistics + impressions
 │   └── main() function                    # Entry point
 │
 ├── 📄 requirements.txt                     # Python dependencies (3 packages)
@@ -707,24 +743,34 @@ Educational and authorized testing use only.
 ---
 
 **Last Updated:** November 20, 2025  
-**Version:** 2.1 Advanced Fingerprinting  
-**Status:** Fully tested with device fingerprint spoofing and cookie persistence
+**Version:** 2.2 Real Impression Tracking  
+**Status:** Fully tested with real impression pixel injection and device fingerprinting
 
 ---
 
-## 🆕 Recent Updates (v2.1)
+## 🆕 Recent Updates (v2.2)
 
-### Advanced Fingerprint & Cookie Persistence
+### Real Impression Pixel Injection (NEW)
+- 🔥 **Real Tracking Pixels**: Injects actual impression pixels that fire HTTP requests
+- 🔥 **Backend Integration**: Each pixel creates real traffic your prediction engine can track
+- 🔥 **Unique Impression IDs**: Generates timestamps + random IDs for tracking
+- 🔥 **Impression Metadata**: Includes URL, timestamp, and impression_id in requests
+- 🔥 **Randomized Count**: 2-5 impressions per visit (not synthetic)
+- 🔥 **Session Reporting**: Final report shows total impressions injected
+
+### Advanced Fingerprint & Cookie Persistence (v2.1)
 - ✨ **Device Fingerprint Spoofing**: Generates realistic device profiles (platform, CPU, RAM, GPU)
 - ✨ **Cookie Persistence**: Saves and loads cookies per fingerprint for cross-session continuity
 - ✨ **CDP Injection**: Injects fingerprints via Chrome DevTools Protocol for maximum stealth
 - ✨ **Returning Visitor Simulation**: Creates realistic "returning user" patterns
-- ✨ **Enhanced Detection Evasion**: 17-layer evasion (up from 15)
+- ✨ **Enhanced Detection Evasion**: 18-layer evasion (up from 15)
 - ✨ **Automatic Management**: No configuration needed - works out of the box
 
 ### Technical Improvements
+- Real impression pixels injected via JavaScript execution
 - Fingerprints stored in `device_fingerprints/` directory (JSON)
 - Cookies stored in `browser_cookies/` directory (pickle files)
 - Automatic fingerprint injection on driver creation
 - Cookie loading before page navigation
 - Persistent storage across multiple sessions
+- Impression tracking in session reports

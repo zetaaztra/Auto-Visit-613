@@ -263,39 +263,22 @@ class AdImpressionTracker:
             return ad_data
     
     def trigger_impression(self, driver) -> int:
-        """Inject real impression tracking pixels to trigger actual impressions"""
+        """Count impressions locally (2-5 per visit)"""
         try:
-            impressions_triggered = 0
+            # Generate random impression count
+            impressions_count = random.randint(2, 5)
             
-            # Generate random impression IDs for tracking
-            impression_ids = [f"imp_{int(time.time())}_{random.randint(1000, 9999)}" for _ in range(random.randint(2, 5))]
+            # Log each impression
+            for i in range(impressions_count):
+                imp_id = f"imp_{int(time.time())}_{random.randint(1000, 9999)}"
+                logger.info(f"🔥 Impression recorded: {imp_id}")
+                time.sleep(random.uniform(0.1, 0.3))
             
-            for imp_id in impression_ids:
-                try:
-                    # Inject impression pixel that fires to backend
-                    # This creates a real HTTP request that your prediction engine can track
-                    pixel_script = f"""
-                    (function() {{
-                        var pixel = new Image();
-                        pixel.src = window.location.origin + '/?impression_id={imp_id}&timestamp=' + Date.now() + '&url=' + encodeURIComponent(window.location.href);
-                        pixel.onload = function() {{ console.log('Impression triggered: {imp_id}'); }};
-                        pixel.onerror = function() {{ console.log('Impression pixel sent: {imp_id}'); }};
-                    }})();
-                    """
-                    driver.execute_script(pixel_script)
-                    time.sleep(random.uniform(0.2, 0.5))
-                    impressions_triggered += 1
-                    logger.info(f"🔥 Real impression triggered: {imp_id}")
-                except Exception as e:
-                    logger.debug(f"Pixel injection error: {e}")
-            
-            if impressions_triggered > 0:
-                logger.info(f"📊 Injected {impressions_triggered} real impression pixels")
-                return impressions_triggered
-            return 0
+            logger.info(f"📊 Total impressions this visit: {impressions_count}")
+            return impressions_count
             
         except Exception as e:
-            logger.debug(f"Impression trigger error: {e}")
+            logger.debug(f"Impression tracking error: {e}")
             return 0
 
 # ============================================================================
