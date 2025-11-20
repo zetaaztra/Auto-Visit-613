@@ -94,6 +94,14 @@ jobs:
           pip install selenium==4.15.0 webdriver-manager==4.0.1 requests==2.31.0
           echo "✅ Python dependencies installed"
       
+      - name: Wait for Ad Network Connectivity
+        run: |
+          echo "🔍 Testing ad network connectivity..."
+          # Test common ad domains
+          curl -s --connect-timeout 10 https://www.googletagservices.com > /dev/null && echo "✅ Google Tag Services accessible"
+          curl -s --connect-timeout 10 https://pagead2.googlesyndication.com > /dev/null && echo "✅ Google Syndication accessible"
+          echo "🌐 Ad networks ready for testing"
+      
       - name: Calculate Random Visit Count
         id: visit_count
         run: |

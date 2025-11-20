@@ -32,7 +32,6 @@ from selenium.webdriver.support import expected_conditions as EC
 GITHUB_ACTIONS = os.getenv('GITHUB_ACTIONS') is not None
 
 WEBSITES = [
-    "https://pravinmathew613.netlify.app/",
     "https://tradyxa-alephx.pages.dev/",
 ]
 
@@ -84,7 +83,7 @@ class RealisticAdsterraVisitor:
         self.session_start = datetime.now()
     
     def natural_page_visit(self, driver, url: str) -> int:
-        """Natural page visit that properly loads Adsterra ads"""
+        """Natural page visit optimized for Adsterra ads"""
         impressions = 0
         
         try:
@@ -93,14 +92,21 @@ class RealisticAdsterraVisitor:
             # Navigate to page
             driver.get(url)
             
-            # Wait for initial load
-            time.sleep(random.uniform(2, 4))
+            # Wait for initial load - longer for ads
+            time.sleep(random.uniform(3, 6))
             
             # Handle cookie consent if present
             self.handle_cookie_consent(driver)
             
-            # Wait for ads to load
-            time.sleep(random.uniform(3, 6))
+            # CRITICAL: Wait specifically for Adsterra ads to load
+            logger.info("⏳ Waiting for ad content to load...")
+            time.sleep(random.uniform(5, 10))  # Longer wait for ads
+            
+            # Look for common ad elements and wait for them
+            self.wait_for_ad_elements(driver)
+            
+            # Interact with ads
+            impressions += self.interact_with_ads(driver)
             
             # Natural scrolling behavior
             impressions += self.natural_scroll_behavior(driver)
@@ -108,8 +114,8 @@ class RealisticAdsterraVisitor:
             # Random page interactions
             impressions += self.random_page_interactions(driver)
             
-            # Natural reading time
-            read_time = random.uniform(*HUMAN_BEHAVIOR["page_read_time"])
+            # Natural reading time - longer for ad viewing
+            read_time = random.uniform(10, 25)  # Increased for ads
             logger.info(f"📖 Natural reading time: {read_time:.1f}s")
             time.sleep(read_time)
             
@@ -124,7 +130,7 @@ class RealisticAdsterraVisitor:
             
         except Exception as e:
             logger.error(f"Visit error: {e}")
-            return 1  # Minimum 1 impression even on error
+            return 1
     
     def handle_cookie_consent(self, driver):
         """Handle cookie consent dialogs naturally"""
@@ -154,6 +160,66 @@ class RealisticAdsterraVisitor:
                         continue
             except:
                 continue
+    
+    def wait_for_ad_elements(self, driver):
+        """Wait for common ad elements to load"""
+        ad_selectors = [
+            "//iframe[contains(@src, 'ad')]",
+            "//iframe[contains(@src, 'ads')]",
+            "//div[contains(@class, 'ad')]",
+            "//div[contains(@id, 'ad')]",
+            "//ins[contains(@class, 'adsbygoogle')]",
+            "//script[contains(@src, 'ad')]",
+        ]
+        
+        for selector in ad_selectors:
+            try:
+                elements = WebDriverWait(driver, 5).until(
+                    EC.presence_of_element_located((By.XPATH, selector))
+                )
+                logger.info(f"✅ Detected ad element: {selector}")
+            except:
+                continue
+    
+    def interact_with_ads(self, driver) -> int:
+        """Specifically interact with ad elements"""
+        ad_interactions = 0
+        
+        try:
+            # Common ad container selectors
+            ad_selectors = [
+                "//iframe[contains(@src, 'ad')]",
+                "//div[contains(@class, 'ad-container')]",
+                "//div[contains(@id, 'ad-wrapper')]",
+                "//div[contains(@class, 'banner-ad')]",
+            ]
+            
+            for selector in ad_selectors:
+                try:
+                    ad_elements = driver.find_elements(By.XPATH, selector)
+                    for ad in ad_elements[:2]:  # Limit to first 2 ads
+                        if ad.is_displayed():
+                            # Scroll to ad
+                            driver.execute_script(
+                                "arguments[0].scrollIntoView({behavior: 'smooth', block: 'center'});", 
+                                ad
+                            )
+                            time.sleep(random.uniform(2, 4))
+                            
+                            # Hover over ad (simulates interest)
+                            actions = ActionChains(driver)
+                            actions.move_to_element(ad).pause(1).perform()
+                            
+                            ad_interactions += 1
+                            logger.info("🎯 Interacted with ad element")
+                            
+                except:
+                    continue
+                    
+        except Exception as e:
+            logger.debug(f"Ad interaction error: {e}")
+        
+        return ad_interactions
     
     def natural_scroll_behavior(self, driver) -> int:
         """Natural scrolling that exposes ads gradually with high variability"""
@@ -356,7 +422,7 @@ class SimpleBrowser:
         self.driver = None
     
     def create_driver(self) -> webdriver.Chrome:
-        """Create simple browser for GitHub Actions"""
+        """Create advanced stealth browser for Adsterra"""
         
         options = Options()
         
@@ -369,10 +435,20 @@ class SimpleBrowser:
         else:
             options.add_argument('--headless=new')
         
-        # Basic stealth options
+        # ADVANCED STEALTH OPTIONS FOR ADSTERRA
         options.add_argument('--disable-blink-features=AutomationControlled')
-        options.add_argument('--disable-popup-blocking')
-        options.add_argument('--disable-notifications')
+        options.add_experimental_option("excludeSwitches", ["enable-automation"])
+        options.add_experimental_option('useAutomationExtension', False)
+        
+        # Disable automation flags
+        options.add_argument('--disable-background-timer-throttling')
+        options.add_argument('--disable-backgrounding-occluded-windows')
+        options.add_argument('--disable-renderer-backgrounding')
+        options.add_argument('--disable-features=TranslateUI')
+        options.add_argument('--disable-ipc-flooding-protection')
+        
+        # Enable necessary features for ads
+        options.add_argument('--enable-features=NetworkService,NetworkServiceInProcess')
         
         # Random viewport
         viewport = random.choice(HUMAN_BEHAVIOR["viewport_sizes"])
@@ -382,41 +458,75 @@ class SimpleBrowser:
         user_agent = random.choice(HUMAN_BEHAVIOR["user_agents"])
         options.add_argument(f'--user-agent={user_agent}')
         
-        # Enable JavaScript and images
+        # Enable JavaScript and images for ads
         options.add_experimental_option("prefs", {
             "profile.default_content_setting_values.notifications": 2,
             "profile.default_content_settings.popups": 0,
             "profile.managed_default_content_settings.images": 1,
             "profile.managed_default_content_settings.javascript": 1,
+            "profile.managed_default_content_settings.cookies": 1,
+            "profile.managed_default_content_settings.plugins": 1,
+            "profile.managed_default_content_settings.geolocation": 1,
+            "profile.managed_default_content_settings.media_stream": 1,
         })
         
         try:
             if GITHUB_ACTIONS:
-                # Use system Chrome in GitHub Actions
                 service = Service('/usr/bin/chromedriver')
                 driver = webdriver.Chrome(service=service, options=options)
             else:
-                # Use webdriver_manager for local development
                 service = Service(ChromeDriverManager().install())
                 driver = webdriver.Chrome(service=service, options=options)
             
             # Set timeouts
-            driver.set_page_load_timeout(30)
-            driver.set_script_timeout(20)
+            driver.set_page_load_timeout(45)
+            driver.set_script_timeout(30)
             
-            # Basic stealth script
-            stealth_script = """
-            Object.defineProperty(navigator, 'webdriver', {get: () => undefined});
-            """
-            driver.execute_script(stealth_script)
+            # ADVANCED STEALTH SCRIPTS FOR ADSTERRA
+            stealth_scripts = [
+                # Remove webdriver property
+                "Object.defineProperty(navigator, 'webdriver', {get: () => undefined});",
+                
+                # Override languages property
+                "Object.defineProperty(navigator, 'languages', {get: () => ['en-US', 'en']});",
+                
+                # Override plugins
+                "Object.defineProperty(navigator, 'plugins', {get: () => [1, 2, 3, 4, 5]});",
+                
+                # Mock permissions
+                "const originalQuery = window.navigator.permissions.query;"
+                "window.navigator.permissions.query = (parameters) => ("
+                "    parameters.name === 'notifications' ? "
+                "    Promise.resolve({ state: Notification.permission }) : "
+                "    originalQuery(parameters)"
+                ");",
+                
+                # Mock Chrome runtime
+                "window.chrome = {runtime: {}};",
+                
+                # Set plausible language
+                "Object.defineProperty(navigator, 'language', {get: () => 'en-US'});",
+            ]
             
-            logger.info("🚀 Browser created successfully")
+            for script in stealth_scripts:
+                try:
+                    driver.execute_script(script)
+                except:
+                    pass
+            
+            # Additional: Set document state to mimic real user
+            driver.execute_script("""
+                Object.defineProperty(document, 'hidden', {value: false});
+                Object.defineProperty(document, 'visibilityState', {value: 'visible'});
+            """)
+            
+            logger.info("🚀 Advanced stealth browser created successfully")
             return driver
             
         except Exception as e:
             logger.error(f"Browser creation failed: {e}")
             
-            # Fallback: try without service
+            # Fallback
             try:
                 driver = webdriver.Chrome(options=options)
                 logger.info("✅ Browser created with fallback method")
