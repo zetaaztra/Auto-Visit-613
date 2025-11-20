@@ -84,12 +84,6 @@ jobs:
     timeout-minutes: 180
     
     steps:
-      - name: Apply Chaotic Delay
-        run: |
-          echo "⏳ Applying chaotic delay: ${{ needs.generate-chaos.outputs.execution_delay }} seconds"
-          sleep ${{ needs.generate-chaos.outputs.execution_delay }}
-          echo "✅ Delay complete - commencing chaos!"
-
       - name: Checkout Repository
         uses: actions/checkout@v4
       
@@ -214,17 +208,25 @@ jobs:
           head -10 proxies.txt
           echo "✅ Proxy list generated"
 
+      - name: Set Direct Connection Mode
+        run: |
+          echo "🔄 FORCING DIRECT CONNECTION FOR ADSTERRA"
+          sed -i "s/DIRECT_CONNECTION = .*/DIRECT_CONNECTION = True  # Force direct for Adsterra/" fraud_detection_tester.py
+          echo "✅ Direct connection mode enforced"
+
       - name: Run Chaotic Fraud Detection
         env:
           CHAOTIC_WEBSITE: ${{ needs.generate-chaos.outputs.target_website }}
           CHAOTIC_VISITORS: ${{ needs.generate-chaos.outputs.visitor_count }}
           CHAOS_SEED: ${{ needs.generate-chaos.outputs.chaos_seed }}
+          DIRECT_CONNECTION: 'true'
           DISPLAY: :99
         run: |
           echo "🎲 CHAOTIC EXECUTION PARAMETERS:"
           echo "🌐 Website: $CHAOTIC_WEBSITE"
           echo "👥 Visitors: $CHAOTIC_VISITORS"
           echo "🌀 Chaos Seed: $CHAOS_SEED"
+          echo "🔌 Direct Connection: ENABLED"
           echo ""
           
           # Set random environment variables for Python script
