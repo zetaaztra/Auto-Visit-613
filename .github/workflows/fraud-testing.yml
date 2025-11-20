@@ -1,42 +1,91 @@
-name: Ad Fraud Detection - Random Daily Visitors
+name: Ad Fraud Detection - Chaotic Random Visitors
 
 on:
   schedule:
-    - cron: '0 2 * * *'  # 2 AM UTC
-    - cron: '0 14 * * *' # 2 PM UTC
+    - cron: '*/30 * * * *'  # Every 30 minutes - CHAOTIC SCHEDULING
+    - cron: '17,43 * * * *' # Random minutes
+    - cron: '0 2,8,14,20 * * *' # Multiple times daily
   workflow_dispatch:
+    inputs:
+      chaos_level:
+        description: 'Chaos Level (1-10)'
+        required: false
+        default: '7'
 
 env:
-  MIN_VISITS: 1
-  MAX_VISITS: 3
   PYTHON_VERSION: '3.11'
 
 jobs:
-  check-if-already-ran:
+  generate-chaos:
     runs-on: ubuntu-latest
     outputs:
-      should_run: ${{ steps.check.outputs.should_run }}
-    
+      target_website: ${{ steps.chaos.outputs.target_website }}
+      visitor_count: ${{ steps.chaos.outputs.visitor_count }}
+      chaos_seed: ${{ steps.chaos.outputs.chaos_seed }}
+      execution_delay: ${{ steps.chaos.outputs.execution_delay }}
     steps:
-      - name: Check if already ran today
-        id: check
+      - name: Generate Complete Chaos
+        id: chaos
         run: |
-          # Create a unique marker for today
-          TODAY=$(date -u +%Y-%m-%d)
-          echo "today=$TODAY" >> $GITHUB_OUTPUT
+          # CHAOTIC RANDOMIZATION ENGINE
+          CHAOS_SEED=$((RANDOM % 1000 + 1))
+          echo "🌀 Chaos Seed: $CHAOS_SEED"
           
-          # In real implementation, check if log exists from earlier today
-          # For now, always run
-          echo "should_run=true" >> $GITHUB_OUTPUT
-          echo "✅ Ready to run for $TODAY"
+          # RANDOM WEBSITE SELECTION
+          WEBSITES=(
+            "https://tradyxa-alephx.pages.dev/"
+            "https://tradyxa-alephx.pages.dev/?ref=github"
+            "https://tradyxa-alephx.pages.dev/?utm_source=organic"
+            "https://tradyxa-alephx.pages.dev/?utm_medium=social"
+            "https://tradyxa-alephx.pages.dev/?campaign=chaos"
+            "https://tradyxa-alephx.pages.dev/?ref=random$((RANDOM % 1000))"
+          )
+          TARGET_WEBSITE=${WEBSITES[$((RANDOM % ${#WEBSITES[@]}))]}
+          echo "🎯 Target Website: $TARGET_WEBSITE"
+          
+          # CHAOTIC VISITOR COUNT (1-5 completely random)
+          VISITOR_COUNT=$((RANDOM % 5 + 1))
+          # 10% chance of 0 visitors (pure chaos)
+          if [ $((RANDOM % 10)) -eq 0 ]; then
+            VISITOR_COUNT=0
+            echo "🎲 CHAOS MODE: Zero visitors this run!"
+          fi
+          echo "👥 Visitor Count: $VISITOR_COUNT"
+          
+          # RANDOM EXECUTION DELAY (0-300 seconds)
+          EXECUTION_DELAY=$((RANDOM % 300))
+          echo "⏰ Execution Delay: ${EXECUTION_DELAY}s"
+          
+          # Set outputs
+          echo "target_website=$TARGET_WEBSITE" >> $GITHUB_OUTPUT
+          echo "visitor_count=$VISITOR_COUNT" >> $GITHUB_OUTPUT
+          echo "chaos_seed=$CHAOS_SEED" >> $GITHUB_OUTPUT
+          echo "execution_delay=$EXECUTION_DELAY" >> $GITHUB_OUTPUT
+          
+          echo ""
+          echo "=========================================="
+          echo "🎲 CHAOTIC EXECUTION PLAN"
+          echo "=========================================="
+          echo "🌐 Website: $TARGET_WEBSITE"
+          echo "👥 Visitors: $VISITOR_COUNT"
+          echo "🌀 Chaos Seed: $CHAOS_SEED"
+          echo "⏰ Delay: ${EXECUTION_DELAY}s"
+          echo "🕒 Start: $(date -u)"
+          echo "=========================================="
 
-  daily-fraud-test:
-    needs: check-if-already-ran
-    if: needs.check-if-already-ran.outputs.should_run == 'true'
+  chaotic-fraud-test:
+    needs: generate-chaos
+    if: needs.generate-chaos.outputs.visitor_count > 0
     runs-on: ubuntu-latest
-    timeout-minutes: 120  # 2 hours max (for realistic 1-3 visitors)
+    timeout-minutes: 180
     
     steps:
+      - name: Apply Chaotic Delay
+        run: |
+          echo "⏳ Applying chaotic delay: ${{ needs.generate-chaos.outputs.execution_delay }} seconds"
+          sleep ${{ needs.generate-chaos.outputs.execution_delay }}
+          echo "✅ Delay complete - commencing chaos!"
+
       - name: Checkout Repository
         uses: actions/checkout@v4
       
@@ -48,222 +97,207 @@ jobs:
       
       - name: Install System Dependencies
         run: |
-          echo "📦 Installing Chrome and ChromeDriver..."
+          echo "📦 Installing dependencies with chaotic timing..."
           sudo apt-get update -qq
           
-          # Install Chrome dependencies (FIXED package names for Ubuntu 24.04)
-          sudo apt-get install -y -qq \
-            chromium-browser \
-            chromium-chromedriver \
-            xvfb \
-            fonts-liberation \
-            libatk-bridge2.0-0 \
-            libatk1.0-0 \
-            libatspi2.0-0 \
-            libcups2 \
-            libdbus-1-3 \
-            libdrm2 \
-            libgbm1 \
-            libgtk-3-0 \
-            libnspr4 \
-            libnss3 \
-            libwayland-client0 \
-            libxcomposite1 \
-            libxdamage1 \
-            libxfixes3 \
-            libxkbcommon0 \
-            libxrandr2 \
-            xdg-utils
+          # Install with random order sometimes
+          if [ $((RANDOM % 3)) -eq 0 ]; then
+            echo "🌀 CHAOS: Reverse installation order!"
+            packages=(
+              xdg-utils
+              libxrandr2
+              libxkbcommon0
+              libxfixes3
+              libxdamage1
+              libxcomposite1
+              libwayland-client0
+              libnss3
+              libnspr4
+              libgtk-3-0
+              libgbm1
+              libdrm2
+              libdbus-1-3
+              libcups2
+              libatspi2.0-0
+              libatk1.0-0
+              libatk-bridge2.0-0
+              fonts-liberation
+              xvfb
+              chromium-chromedriver
+              chromium-browser
+            )
+            for pkg in "${packages[@]}"; do
+              sudo apt-get install -y -qq $pkg
+            done
+          else
+            sudo apt-get install -y -qq \
+              chromium-browser \
+              chromium-chromedriver \
+              xvfb \
+              fonts-liberation \
+              libatk-bridge2.0-0 \
+              libatk1.0-0 \
+              libatspi2.0-0 \
+              libcups2 \
+              libdbus-1-3 \
+              libdrm2 \
+              libgbm1 \
+              libgtk-3-0 \
+              libnspr4 \
+              libnss3 \
+              libwayland-client0 \
+              libxcomposite1 \
+              libxdamage1 \
+              libxfixes3 \
+              libxkbcommon0 \
+              libxrandr2 \
+              xdg-utils
+          fi
           
           echo "✅ System dependencies installed"
           chromium-browser --version || echo "Chromium version check failed"
           chromedriver --version || echo "ChromeDriver version check failed"
-      
+
       - name: Set up Virtual Display
         run: |
-          echo "🖥️ Starting virtual display..."
+          echo "🖥️ Starting virtual display with chaotic settings..."
           export DISPLAY=:99
-          Xvfb :99 -screen 0 1920x1080x24 -ac +extension GLX +render -noreset > /dev/null 2>&1 &
-          sleep 2
+          # Random screen dimensions
+          WIDTH=$((1024 + RANDOM % 1024))
+          HEIGHT=$((768 + RANDOM % 512))
+          echo "📺 Chaotic resolution: ${WIDTH}x${HEIGHT}"
+          Xvfb :99 -screen 0 ${WIDTH}x${HEIGHT}x24 -ac +extension GLX +render -noreset > /dev/null 2>&1 &
+          sleep $((1 + RANDOM % 5))
           echo "✅ Virtual display started on :99"
-      
+
       - name: Install Python Dependencies
         run: |
           echo "📦 Installing Python packages..."
           python -m pip install --upgrade pip
-          pip install selenium==4.15.0 webdriver-manager==4.0.1 requests==2.31.0
+          # Sometimes install in different order
+          if [ $((RANDOM % 4)) -eq 0 ]; then
+            echo "🌀 CHAOS: Random package installation order!"
+            pip install requests==2.31.0
+            pip install webdriver-manager==4.0.1
+            pip install selenium==4.15.0
+          else
+            pip install selenium==4.15.0 webdriver-manager==4.0.1 requests==2.31.0
+          fi
           echo "✅ Python dependencies installed"
-      
-      - name: Wait for Ad Network Connectivity
+
+      - name: Generate Free Proxy List
         run: |
-          echo "🔍 Testing ad network connectivity..."
-          # Test common ad domains
-          curl -s --connect-timeout 10 https://www.googletagservices.com > /dev/null && echo "✅ Google Tag Services accessible"
-          curl -s --connect-timeout 10 https://pagead2.googlesyndication.com > /dev/null && echo "✅ Google Syndication accessible"
-          echo "🌐 Ad networks ready for testing"
-      
-      - name: Calculate Random Visit Count
-        id: visit_count
-        run: |
-          # Generate random number between MIN and MAX
-          RANDOM_VISITS=$(shuf -i $MIN_VISITS-$MAX_VISITS -n 1)
-          echo "visits=$RANDOM_VISITS" >> $GITHUB_OUTPUT
+          echo "🔁 Generating fresh free proxy list..."
+          # Get free proxies from multiple sources
+          curl -s "https://www.proxy-list.download/api/v1/get?type=http" > proxies.txt || true
+          curl -s "https://api.proxyscrape.com/v2/?request=getproxies&protocol=http&timeout=10000&country=all&ssl=all&anonymity=all" >> proxies.txt || true
           
-          # Calculate estimated duration (avg 1.5 min per visit)
-          ESTIMATED_MINUTES=$((RANDOM_VISITS * 90 / 60))
+          # Add some fallback proxies
+          cat << EOF >> proxies.txt
+          185.199.229.156:7492
+          185.199.228.220:7300
+          185.199.231.45:8382
+          188.74.210.207:6286
+          188.74.183.10:8279
+          188.74.210.21:6100
+          45.95.147.100:8080
+          45.95.147.97:8080
+          45.95.147.96:8080
+          45.95.147.221:8080
+          EOF
           
-          echo ""
-          echo "=========================================="
-          echo "🎲 RANDOMIZED DAILY PLAN"
-          echo "=========================================="
-          echo "Target visitors today: $RANDOM_VISITS"
-          echo "Estimated duration: ~$ESTIMATED_MINUTES minutes"
-          echo "Start time: $(date -u)"
-          echo "=========================================="
-          echo ""
-      
-      - name: Run Fraud Detection Tests
+          echo "📋 Available proxies:"
+          head -10 proxies.txt
+          echo "✅ Proxy list generated"
+
+      - name: Run Chaotic Fraud Detection
         env:
-          DAILY_VISITS: ${{ steps.visit_count.outputs.visits }}
+          CHAOTIC_WEBSITE: ${{ needs.generate-chaos.outputs.target_website }}
+          CHAOTIC_VISITORS: ${{ needs.generate-chaos.outputs.visitor_count }}
+          CHAOS_SEED: ${{ needs.generate-chaos.outputs.chaos_seed }}
           DISPLAY: :99
         run: |
-          echo "🚀 Starting fraud detection test suite..."
-          echo "Target: $DAILY_VISITS visitors"
+          echo "🎲 CHAOTIC EXECUTION PARAMETERS:"
+          echo "🌐 Website: $CHAOTIC_WEBSITE"
+          echo "👥 Visitors: $CHAOTIC_VISITORS"
+          echo "🌀 Chaos Seed: $CHAOS_SEED"
           echo ""
           
-          # Run the main script
-          python fraud_detection_tester.py || echo "Script completed with errors (may be normal)"
+          # Set random environment variables for Python script
+          export RANDOM_SLEEP=$((RANDOM % 10))
+          export RANDOM_SCROLLS=$((3 + RANDOM % 5))
+          export RANDOM_INTERACTIONS=$((1 + RANDOM % 4))
+          
+          echo "🚀 Starting chaotic fraud detection..."
+          echo "💤 Initial random sleep: ${RANDOM_SLEEP}s"
+          sleep $RANDOM_SLEEP
+          
+          python fraud_detection_tester.py || echo "🌀 Chaos completed (errors are normal)"
           
           echo ""
-          echo "✅ Test suite execution finished!"
-      
-      - name: Parse Results
-        if: always()
-        id: results
-        run: |
-          if [ -f fraud_detection_test.log ]; then
-            # Extract successful and failed visits from log
-            SUCCESSFUL=$(grep "✅ Visit successful:" fraud_detection_test.log | wc -l)
-            FAILED=$(grep "❌ Visit failed:" fraud_detection_test.log | wc -l)
-            
-            # Extract total impressions from the session report
-            TOTAL_IMP=$(grep "🔥 Total Impressions:" fraud_detection_test.log | tail -1 | grep -oP '\d+$' || echo 0)
-            
-            # Ensure values are set
-            SUCCESSFUL=${SUCCESSFUL:-0}
-            FAILED=${FAILED:-0}
-            TOTAL_IMP=${TOTAL_IMP:-0}
-            
-            # Output to GitHub Actions
-            echo "successful=$SUCCESSFUL" >> $GITHUB_OUTPUT
-            echo "failed=$FAILED" >> $GITHUB_OUTPUT
-            echo "total_impressions=$TOTAL_IMP" >> $GITHUB_OUTPUT
-            
-            # Display results
-            echo ""
-            echo "=========================================="
-            echo "🎯 ADSTERRA IMPRESSION RESULTS"
-            echo "=========================================="
-            echo "✅ Successful visits: $SUCCESSFUL"
-            echo "❌ Failed visits: $FAILED"
-            echo "📊 Total Impressions Generated: $TOTAL_IMP"
-            
-            if [ "$SUCCESSFUL" -gt 0 ]; then
-              AVG=$((TOTAL_IMP / SUCCESSFUL))
-              echo "📈 Avg Impressions/Visit: $AVG"
-            fi
-            echo "=========================================="
-          else
-            echo "⚠️ No log file found"
-            echo "successful=0" >> $GITHUB_OUTPUT
-            echo "failed=0" >> $GITHUB_OUTPUT
-            echo "total_impressions=0" >> $GITHUB_OUTPUT
-          fi
-      
-      - name: Upload Complete Logs
+          echo "✅ Chaotic test suite execution finished!"
+
+      - name: Upload Chaotic Logs
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: fraud-test-logs-${{ github.run_number }}-${{ steps.visit_count.outputs.visits }}visitors
+          name: chaos-logs-${{ github.run_number }}-${{ needs.generate-chaos.outputs.visitor_count }}v-${{ needs.generate-chaos.outputs.chaos_seed }}
           path: |
             fraud_detection_test.log
-          retention-days: 30
+            proxies.txt
+          retention-days: 7
           compression-level: 9
-          if-no-files-found: warn
-      
-      - name: Generate Summary Report
+
+      - name: Generate Chaos Report
         if: always()
         run: |
-          echo "# 🎯 ADSTERRA IMPRESSION REPORT" >> $GITHUB_STEP_SUMMARY
+          echo "# 🎲 CHAOTIC ADSTERRA REPORT" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
-          echo "**Date:** $(date -u +"%Y-%m-%d %H:%M UTC")" >> $GITHUB_STEP_SUMMARY
+          echo "**Execution Time:** $(date -u +"%Y-%m-%d %H:%M UTC")" >> $GITHUB_STEP_SUMMARY
+          echo "**Chaos Seed:** ${{ needs.generate-chaos.outputs.chaos_seed }}" >> $GITHUB_STEP_SUMMARY
           echo "**Run Number:** #${{ github.run_number }}" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
           
-          echo "## 📈 Today's Results" >> $GITHUB_STEP_SUMMARY
-          PLANNED_VISITS="${{ steps.visit_count.outputs.visits }}"
-          PLANNED_VISITS=${PLANNED_VISITS:-0}
-          echo "- **Planned visitors:** $PLANNED_VISITS" >> $GITHUB_STEP_SUMMARY
-          
-          SUCCESSFUL="${{ steps.results.outputs.successful }}"
-          FAILED="${{ steps.results.outputs.failed }}"
-          TOTAL_IMP="${{ steps.results.outputs.total_impressions }}"
-          
-          # Set defaults if empty
-          SUCCESSFUL=${SUCCESSFUL:-0}
-          FAILED=${FAILED:-0}
-          TOTAL_IMP=${TOTAL_IMP:-0}
-          
-          echo "- **Successful visits:** $SUCCESSFUL" >> $GITHUB_STEP_SUMMARY
-          echo "- **Failed visits:** $FAILED" >> $GITHUB_STEP_SUMMARY
-          echo "- **🔥 Total Impressions Generated:** $TOTAL_IMP" >> $GITHUB_STEP_SUMMARY
+          echo "## 🎯 Chaotic Parameters" >> $GITHUB_STEP_SUMMARY
+          echo "- **Target Website:** ${{ needs.generate-chaos.outputs.target_website }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Visitor Count:** ${{ needs.generate-chaos.outputs.visitor_count }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Execution Delay:** ${{ needs.generate-chaos.outputs.execution_delay }}s" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
-          
-          # Calculate success rate and avg impressions
-          TOTAL=$((SUCCESSFUL + FAILED))
-          
-          if [ "$TOTAL" -gt 0 ]; then
-            SUCCESS_RATE=$((SUCCESSFUL * 100 / TOTAL))
-            if [ "$SUCCESSFUL" -gt 0 ]; then
-              AVG_IMP=$((TOTAL_IMP / SUCCESSFUL))
-              echo "- **Success rate:** ${SUCCESS_RATE}%" >> $GITHUB_STEP_SUMMARY
-              echo "- **📊 Avg Impressions/Visit:** ${AVG_IMP}" >> $GITHUB_STEP_SUMMARY
-            fi
-          fi
-          
-          echo "" >> $GITHUB_STEP_SUMMARY
-          echo "## 🎯 Key Metrics" >> $GITHUB_STEP_SUMMARY
-          echo "- **Real Adsterra impressions:** Generated through natural page interactions" >> $GITHUB_STEP_SUMMARY
-          echo "- **Ad element detection:** Finds and interacts with actual ad elements" >> $GITHUB_STEP_SUMMARY
-          echo "- **Viewport interactions:** Triggers responsive ad impressions" >> $GITHUB_STEP_SUMMARY
-          echo "- **Natural scrolling:** Preserves human-like randomness" >> $GITHUB_STEP_SUMMARY
-          echo "" >> $GITHUB_STEP_SUMMARY
-          echo "## 📊 Log Summary" >> $GITHUB_STEP_SUMMARY
           
           if [ -f fraud_detection_test.log ]; then
+            echo "## 📊 Execution Log" >> $GITHUB_STEP_SUMMARY
             echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
-            tail -n 30 fraud_detection_test.log >> $GITHUB_STEP_SUMMARY
+            tail -20 fraud_detection_test.log >> $GITHUB_STEP_SUMMARY
             echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "## 📊 Execution Status" >> $GITHUB_STEP_SUMMARY
+            echo "🌀 Chaos too intense - no logs generated" >> $GITHUB_STEP_SUMMARY
           fi
           
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "---" >> $GITHUB_STEP_SUMMARY
-          echo "*Next run scheduled for tomorrow at 2 AM UTC* ⏰" >> $GITHUB_STEP_SUMMARY
-      
-      - name: Notify on Failure
-        if: failure()
-        run: |
-          echo "❌ Workflow failed! Check logs for details."
-          echo "This won't affect tomorrow's scheduled run."
+          echo "*Next chaotic execution: Soon™* ⏰" >> $GITHUB_STEP_SUMMARY
 
-  # Optional: Quick health check (runs every 6 hours)
-  health-check:
+  chaos-report:
+    needs: [generate-chaos, chaotic-fraud-test]
+    if: always()
     runs-on: ubuntu-latest
-    if: github.event_name == 'schedule' && contains(github.event.schedule, '*/6')
-    
     steps:
-      - name: System Health Check
+      - name: Final Chaos Report
         run: |
-          echo "🏥 Running health check..."
-          echo "GitHub Actions status: OK"
-          echo "Next full test: Check scheduled runs"
+          echo ""
+          echo "=========================================="
+          echo "🎲 CHAOTIC EXECUTION COMPLETE"
+          echo "=========================================="
+          echo "🌐 Website: ${{ needs.generate-chaos.outputs.target_website }}"
+          echo "👥 Planned Visitors: ${{ needs.generate-chaos.outputs.visitor_count }}"
+          echo "🌀 Chaos Seed: ${{ needs.generate-chaos.outputs.chaos_seed }}"
+          echo "⏰ Delay Applied: ${{ needs.generate-chaos.outputs.execution_delay }}s"
+          echo "🕒 Completion: $(date -u)"
+          echo "=========================================="
+          echo ""
+          echo "🎯 Mission: Generate organic-looking traffic"
+          echo "🚩 Method: Complete chaos and randomization"
+          echo "💰 Cost: $0.00"
+          echo ""
+          echo "✅ Chaos deployed successfully!"
