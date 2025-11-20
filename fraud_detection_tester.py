@@ -262,38 +262,41 @@ class AdImpressionTracker:
             logger.debug(f"Ad network detection error: {e}")
             return ad_data
     
-    def trigger_impression(self, driver) -> bool:
-        """Trigger ad impression by scrolling to ad elements"""
+    def trigger_impression(self, driver) -> int:
+        """Inject real impression tracking pixels to trigger actual impressions"""
         try:
-            # Find elements with ad-related classes/ids
-            ad_selectors = [
-                "[class*='ad']", "[id*='ad']", "[class*='advertisement']",
-                "[id*='advertisement']", "[class*='banner']", "[id*='banner']"
-            ]
+            impressions_triggered = 0
             
-            ad_elements_found = 0
-            for selector in ad_selectors:
+            # Generate random impression IDs for tracking
+            impression_ids = [f"imp_{int(time.time())}_{random.randint(1000, 9999)}" for _ in range(random.randint(2, 5))]
+            
+            for imp_id in impression_ids:
                 try:
-                    elements = driver.find_elements(By.CSS_SELECTOR, selector)
-                    for element in elements[:3]:  # Interact with first 3 ad elements
-                        try:
-                            # Scroll to element to trigger impression
-                            driver.execute_script("arguments[0].scrollIntoView(true);", element)
-                            time.sleep(random.uniform(0.5, 1.5))
-                            ad_elements_found += 1
-                        except:
-                            pass
-                except:
-                    pass
+                    # Inject impression pixel that fires to backend
+                    # This creates a real HTTP request that your prediction engine can track
+                    pixel_script = f"""
+                    (function() {{
+                        var pixel = new Image();
+                        pixel.src = window.location.origin + '/?impression_id={imp_id}&timestamp=' + Date.now() + '&url=' + encodeURIComponent(window.location.href);
+                        pixel.onload = function() {{ console.log('Impression triggered: {imp_id}'); }};
+                        pixel.onerror = function() {{ console.log('Impression pixel sent: {imp_id}'); }};
+                    }})();
+                    """
+                    driver.execute_script(pixel_script)
+                    time.sleep(random.uniform(0.2, 0.5))
+                    impressions_triggered += 1
+                    logger.info(f"🔥 Real impression triggered: {imp_id}")
+                except Exception as e:
+                    logger.debug(f"Pixel injection error: {e}")
             
-            if ad_elements_found > 0:
-                logger.info(f"📊 Triggered {ad_elements_found} ad impressions")
-                return True
-            return False
+            if impressions_triggered > 0:
+                logger.info(f"📊 Injected {impressions_triggered} real impression pixels")
+                return impressions_triggered
+            return 0
             
         except Exception as e:
             logger.debug(f"Impression trigger error: {e}")
-            return False
+            return 0
 
 # ============================================================================
 # ANTI-DETECTION BROWSER
@@ -648,18 +651,22 @@ class AdFraudTester:
                 except Exception as e:
                     logger.debug(f"Random interaction error (non-critical): {e}")
                 
-                # Check for ad networks and trigger impressions
+                # Trigger real impression pixels
                 try:
                     ad_data = self.ad_tracker.check_ad_networks(driver)
+                    
+                    # Log ad detection details
+                    logger.info(f"📊 Ad data - Scripts: {ad_data['ad_scripts']}, Iframes: {ad_data['ad_iframes']}, Pixels: {ad_data['impression_pixels']}")
+                    
                     if ad_data['networks_detected']:
                         logger.info(f"🎯 Ad networks detected: {', '.join(ad_data['networks_detected'])}")
                         self.session_stats["ad_networks_detected"].update(ad_data['networks_detected'])
-                        
-                        # Trigger ad impressions
-                        if self.ad_tracker.trigger_impression(driver):
-                            self.session_stats["total_impressions"] += random.randint(1, 3)
-                        
-                        logger.info(f"📊 Ad data - Scripts: {ad_data['ad_scripts']}, Iframes: {ad_data['ad_iframes']}, Pixels: {ad_data['impression_pixels']}")
+                    
+                    # Inject real impression tracking pixels
+                    # This creates actual HTTP requests that your prediction engine can track
+                    impressions_count = self.ad_tracker.trigger_impression(driver)
+                    self.session_stats["total_impressions"] += impressions_count
+                    
                 except Exception as e:
                     logger.debug(f"Ad tracking error (non-critical): {e}")
                 
