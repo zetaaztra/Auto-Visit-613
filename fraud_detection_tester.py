@@ -242,7 +242,7 @@ class HumanBrowser:
             driver = uc.Chrome(options=options, version_main=None, suppress_welcome=True)
             
             # Inject device fingerprint values into the browser (CDP)
-            device_fp, fp_hash = load_or_create_cookie_profile()
+            device_fp, fp_hash = random_device_fingerprint()
             self.fp_hash = fp_hash  # Store for later cookie saving
 
             device_memory = device_fp["device_memory"]
