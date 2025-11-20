@@ -23,6 +23,9 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.common.exceptions import TimeoutException, NoSuchElementException
 import undetected_chromedriver as uc
+import hashlib
+import pickle
+from pathlib import Path
 
 # ============================================================================
 # CONFIGURATION
@@ -33,6 +36,7 @@ TEST_MODE = True
 
 WEBSITES = [
     "https://pravinmathew613.netlify.app/",
+    "https://tradyxa-alephx.pages.dev/",
     
 ]
 
@@ -139,6 +143,52 @@ class ProxyManager:
         logger.warning(f"Blacklisted proxy: {proxy}")
 
 # ============================================================================
+# ADVANCED FINGERPRINT & COOKIE ROTATION (REAL USER PERSISTENCE)
+# ============================================================================
+
+COOKIE_DIR = Path("browser_cookies")
+DEVICE_FP_DIR = Path("device_fingerprints")
+COOKIE_DIR.mkdir(exist_ok=True)
+DEVICE_FP_DIR.mkdir(exist_ok=True)
+
+def random_device_fingerprint() -> Dict:
+    """Generate and persist a fake but realistic device fingerprint profile."""
+    device_profile = {
+        "platform": random.choice(["Win32", "Linux x86_64", "MacIntel"]),
+        "hardware_concurrency": random.choice([2, 4, 8, 6]),
+        "device_memory": random.choice([4, 8, 16]),
+        "vendor": random.choice(["Google Inc.", "Intel Corp", "AMD"]),
+        "renderer": random.choice([
+            "ANGLE (Intel, Intel(R) UHD Graphics 620 Direct3D11 vs_5_0 ps_5_0)",
+            "ANGLE (AMD, AMD Radeon Pro 560 Metal)",
+            "Apple GPU (Metal)",
+        ]),
+    }
+    fp_hash = hashlib.sha256(json.dumps(device_profile).encode()).hexdigest()[:16]
+    fingerprint_path = DEVICE_FP_DIR / f"{fp_hash}.json"
+    with open(fingerprint_path, "w") as fp:
+        json.dump(device_profile, fp, indent=2)
+    return device_profile, fp_hash
+
+def load_or_create_cookie_profile():
+    """Rotates cookies per fingerprint for persistent visitors."""
+    _, fp_hash = random_device_fingerprint()
+    cookie_path = COOKIE_DIR / f"{fp_hash}.pkl"
+    if cookie_path.exists():
+        with open(cookie_path, "rb") as ck:
+            return pickle.load(ck), fp_hash
+    else:
+        with open(cookie_path, "wb") as ck:
+            pickle.dump([], ck)
+        return [], fp_hash
+
+def save_cookies(driver, fp_hash):
+    """Save cookies for fingerprint persistence"""
+    cookie_path = COOKIE_DIR / f"{fp_hash}.pkl"
+    with open(cookie_path, "wb") as ck:
+        pickle.dump(driver.get_cookies(), ck)
+
+# ============================================================================
 # ANTI-DETECTION BROWSER
 # ============================================================================
 
@@ -191,6 +241,42 @@ class HumanBrowser:
             # Let undetected_chromedriver auto-detect the Chrome version
             driver = uc.Chrome(options=options, version_main=None, suppress_welcome=True)
             
+            # Inject device fingerprint values into the browser (CDP)
+            device_fp, fp_hash = load_or_create_cookie_profile()
+            self.fp_hash = fp_hash  # Store for later cookie saving
+
+            device_memory = device_fp["device_memory"]
+            hardware_concurrency = device_fp["hardware_concurrency"]
+            platform = device_fp["platform"]
+            vendor = device_fp["vendor"]
+            renderer = device_fp["renderer"]
+            
+            fingerprint_script = f"""
+                Object.defineProperty(navigator, 'deviceMemory', {{get: () => {device_memory}}});
+                Object.defineProperty(navigator, 'hardwareConcurrency', {{get: () => {hardware_concurrency}}});
+                Object.defineProperty(navigator, 'platform', {{get: () => '{platform}'}});
+                WebGLRenderingContext.prototype.getParameter = 
+                    new Proxy(WebGLRenderingContext.prototype.getParameter, {{
+                    apply(target, ctx, args) {{
+                        if (args[0] === 37445) return '{vendor}';
+                        if (args[0] === 37446) return '{renderer}';
+                        return target.apply(ctx, args);
+                    }}}}
+                );
+            """
+            
+            driver.execute_cdp_cmd("Page.addScriptToEvaluateOnNewDocument", {
+                "source": fingerprint_script
+            })
+
+            # Load cookies before navigation
+            cookies, _ = load_or_create_cookie_profile()
+            for cookie in cookies:
+                try:
+                    driver.add_cookie(cookie)
+                except:
+                    pass
+            
             # Set timeouts immediately
             driver.set_page_load_timeout(30)
             driver.set_script_timeout(30)
@@ -210,7 +296,7 @@ class HumanBrowser:
                 logger.warning(f"Could not inject CDP command: {e}")
             
             self.driver = driver
-            logger.info("Browser created successfully")
+            logger.info("Browser created successfully with fingerprint injection")
             return driver
             
         except Exception as e:
@@ -405,6 +491,7 @@ class AdFraudTester:
     def visit_website(self, url: str, proxy: Optional[str] = None) -> bool:
         """Perform single website visit with human behavior"""
         browser = None
+        fp_hash = None
         
         try:
             logger.info(f"Starting visit to: {url}")
@@ -412,6 +499,7 @@ class AdFraudTester:
             # Create browser with proxy
             browser = HumanBrowser(proxy=proxy)
             driver = browser.create_driver()
+            fp_hash = browser.fp_hash  # Get fingerprint hash for cookie saving
             
             # Set page load timeout
             driver.set_page_load_timeout(25)
@@ -483,6 +571,13 @@ class AdFraudTester:
         
         finally:
             if browser:
+                # Save cookies based on persistent fingerprint
+                try:
+                    if fp_hash and browser.driver:
+                        save_cookies(browser.driver, fp_hash)
+                except Exception as e:
+                    logger.debug(f"Cookie save error: {e}")
+                
                 browser.close()
     
     def run_daily_visits(self, target_visits: int = 25):
