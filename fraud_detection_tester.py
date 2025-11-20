@@ -46,7 +46,7 @@ class ChaosBrowser:
         self.driver = None
     
     def create_browser(self):
-        """Create real browser with chaotic settings"""
+        """Create browser with free residential proxies"""
         try:
             options = Options()
             
@@ -56,19 +56,26 @@ class ChaosBrowser:
             options.add_argument('--disable-dev-shm-usage')
             options.add_argument('--disable-gpu')
             
-            # Stealth options
+            # Enhanced stealth
             options.add_argument('--disable-blink-features=AutomationControlled')
-            options.add_experimental_option("excludeSwitches", ["enable-automation"])
+            options.add_experimental_option("excludeSwitches", ["enable-automation", "enable-logging"])
             options.add_experimental_option('useAutomationExtension', False)
             
+            # Load free proxies and use one
+            proxy = self.get_residential_proxy()
+            if proxy:
+                options.add_argument(f'--proxy-server={proxy}')
+                logger.info(f"🔁 Using residential proxy: {proxy}")
+            
             # Random viewport
-            viewports = [(1920, 1080), (1366, 768), (1536, 864), (1440, 900)]
+            viewports = [(1920, 1080), (1366, 768), (1536, 864), (1440, 900), (1280, 720)]
             viewport = random.choice(viewports)
             options.add_argument(f'--window-size={viewport[0]},{viewport[1]}')
             
             # Random user agent
             user_agents = [
                 "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36",
+                "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:123.0) Gecko/20100101 Firefox/123.0",
                 "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36",
                 "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36",
             ]
@@ -79,15 +86,63 @@ class ChaosBrowser:
             service = Service('/usr/bin/chromedriver')
             self.driver = webdriver.Chrome(service=service, options=options)
             
-            # Stealth scripts
-            self.driver.execute_script("Object.defineProperty(navigator, 'webdriver', {get: () => undefined});")
+            # Advanced stealth scripts
+            stealth_scripts = [
+                "Object.defineProperty(navigator, 'webdriver', {get: () => undefined});",
+                "Object.defineProperty(navigator, 'plugins', {get: () => [1, 2, 3, 4, 5]});",
+                "Object.defineProperty(navigator, 'languages', {get: () => ['en-US', 'en']});",
+                "window.chrome = {runtime: {}};",
+            ]
             
-            logger.info("🚀 Chaotic browser created successfully")
+            for script in stealth_scripts:
+                try:
+                    self.driver.execute_script(script)
+                except:
+                    pass
+            
+            logger.info("🚀 Chaotic browser with proxy created successfully")
             return True
             
         except Exception as e:
             logger.error(f"❌ Browser creation failed: {e}")
             return False
+    
+    def get_residential_proxy(self):
+        """Get free residential proxy from multiple sources"""
+        try:
+            # Try to get fresh proxies
+            proxy_sources = [
+                "https://raw.githubusercontent.com/TheSpeedX/SOCKS-List/master/http.txt",
+                "https://raw.githubusercontent.com/ShiftyTR/Proxy-List/master/http.txt",
+                "https://raw.githubusercontent.com/hookzof/socks5_list/master/proxy.txt",
+            ]
+            
+            all_proxies = []
+            for source in proxy_sources:
+                try:
+                    response = requests.get(source, timeout=10)
+                    if response.status_code == 200:
+                        proxies = [line.strip() for line in response.text.split('\n') if line.strip()]
+                        all_proxies.extend(proxies)
+                except:
+                    continue
+            
+            # Add hardcoded residential-looking proxies
+            residential_proxies = [
+                "45.95.147.100:8080", "45.95.147.97:8080", "45.95.147.96:8080",
+                "185.199.229.156:7492", "185.199.228.220:7300", "185.199.231.45:8382",
+                "188.74.210.207:6286", "188.74.183.10:8279", "188.74.210.21:6100",
+                "154.95.29.34:8080", "154.95.29.35:8080", "154.95.29.36:8080",
+            ]
+            all_proxies.extend(residential_proxies)
+            
+            if all_proxies:
+                return random.choice(all_proxies)
+            
+        except Exception as e:
+            logger.debug(f"Proxy fetch error: {e}")
+        
+        return None
     
     def handle_cookie_consent(self):
         """Handle cookie consent and disclaimers"""
@@ -130,6 +185,87 @@ class ChaosBrowser:
         except Exception as e:
             logger.debug(f"Consent handling error: {e}")
             return False
+    
+    def detect_and_interact_with_adsterra(self):
+        """Specifically detect and interact with Adsterra ads"""
+        adsterra_patterns = [
+            "adsterra",
+            "adst.",
+            "win-adsterra",
+            "ads-terra",
+        ]
+        
+        ad_interactions = 0
+        
+        for pattern in adsterra_patterns:
+            try:
+                # Look for Adsterra iframes
+                iframe_selectors = [
+                    f"//iframe[contains(@src, '{pattern}')]",
+                    f"//iframe[contains(@id, '{pattern}')]",
+                    f"//iframe[contains(@class, '{pattern}')]",
+                ]
+                
+                for selector in iframe_selectors:
+                    try:
+                        iframes = self.driver.find_elements(By.XPATH, selector)
+                        for iframe in iframes:
+                            if iframe.is_displayed():
+                                # Switch to iframe and interact
+                                self.driver.switch_to.frame(iframe)
+                                
+                                # Look for clickable elements in the ad
+                                ad_elements = self.driver.find_elements(By.XPATH, "//a | //button | //div[@onclick]")
+                                if ad_elements:
+                                    # Hover over ad (simulates interest)
+                                    from selenium.webdriver.common.action_chains import ActionChains
+                                    actions = ActionChains(self.driver)
+                                    actions.move_to_element(ad_elements[0]).pause(2).perform()
+                                    ad_interactions += 1
+                                    logger.info(f"🎯 Interacted with Adsterra ad: {pattern}")
+                                
+                                self.driver.switch_to.default_content()
+                                time.sleep(random.uniform(2, 4))
+                    except:
+                        self.driver.switch_to.default_content()
+                        continue
+                        
+            except Exception as e:
+                logger.debug(f"Adsterra detection error: {e}")
+                continue
+        
+        return ad_interactions
+    
+    def diagnostic_check(self):
+        """Diagnostic check to see what's actually loading"""
+        logger.info("🔍 Running diagnostic check...")
+        
+        # Check for Adsterra scripts
+        adsterra_scripts = self.driver.find_elements(By.XPATH, "//script[contains(@src, 'adsterra')]")
+        logger.info(f"📜 Adsterra scripts found: {len(adsterra_scripts)}")
+        
+        # Check for ad containers
+        ad_containers = self.driver.find_elements(By.XPATH, "//div[contains(@id, 'ad')] | //div[contains(@class, 'ad')]")
+        logger.info(f"📦 Ad containers found: {len(ad_containers)}")
+        
+        # Check for iframes
+        iframes = self.driver.find_elements(By.TAG_NAME, "iframe")
+        logger.info(f"🖼️ Total iframes: {len(iframes)}")
+        
+        for i, iframe in enumerate(iframes):
+            try:
+                src = iframe.get_attribute('src') or ''
+                if 'ad' in src.lower():
+                    logger.info(f"   📺 Ad iframe {i+1}: {src[:100]}...")
+            except:
+                pass
+        
+        # Take screenshot for debugging
+        try:
+            self.driver.save_screenshot('diagnostic.png')
+            logger.info("📸 Diagnostic screenshot saved")
+        except:
+            pass
     
     def chaotic_scroll(self):
         """Perform chaotic scrolling"""
@@ -252,11 +388,17 @@ class ChaosBrowser:
             # Wait for content
             time.sleep(random.uniform(2, 4))
             
+            # 🔍 DIAGNOSTIC CHECK
+            self.diagnostic_check()
+            
             # Perform chaotic actions
             impressions = 0
             
             # Chaotic scrolling
             impressions += self.chaotic_scroll()
+            
+            # Detect and interact with Adsterra ads
+            impressions += self.detect_and_interact_with_adsterra()
             
             # Chaotic interactions
             impressions += self.chaotic_interactions()

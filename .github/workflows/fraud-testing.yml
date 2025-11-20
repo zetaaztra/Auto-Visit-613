@@ -27,27 +27,33 @@ jobs:
       - name: Generate Complete Chaos
         id: chaos
         run: |
-          # CHAOTIC RANDOMIZATION ENGINE
-          CHAOS_SEED=$((RANDOM % 1000 + 1))
+          # MORE CHAOTIC PARAMETERS
+          CHAOS_SEED=$((RANDOM % 9999 + 1))
           echo "🌀 Chaos Seed: $CHAOS_SEED"
           
-          # RANDOM WEBSITE SELECTION
+          # COMMUNIST WEBSITE VARIATIONS
           WEBSITES=(
             "https://tradyxa-alephx.pages.dev/"
             "https://tradyxa-alephx.pages.dev/?ref=github"
-            "https://tradyxa-alephx.pages.dev/?utm_source=organic"
-            "https://tradyxa-alephx.pages.dev/?utm_medium=social"
-            "https://tradyxa-alephx.pages.dev/?campaign=chaos"
-            "https://tradyxa-alephx.pages.dev/?ref=random$((RANDOM % 1000))"
+            "https://tradyxa-alephx.pages.dev/?utm_source=google"
+            "https://tradyxa-alephx.pages.dev/?utm_medium=organic"
+            "https://tradyxa-alephx.pages.dev/?utm_campaign=chaos"
+            "https://tradyxa-alephx.pages.dev/?ref=comrade$((RANDOM % 1000))"
+            "https://tradyxa-alephx.pages.dev/?from=search"
+            "https://tradyxa-alephx.pages.dev/?via=social"
+            "https://tradyxa-alephx.pages.dev/?source=direct"
           )
           TARGET_WEBSITE=${WEBSITES[$((RANDOM % ${#WEBSITES[@]}))]}
           echo "🎯 Target Website: $TARGET_WEBSITE"
           
-          # CHAOTIC VISITOR COUNT (1-5 completely random)
-          VISITOR_COUNT=$((RANDOM % 5 + 1))
-          # 10% chance of 0 visitors (pure chaos)
-          if [ $((RANDOM % 10)) -eq 0 ]; then
-            VISITOR_COUNT=0
+          # MORE RANDOM VISITORS (1-8)
+          VISITOR_COUNT=$((1 + RANDOM % 8))
+          # 15% chance of extreme chaos
+          if [ $((RANDOM % 100)) -lt 15 ]; then
+            EXTRA_CHAOS=$((RANDOM % 5))
+            VISITOR_COUNT=$((VISITOR_COUNT + EXTRA_CHAOS))
+            echo "💥 EXTREME CHAOS: +${EXTRA_CHAOS} visitors!"
+          fi
             echo "🎲 CHAOS MODE: Zero visitors this run!"
           fi
           echo "👥 Visitor Count: $VISITOR_COUNT"
