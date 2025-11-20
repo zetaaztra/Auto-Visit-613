@@ -138,27 +138,31 @@ jobs:
         id: results
         run: |
           if [ -f fraud_detection_test.log ]; then
-            SUCCESSFUL=$(grep -c "Visit completed successfully" fraud_detection_test.log || echo 0)
-            FAILED=$(grep -c "Visit failed" fraud_detection_test.log || echo 0)
-            PROXIES=$(grep -c "Using proxy" fraud_detection_test.log || echo 0)
+            SUCCESSFUL=$(grep -c "VISIT COMPLETED" fraud_detection_test.log || echo 0)
+            FAILED=$(grep -c "VISIT FAILED" fraud_detection_test.log || echo 0)
+            IMPRESSIONS=$(grep -c "REAL IMPRESSIONS GENERATED" fraud_detection_test.log || echo 0)
+            TOTAL_IMP=$(grep "REAL IMPRESSIONS GENERATED" fraud_detection_test.log | awk '{sum+=$NF} END {print sum}' || echo 0)
             
             echo "successful=$SUCCESSFUL" >> $GITHUB_OUTPUT
             echo "failed=$FAILED" >> $GITHUB_OUTPUT
-            echo "proxies=$PROXIES" >> $GITHUB_OUTPUT
+            echo "impressions=$IMPRESSIONS" >> $GITHUB_OUTPUT
+            echo "total_impressions=$TOTAL_IMP" >> $GITHUB_OUTPUT
             
             echo ""
             echo "=========================================="
-            echo "📊 TEST RESULTS"
+            echo "🎯 ADSTERRA IMPRESSION RESULTS"
             echo "=========================================="
             echo "✅ Successful visits: $SUCCESSFUL"
             echo "❌ Failed visits: $FAILED"
-            echo "🔄 Proxies used: $PROXIES"
+            echo "📊 Total Impressions Generated: $TOTAL_IMP"
+            echo "📈 Avg Impressions/Visit: $(echo "scale=1; $TOTAL_IMP / $SUCCESSFUL" | bc 2>/dev/null || echo 0)"
             echo "=========================================="
           else
             echo "⚠️ No log file found"
             echo "successful=0" >> $GITHUB_OUTPUT
             echo "failed=0" >> $GITHUB_OUTPUT
-            echo "proxies=0" >> $GITHUB_OUTPUT
+            echo "impressions=0" >> $GITHUB_OUTPUT
+            echo "total_impressions=0" >> $GITHUB_OUTPUT
           fi
       
       - name: Upload Complete Logs
@@ -175,30 +179,40 @@ jobs:
       - name: Generate Summary Report
         if: always()
         run: |
-          echo "# 🎯 Daily Fraud Detection Test Report" >> $GITHUB_STEP_SUMMARY
+          echo "# 🎯 ADSTERRA IMPRESSION REPORT" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "**Date:** $(date -u +"%Y-%m-%d %H:%M UTC")" >> $GITHUB_STEP_SUMMARY
           echo "**Run Number:** #${{ github.run_number }}" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
           
-          echo "## 📈 Today's Targets" >> $GITHUB_STEP_SUMMARY
+          echo "## 📈 Today's Results" >> $GITHUB_STEP_SUMMARY
           echo "- **Planned visitors:** ${{ steps.visit_count.outputs.visits }}" >> $GITHUB_STEP_SUMMARY
-          echo "- **Successful:** ${{ steps.results.outputs.successful }}" >> $GITHUB_STEP_SUMMARY
-          echo "- **Failed:** ${{ steps.results.outputs.failed }}" >> $GITHUB_STEP_SUMMARY
-          echo "- **Proxies used:** ${{ steps.results.outputs.proxies }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Successful visits:** ${{ steps.results.outputs.successful }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Failed visits:** ${{ steps.results.outputs.failed }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **🔥 Total Impressions Generated:** ${{ steps.results.outputs.total_impressions }}" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
           
-          # Calculate success rate (FIXED - using proper variable access)
+          # Calculate success rate and avg impressions
           SUCCESSFUL=${{ steps.results.outputs.successful }}
           FAILED=${{ steps.results.outputs.failed }}
+          TOTAL_IMP=${{ steps.results.outputs.total_impressions }}
           TOTAL=$((SUCCESSFUL + FAILED))
           
           if [ $TOTAL -gt 0 ]; then
             SUCCESS_RATE=$((SUCCESSFUL * 100 / TOTAL))
+            AVG_IMP=$((TOTAL_IMP / SUCCESSFUL))
             echo "- **Success rate:** ${SUCCESS_RATE}%" >> $GITHUB_STEP_SUMMARY
+            echo "- **📊 Avg Impressions/Visit:** ${AVG_IMP}" >> $GITHUB_STEP_SUMMARY
           fi
           
           echo "" >> $GITHUB_STEP_SUMMARY
+          echo "## 🎯 Key Metrics" >> $GITHUB_STEP_SUMMARY
+          echo "- **Real Adsterra impressions:** Generated through natural page interactions" >> $GITHUB_STEP_SUMMARY
+          echo "- **Ad element detection:** Finds and interacts with actual ad elements" >> $GITHUB_STEP_SUMMARY
+          echo "- **Viewport interactions:** Triggers responsive ad impressions" >> $GITHUB_STEP_SUMMARY
+          echo "- **Natural scrolling:** Preserves human-like randomness" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          
           echo "## 📊 Log Summary" >> $GITHUB_STEP_SUMMARY
           
           if [ -f fraud_detection_test.log ]; then

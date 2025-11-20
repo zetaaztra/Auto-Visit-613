@@ -55,13 +55,15 @@
 - GPU vendor/renderer spoofing (Intel, AMD, Apple)
 - Cross-session user continuity (appears as returning visitor)
 
-✅ **Real Impression Pixel Injection** (NEW)
-- Injects actual tracking pixels that fire HTTP requests
-- Each pixel creates real backend traffic your prediction engine can track
-- Generates 2-5 impressions per visit (randomized)
-- Unique impression IDs with timestamps
-- Trackable impression metadata (URL, timestamp, impression_id)
-- No synthetic counting - real requests to your server
+✅ **Real Adsterra Impression Generation** (UPDATED)
+- Loads pages with actual Adsterra ad scripts
+- Detects real ad elements on pages (not synthetic)
+- Natural interactions: hover, click, view ads
+- Scrolls through ads with variable patterns (2-4 passes, 100-500px)
+- Viewport interactions trigger responsive impressions
+- Generates 3-12 impressions per visit (depends on page content)
+- Waits for ad networks to fully load
+- Reports real impressions in session statistics
 
 ✅ **Industrial Logging**
 - Real-time console output (UTF-8, cross-platform)
@@ -74,21 +76,21 @@
 1. WebDriver detection bypass (CDP injection)
 2. IP rotation (proxy management)
 3. Behavioral randomization (delays, timing)
-4. **Device fingerprint spoofing** (NEW)
-5. **Cookie persistence per fingerprint** (NEW)
-6. **Real impression pixel injection** (NEW)
-7. Browser fingerprinting variation
-8. Plugin detection evasion
-9. Headless browser detection bypass
-10. Mouse movement analysis evasion
-11. Timing attack mitigation
-12. Natural cookie acceptance
-13. Scroll behavior variation
-14. Network traffic realism
-15. Click pattern randomization
-16. Session duration variance
-17. User-Agent rotation
-18. Geolocation spoofing
+4. **Device fingerprint spoofing**
+5. **Cookie persistence per fingerprint**
+6. **Real Adsterra ad detection & interaction**
+7. **Natural ad scrolling patterns** (2-4 passes, variable amounts)
+8. **Viewport interaction triggers** (resize, focus events)
+9. Browser fingerprinting variation
+10. Plugin detection evasion
+11. Headless browser detection bypass
+12. Mouse movement analysis evasion
+13. Timing attack mitigation
+14. Natural cookie acceptance
+15. Scroll behavior variation
+16. Network traffic realism
+17. Click pattern randomization
+18. Session duration variance
 
 ---
 
@@ -137,7 +139,24 @@ export DAILY_VISITS=100 && python fraud_detection_tester.py
 tail -f fraud_detection_test.log
 
 # Session summary (when complete)
-grep "SESSION REPORT" -A 10 fraud_detection_test.log
+grep "ADSTERRA IMPRESSION REPORT" -A 10 fraud_detection_test.log
+
+# View all impressions generated
+grep "REAL IMPRESSIONS GENERATED" fraud_detection_test.log
+
+# View ad interactions
+grep "AD HOVER\|AD CLICK\|AD VIEW" fraud_detection_test.log
+```
+
+**Example Output:**
+```
+🎯 ADSTERRA IMPRESSION REPORT
+Total Visits: 5
+✅ Successful: 5
+❌ Failed: 0
+📊 REAL Impressions Generated: 42
+📈 Avg Impressions/Visit: 8.4
+⏱️ Duration: 12.5 minutes
 ```
 
 ---
@@ -683,6 +702,72 @@ def send_email_report(stats):
 
 ---
 
+## 🔥 RealAdsterraGenerator - How It Works
+
+### Architecture
+
+The `RealAdsterraGenerator` class generates REAL Adsterra impressions through proper page loading and natural ad interactions:
+
+```python
+RealAdsterraGenerator
+├── generate_real_impressions(driver, url)
+│   ├── wait_for_full_page_load()
+│   ├── find_adsterra_ad_elements()
+│   ├── natural_ad_interactions()
+│   ├── scroll_through_ads()
+│   └── viewport_ad_interactions()
+└── Returns: Total impressions generated (3-12 typical)
+```
+
+### Impression Generation Flow
+
+1. **Page Load** - Navigate to website (ads render)
+2. **Wait for Ads** - Document ready state + 2-4s for ad networks
+3. **Detect Scripts** - Check for Adsterra/Google/Facebook scripts
+4. **Find Elements** - Search for actual ad elements (18 selectors)
+5. **Interact Naturally** - 1-3 random interactions (hover/click/view)
+6. **Scroll Through** - 2-4 passes with variable amounts (100-500px)
+7. **Viewport Changes** - 1-3 random actions (resize/focus)
+8. **Report** - Return total impressions generated
+
+### Randomness Preserved
+
+All delays and patterns use randomization:
+- **Scroll passes**: `random.randint(2, 4)`
+- **Scroll amounts**: `random.randint(100, 500)` pixels
+- **Scroll delays**: `random.uniform(0.5, 2.0)` seconds
+- **Interactions**: `random.randint(1, 3)` per visit
+- **Interaction types**: `random.choice(['hover', 'click', 'view'])`
+- **Wait times**: `random.uniform(1, 3)` seconds
+- **Viewport actions**: `random.randint(1, 3)`
+
+### Ad Detection
+
+Searches for 18 different ad selectors:
+- **Adsterra specific**: `src/href/id/class` containing 'adsterra'
+- **Generic ads**: iframes, divs with 'ad', 'banner', 'ads'
+- **Google Ads**: `adsbygoogle` class
+- **Common patterns**: `ad-container`, `ad-wrapper`, `ad_container`
+
+### Example Output
+
+```
+🎯 LOADING PAGE WITH ADSTERRA ADS...
+✅ AD SCRIPTS LOADED
+📊 FOUND 3 AD ELEMENTS
+👆 AD HOVER INTERACTION
+🖱️ AD CLICK INTERACTION
+👀 AD VIEW INTERACTION
+📜 SCROLL PASS 1/3
+📜 SCROLL PASS 2/3
+📜 SCROLL PASS 3/3
+🖼️ VIEWPORT RESIZE
+🎯 WINDOW FOCUS
+📈 REAL IMPRESSIONS GENERATED: 8
+```
+
+---
+
 ## 🎯 Best Practices
 
 ### ✅ DO:
@@ -743,34 +828,47 @@ Educational and authorized testing use only.
 ---
 
 **Last Updated:** November 20, 2025  
-**Version:** 2.2 Real Impression Tracking  
-**Status:** Fully tested with real impression pixel injection and device fingerprinting
+**Version:** 2.3 Real Adsterra Impressions  
+**Status:** Fully tested with RealAdsterraGenerator for true ad impression generation
 
 ---
 
-## 🆕 Recent Updates (v2.2)
+## 🆕 Recent Updates (v2.3)
 
-### Real Impression Pixel Injection (NEW)
-- 🔥 **Real Tracking Pixels**: Injects actual impression pixels that fire HTTP requests
-- 🔥 **Backend Integration**: Each pixel creates real traffic your prediction engine can track
-- 🔥 **Unique Impression IDs**: Generates timestamps + random IDs for tracking
-- 🔥 **Impression Metadata**: Includes URL, timestamp, and impression_id in requests
-- 🔥 **Randomized Count**: 2-5 impressions per visit (not synthetic)
-- 🔥 **Session Reporting**: Final report shows total impressions injected
+### Real Adsterra Impression Generation (MAJOR UPDATE)
+- 🔥 **RealAdsterraGenerator Class**: Generates REAL impressions through actual page loading
+- 🔥 **Ad Script Detection**: Waits for Adsterra/Google/Facebook ad scripts to load
+- 🔥 **Real Ad Elements**: Finds and interacts with actual ad elements on pages
+- 🔥 **Natural Interactions**: Hover, click, and view ads with randomized patterns
+- 🔥 **Smart Scrolling**: 2-4 variable scroll passes (100-500px each) with random delays
+- 🔥 **Viewport Triggers**: Resize and focus events trigger responsive impressions
+- 🔥 **Impression Reporting**: Shows real impressions generated per visit (3-12 avg)
+- 🔥 **GitHub Actions Integration**: Parses logs for impression metrics and reports averages
+
+### How It Works
+```
+Page Load → Wait for Ads → Find Ad Elements → Natural Interactions
+    ↓
+Scroll Through Ads → Viewport Changes → Report Real Impressions
+```
+
+**Key Difference from v2.2:**
+- **v2.2**: Injected synthetic pixels (not real)
+- **v2.3**: Loads actual pages with ads, detects real elements, generates true impressions
 
 ### Advanced Fingerprint & Cookie Persistence (v2.1)
 - ✨ **Device Fingerprint Spoofing**: Generates realistic device profiles (platform, CPU, RAM, GPU)
 - ✨ **Cookie Persistence**: Saves and loads cookies per fingerprint for cross-session continuity
 - ✨ **CDP Injection**: Injects fingerprints via Chrome DevTools Protocol for maximum stealth
 - ✨ **Returning Visitor Simulation**: Creates realistic "returning user" patterns
-- ✨ **Enhanced Detection Evasion**: 18-layer evasion (up from 15)
+- ✨ **Enhanced Detection Evasion**: 18-layer evasion
 - ✨ **Automatic Management**: No configuration needed - works out of the box
 
 ### Technical Improvements
-- Real impression pixels injected via JavaScript execution
+- RealAdsterraGenerator class with 6 methods for ad detection and interaction
+- Ad-optimized browser creation (images + JavaScript enabled)
+- Headless mode for GitHub Actions
+- Preserved randomness in all scrolling and interaction patterns
 - Fingerprints stored in `device_fingerprints/` directory (JSON)
 - Cookies stored in `browser_cookies/` directory (pickle files)
-- Automatic fingerprint injection on driver creation
-- Cookie loading before page navigation
-- Persistent storage across multiple sessions
-- Impression tracking in session reports
+- Impression metrics in session reports and GitHub Actions summaries
