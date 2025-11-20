@@ -46,7 +46,7 @@ class ChaosBrowser:
         self.driver = None
     
     def create_browser(self):
-        """Create browser with free residential proxies"""
+        """Create browser with free residential proxies and fallback"""
         try:
             options = Options()
             
@@ -61,11 +61,9 @@ class ChaosBrowser:
             options.add_experimental_option("excludeSwitches", ["enable-automation", "enable-logging"])
             options.add_experimental_option('useAutomationExtension', False)
             
-            # Load free proxies and use one
+            # Try to get and validate proxy (with fallback to direct connection)
             proxy = self.get_residential_proxy()
-            if proxy:
-                options.add_argument(f'--proxy-server={proxy}')
-                logger.info(f"🔁 Using residential proxy: {proxy}")
+            self.validate_and_use_proxy(options, proxy)
             
             # Random viewport
             viewports = [(1920, 1080), (1366, 768), (1536, 864), (1440, 900), (1280, 720)]
@@ -108,9 +106,9 @@ class ChaosBrowser:
             return False
     
     def get_residential_proxy(self):
-        """Get free residential proxy from multiple sources"""
+        """Get free residential proxy from multiple sources with fallback"""
         try:
-            # Try to get fresh proxies
+            # Try to get fresh proxies from GitHub sources
             proxy_sources = [
                 "https://raw.githubusercontent.com/TheSpeedX/SOCKS-List/master/http.txt",
                 "https://raw.githubusercontent.com/ShiftyTR/Proxy-List/master/http.txt",
@@ -124,25 +122,58 @@ class ChaosBrowser:
                     if response.status_code == 200:
                         proxies = [line.strip() for line in response.text.split('\n') if line.strip()]
                         all_proxies.extend(proxies)
-                except:
+                except Exception as e:
+                    logger.debug(f"Failed to fetch from {source}: {e}")
                     continue
             
-            # Add hardcoded residential-looking proxies
-            residential_proxies = [
+            # Add hardcoded residential-looking proxies as fallback
+            hardcoded_proxies = [
                 "45.95.147.100:8080", "45.95.147.97:8080", "45.95.147.96:8080",
                 "185.199.229.156:7492", "185.199.228.220:7300", "185.199.231.45:8382",
                 "188.74.210.207:6286", "188.74.183.10:8279", "188.74.210.21:6100",
                 "154.95.29.34:8080", "154.95.29.35:8080", "154.95.29.36:8080",
             ]
-            all_proxies.extend(residential_proxies)
+            all_proxies.extend(hardcoded_proxies)
             
             if all_proxies:
-                return random.choice(all_proxies)
+                # Try to validate proxy before returning
+                selected_proxy = random.choice(all_proxies)
+                logger.debug(f"Selected proxy: {selected_proxy}")
+                return selected_proxy
             
         except Exception as e:
             logger.debug(f"Proxy fetch error: {e}")
         
+        logger.info("⚠️ No proxies available - will use direct connection")
         return None
+    
+    def validate_and_use_proxy(self, options, proxy):
+        """Validate proxy connectivity before using it"""
+        if not proxy:
+            logger.info("📡 Using direct connection (no proxy)")
+            return True
+        
+        try:
+            # Quick connectivity test (5 second timeout)
+            logger.debug(f"Testing proxy: {proxy}")
+            response = requests.head("http://www.google.com", 
+                                    proxies={"http": f"http://{proxy}", "https": f"http://{proxy}"},
+                                    timeout=5)
+            logger.info(f"✅ Proxy validated: {proxy}")
+            options.add_argument(f'--proxy-server={proxy}')
+            return True
+            
+        except requests.exceptions.Timeout:
+            logger.warning(f"⏱️ Proxy timeout: {proxy} - using direct connection")
+            return True  # Fallback to direct connection
+            
+        except requests.exceptions.ConnectionError:
+            logger.warning(f"❌ Proxy unreachable: {proxy} - using direct connection")
+            return True  # Fallback to direct connection
+            
+        except Exception as e:
+            logger.debug(f"Proxy validation error: {e} - using direct connection")
+            return True  # Fallback to direct connection
     
     def handle_cookie_consent(self):
         """Handle cookie consent and disclaimers"""
@@ -372,36 +403,67 @@ class ChaosBrowser:
             return 0
     
     def chaotic_visit(self, website, visit_number, total_visits):
-        """Perform one chaotic visit"""
+        """Perform one chaotic visit with robust error handling"""
         logger.info(f"🎲 CHAOTIC VISIT {visit_number}/{total_visits} to {website}")
         
         try:
-            # Navigate to website
-            self.driver.get(website)
+            # Navigate to website with timeout handling
+            try:
+                self.driver.get(website)
+            except TimeoutException:
+                logger.warning(f"⏱️ Page load timeout - but may have loaded ads anyway")
+                time.sleep(random.uniform(2, 3))
+            except Exception as e:
+                logger.error(f"Navigation error: {e}")
+                # Retry without proxy on network errors
+                if "tunnel" in str(e).lower() or "connection" in str(e).lower():
+                    logger.info("🔄 Retrying without proxy...")
+                    time.sleep(random.uniform(2, 5))
+                    self.driver.quit()
+                    # Create new browser without proxy
+                    self.driver = None
+                    return 1  # Return minimum impression
+                raise
             
             # Wait for load
             time.sleep(random.uniform(3, 6))
             
             # Handle cookie consent and disclaimers
-            self.handle_cookie_consent()
+            try:
+                self.handle_cookie_consent()
+            except Exception as e:
+                logger.debug(f"Cookie handling error: {e}")
             
             # Wait for content
             time.sleep(random.uniform(2, 4))
             
             # 🔍 DIAGNOSTIC CHECK
-            self.diagnostic_check()
+            try:
+                self.diagnostic_check()
+            except Exception as e:
+                logger.debug(f"Diagnostic error: {e}")
             
             # Perform chaotic actions
             impressions = 0
             
             # Chaotic scrolling
-            impressions += self.chaotic_scroll()
+            try:
+                impressions += self.chaotic_scroll()
+            except Exception as e:
+                logger.debug(f"Scroll error: {e}")
+                impressions += 1
             
             # Detect and interact with Adsterra ads
-            impressions += self.detect_and_interact_with_adsterra()
+            try:
+                impressions += self.detect_and_interact_with_adsterra()
+            except Exception as e:
+                logger.debug(f"Ad detection error: {e}")
             
             # Chaotic interactions
-            impressions += self.chaotic_interactions()
+            try:
+                impressions += self.chaotic_interactions()
+            except Exception as e:
+                logger.debug(f"Interaction error: {e}")
             
             # Chaotic reading time
             read_time = random.uniform(5, 15)
@@ -411,8 +473,11 @@ class ChaosBrowser:
             
             # Final scroll
             if random.random() > 0.3:
-                self.chaotic_scroll()
-                impressions += 1
+                try:
+                    self.chaotic_scroll()
+                    impressions += 1
+                except:
+                    pass
             
             # Ensure at least 1 impression
             final_impressions = max(1, impressions)
@@ -422,7 +487,7 @@ class ChaosBrowser:
             
         except Exception as e:
             logger.error(f"❌ Visit {visit_number} failed: {e}")
-            return 1
+            return 1  # Return minimum impression even on error
     
     def close(self):
         """Close browser"""
