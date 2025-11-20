@@ -650,7 +650,31 @@ class ChaosBrowser:
                     iframe.dispatchEvent(new Event('load', {bubbles: true}));
                     iframe.dispatchEvent(new Event('scroll', {bubbles: true}));
                 });
-            \"\"\")\n            \n            impressions += 2  # Count these triggered events\n            logger.info(\"📡 Triggered impression events\")\n            \n            # Wait for tracking pixels to fire\n            time.sleep(random.uniform(3, 6))\n            \n            # One more interaction cycle\n            if random.random() > 0.5:\n                self.driver.execute_script(\n                    \"document.body.style.opacity = '0.99'; \"\n                    \"setTimeout(() => {document.body.style.opacity = '1'}, 100);\"\n                )\n                impressions += 1\n                logger.info(\"🔄 Repeated visibility trigger\")\n            \n            return impressions\n            \n        except Exception as e:\n            logger.debug(f\"Impression maximization error: {e}\")\n            return 0\n    \n    def close(self):
+            """
+            )
+            
+            impressions += 2  # Count these triggered events
+            logger.info("📡 Triggered impression events")
+            
+            # Wait for tracking pixels to fire
+            time.sleep(random.uniform(3, 6))
+            
+            # One more interaction cycle
+            if random.random() > 0.5:
+                self.driver.execute_script(
+                    "document.body.style.opacity = '0.99'; "
+                    "setTimeout(() => {document.body.style.opacity = '1'}, 100);"
+                )
+                impressions += 1
+                logger.info("🔄 Repeated visibility trigger")
+            
+            return impressions
+            
+        except Exception as e:
+            logger.debug(f"Impression maximization error: {e}")
+            return 0
+    
+    def close(self):
         """Close browser"""
         if self.driver:
             try:
