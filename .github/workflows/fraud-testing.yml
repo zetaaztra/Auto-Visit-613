@@ -54,8 +54,6 @@ jobs:
             VISITOR_COUNT=$((VISITOR_COUNT + EXTRA_CHAOS))
             echo "💥 EXTREME CHAOS: +${EXTRA_CHAOS} visitors!"
           fi
-            echo "🎲 CHAOS MODE: Zero visitors this run!"
-          fi
           echo "👥 Visitor Count: $VISITOR_COUNT"
           
           # RANDOM EXECUTION DELAY (0-300 seconds)
