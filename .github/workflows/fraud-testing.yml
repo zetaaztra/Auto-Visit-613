@@ -134,23 +134,24 @@ jobs:
         id: results
         run: |
           if [ -f fraud_detection_test.log ]; then
-            SUCCESSFUL=$(grep -c "VISIT COMPLETED" fraud_detection_test.log || echo 0)
-            FAILED=$(grep -c "VISIT FAILED" fraud_detection_test.log || echo 0)
-            IMPRESSIONS=$(grep -c "REAL IMPRESSIONS GENERATED" fraud_detection_test.log || echo 0)
+            # Extract successful and failed visits from log
+            SUCCESSFUL=$(grep "✅ Visit successful:" fraud_detection_test.log | wc -l)
+            FAILED=$(grep "❌ Visit failed:" fraud_detection_test.log | wc -l)
             
-            # Extract impression count more reliably
-            TOTAL_IMP=$(grep "REAL IMPRESSIONS GENERATED:" fraud_detection_test.log | grep -oP '(?<=: )\d+' | awk '{sum+=$1} END {print sum}' || echo 0)
+            # Extract total impressions from the session report
+            TOTAL_IMP=$(grep "🔥 Total Impressions:" fraud_detection_test.log | tail -1 | grep -oP '\d+$' || echo 0)
             
-            # Handle empty result
-            if [ -z "$TOTAL_IMP" ] || [ "$TOTAL_IMP" = "" ]; then
-              TOTAL_IMP=0
-            fi
+            # Ensure values are set
+            SUCCESSFUL=${SUCCESSFUL:-0}
+            FAILED=${FAILED:-0}
+            TOTAL_IMP=${TOTAL_IMP:-0}
             
+            # Output to GitHub Actions
             echo "successful=$SUCCESSFUL" >> $GITHUB_OUTPUT
             echo "failed=$FAILED" >> $GITHUB_OUTPUT
-            echo "impressions=$IMPRESSIONS" >> $GITHUB_OUTPUT
             echo "total_impressions=$TOTAL_IMP" >> $GITHUB_OUTPUT
             
+            # Display results
             echo ""
             echo "=========================================="
             echo "🎯 ADSTERRA IMPRESSION RESULTS"
@@ -160,7 +161,7 @@ jobs:
             echo "📊 Total Impressions Generated: $TOTAL_IMP"
             
             if [ "$SUCCESSFUL" -gt 0 ]; then
-              AVG=$(echo "scale=1; $TOTAL_IMP / $SUCCESSFUL" | bc 2>/dev/null || echo 0)
+              AVG=$((TOTAL_IMP / SUCCESSFUL))
               echo "📈 Avg Impressions/Visit: $AVG"
             fi
             echo "=========================================="
@@ -168,7 +169,6 @@ jobs:
             echo "⚠️ No log file found"
             echo "successful=0" >> $GITHUB_OUTPUT
             echo "failed=0" >> $GITHUB_OUTPUT
-            echo "impressions=0" >> $GITHUB_OUTPUT
             echo "total_impressions=0" >> $GITHUB_OUTPUT
           fi
       
@@ -193,7 +193,9 @@ jobs:
           echo "" >> $GITHUB_STEP_SUMMARY
           
           echo "## 📈 Today's Results" >> $GITHUB_STEP_SUMMARY
-          echo "- **Planned visitors:** ${{ steps.visit_count.outputs.visits }}" >> $GITHUB_STEP_SUMMARY
+          PLANNED_VISITS="${{ steps.visit_count.outputs.visits }}"
+          PLANNED_VISITS=${PLANNED_VISITS:-0}
+          echo "- **Planned visitors:** $PLANNED_VISITS" >> $GITHUB_STEP_SUMMARY
           
           SUCCESSFUL="${{ steps.results.outputs.successful }}"
           FAILED="${{ steps.results.outputs.failed }}"
@@ -228,12 +230,11 @@ jobs:
           echo "- **Viewport interactions:** Triggers responsive ad impressions" >> $GITHUB_STEP_SUMMARY
           echo "- **Natural scrolling:** Preserves human-like randomness" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
-          
           echo "## 📊 Log Summary" >> $GITHUB_STEP_SUMMARY
           
           if [ -f fraud_detection_test.log ]; then
             echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
-            tail -n 50 fraud_detection_test.log >> $GITHUB_STEP_SUMMARY
+            tail -n 30 fraud_detection_test.log >> $GITHUB_STEP_SUMMARY
             echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
           fi
           
