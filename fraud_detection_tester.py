@@ -38,11 +38,13 @@ WEBSITES = [
 
 # Realistic Human Behavior Parameters
 HUMAN_BEHAVIOR = {
-    "scroll_delay": (1.0, 3.0),  # Realistic reading time between scrolls
-    "page_read_time": (8, 15),   # Time spent on page (seconds)
+    "scroll_delay": (0.5, 5.0),  # More variable reading time
+    "page_read_time": (5, 25),   # More variation in reading time
     "mouse_movements": True,
     "random_interactions": True,
-    "viewport_sizes": [(1920, 1080), (1366, 768), (1536, 864), (1440, 900)],
+    "interaction_intensity": (0.3, 0.9),  # Random interaction level per session
+    "scroll_intensity": (0.4, 1.0),       # Random scroll intensity per session
+    "viewport_sizes": [(1920, 1080), (1366, 768), (1536, 864), (1440, 900), (1280, 720), (1600, 900)],
     "user_agents": [
         "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36",
         "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36",
@@ -154,7 +156,7 @@ class RealisticAdsterraVisitor:
                 continue
     
     def natural_scroll_behavior(self, driver) -> int:
-        """Natural scrolling that exposes ads gradually"""
+        """Natural scrolling that exposes ads gradually with high variability"""
         impressions = 0
         
         try:
@@ -162,55 +164,63 @@ class RealisticAdsterraVisitor:
             total_height = driver.execute_script("return document.body.scrollHeight")
             viewport_height = driver.execute_script("return window.innerHeight")
             
-            if total_height <= viewport_height * 1.5:
-                # Short page - minimal scrolling
+            # MORE VARIABLE SCROLL PASSES
+            if total_height <= viewport_height * 1.2:
+                # Very short page - minimal scrolling (1-2 passes)
                 scroll_passes = random.randint(1, 2)
+            elif total_height <= viewport_height * 2:
+                # Medium page (2-4 passes)
+                scroll_passes = random.randint(2, 4)
             else:
-                # Long page - more natural scrolling
-                scroll_passes = random.randint(3, 5)
+                # Long page - more natural scrolling (3-6 passes)
+                scroll_passes = random.randint(3, 6)
             
             current_pos = 0
             
             for pass_num in range(scroll_passes):
-                # Calculate scroll amount (variable)
+                # MORE VARIABLE SCROLL AMOUNTS
                 if pass_num == scroll_passes - 1:
                     # Final scroll to bottom
                     scroll_to = total_height - viewport_height
                 else:
-                    # Progressive scroll
+                    # Progressive scroll with more variation
+                    scroll_amount = random.randint(200, 1000)  # Increased range
                     scroll_to = min(
-                        current_pos + random.randint(300, 800),
+                        current_pos + scroll_amount,
                         total_height - viewport_height
                     )
                 
-                # Smooth scroll
-                driver.execute_script(f"window.scrollTo({{top: {scroll_to}, behavior: 'smooth'}});")
+                # Sometimes use smooth, sometimes instant scroll
+                if random.random() > 0.3:
+                    driver.execute_script(f"window.scrollTo({{top: {scroll_to}, behavior: 'smooth'}});")
+                else:
+                    driver.execute_script(f"window.scrollTo(0, {scroll_to});")
                 
-                # Natural pause at scroll position
-                pause_time = random.uniform(1.5, 4.0)
+                # MORE VARIABLE PAUSE TIMES
+                pause_time = random.uniform(0.5, 5.0)  # Wider range
                 time.sleep(pause_time)
                 
-                # Random mouse movement during pause
-                if HUMAN_BEHAVIOR["mouse_movements"] and random.random() > 0.6:
+                # Random mouse movement during pause (more frequent)
+                if HUMAN_BEHAVIOR["mouse_movements"] and random.random() > 0.4:
                     self.random_mouse_movement(driver)
                 
                 impressions += 1
                 current_pos = scroll_to
                 
-                logger.info(f"📜 Scroll pass {pass_num + 1}/{scroll_passes}")
+                logger.info(f"📜 Scroll pass {pass_num + 1}/{scroll_passes} (pos: {current_pos})")
             
-            # Occasionally scroll back up a bit
-            if random.random() > 0.7:
-                scroll_back = max(0, current_pos - random.randint(200, 500))
+            # MORE FREQUENT SCROLL BACK
+            if random.random() > 0.4:  # 60% chance instead of 30%
+                scroll_back = max(0, current_pos - random.randint(100, 600))
                 driver.execute_script(f"window.scrollTo({{top: {scroll_back}, behavior: 'smooth'}});")
-                time.sleep(random.uniform(1, 2))
+                time.sleep(random.uniform(0.5, 2.5))
                 impressions += 1
             
             return impressions
             
         except Exception as e:
             logger.debug(f"Scroll behavior error: {e}")
-            return 1
+            return random.randint(1, 3)  # Return random impressions on error
     
     def random_mouse_movement(self, driver):
         """Natural random mouse movements"""
@@ -230,19 +240,21 @@ class RealisticAdsterraVisitor:
             pass  # Silent fail for mouse movements
     
     def random_page_interactions(self, driver) -> int:
-        """Natural random page interactions"""
+        """Natural random page interactions with more variation"""
         interactions = 0
         
         if not HUMAN_BEHAVIOR["random_interactions"]:
             return interactions
         
         try:
-            # Find clickable elements
+            # Find clickable elements with expanded selectors
             clickable_selectors = [
-                "//a[not(contains(@href, '#'))]",  # Real links only
+                "//a[not(contains(@href, '#'))]",
                 "//button",
                 "//div[contains(@class, 'btn')]",
                 "//span[contains(@class, 'button')]",
+                "//input[@type='submit']",
+                "//*[@onclick]",  # Elements with click handlers
             ]
             
             all_elements = []
@@ -251,15 +263,16 @@ class RealisticAdsterraVisitor:
                     elements = driver.find_elements(By.XPATH, selector)
                     # Filter to visible, clickable elements
                     visible_elements = [e for e in elements if e.is_displayed() and e.is_enabled()]
-                    all_elements.extend(visible_elements[:3])  # Limit per selector
+                    all_elements.extend(visible_elements[:5])  # Increased limit
                 except:
                     continue
             
+            # MORE VARIABLE INTERACTION COUNT
             if all_elements:
-                # Select 1-2 random elements to interact with
+                max_interactions = random.randint(0, 4)  # 0-4 interactions
                 elements_to_interact = random.sample(
                     all_elements, 
-                    min(random.randint(1, 2), len(all_elements))
+                    min(max_interactions, len(all_elements))
                 )
                 
                 for element in elements_to_interact:
@@ -269,29 +282,30 @@ class RealisticAdsterraVisitor:
                             "arguments[0].scrollIntoView({behavior: 'smooth', block: 'center'});", 
                             element
                         )
-                        time.sleep(random.uniform(0.5, 1.0))
+                        time.sleep(random.uniform(0.3, 1.5))
                         
                         # Hover over element
                         actions = ActionChains(driver)
-                        actions.move_to_element(element).pause(0.2).perform()
+                        actions.move_to_element(element).pause(0.1).perform()
                         
-                        # Sometimes click (25% chance)
-                        if random.random() > 0.75:
+                        # VARIABLE CLICK CHANCE
+                        click_chance = random.random()
+                        if click_chance > 0.8:  # 20% chance to click
                             element.click()
-                            interactions += 1
+                            interactions += 2  # More weight for clicks
                             logger.info("🖱️ Random element click")
                             
-                            # Brief pause after click
-                            time.sleep(random.uniform(1, 2))
+                            # Variable pause after click
+                            time.sleep(random.uniform(1, 4))
                             
-                            # If new tab opened, close it and return to main
+                            # Handle new tabs
                             if len(driver.window_handles) > 1:
                                 driver.switch_to.window(driver.window_handles[1])
+                                time.sleep(random.uniform(2, 5))  # Brief view of new page
                                 driver.close()
                                 driver.switch_to.window(driver.window_handles[0])
-                        else:
-                            # Just hover
-                            interactions += 0.5  # Partial impression for hover
+                        elif click_chance > 0.3:  # 50% chance for hover only
+                            interactions += 1  # Standard impression for hover
                             
                     except Exception as e:
                         continue
@@ -300,7 +314,7 @@ class RealisticAdsterraVisitor:
             
         except Exception as e:
             logger.debug(f"Random interactions error: {e}")
-            return 0
+            return random.randint(0, 2)  # Return random interactions on error
     
     def final_interactions(self, driver) -> int:
         """Final interactions before leaving page"""
