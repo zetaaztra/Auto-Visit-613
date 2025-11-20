@@ -1,0 +1,7 @@
+{
+  "platform": "MacIntel",
+  "hardware_concurrency": 6,
+  "device_memory": 8,
+  "vendor": "Intel Corp",
+  "renderer": "Apple GPU (Metal)"
+}

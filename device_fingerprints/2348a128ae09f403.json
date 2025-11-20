@@ -1,0 +1,7 @@
+{
+  "platform": "MacIntel",
+  "hardware_concurrency": 8,
+  "device_memory": 16,
+  "vendor": "Intel Corp",
+  "renderer": "ANGLE (AMD, AMD Radeon Pro 560 Metal)"
+}

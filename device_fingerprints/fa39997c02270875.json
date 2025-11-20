@@ -1,0 +1,7 @@
+{
+  "platform": "Win32",
+  "hardware_concurrency": 4,
+  "device_memory": 16,
+  "vendor": "Intel Corp",
+  "renderer": "ANGLE (AMD, AMD Radeon Pro 560 Metal)"
+}
