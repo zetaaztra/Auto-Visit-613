@@ -11,21 +11,18 @@ import time
 import random
 import json
 import logging
-import signal
-import atexit
+import requests
 from datetime import datetime, timedelta
 from typing import List, Dict, Optional
-import requests
 from selenium import webdriver
 from selenium.webdriver.common.by import By
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.common.exceptions import TimeoutException, NoSuchElementException
-import undetected_chromedriver as uc
-import hashlib
-import pickle
-from pathlib import Path
+from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.chrome.service import Service
+from webdriver_manager.chrome import ChromeDriverManager
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 
 # ============================================================================
 # CONFIGURATION - OPTIMIZED FOR ADSTERRA
@@ -335,46 +332,33 @@ class RealisticAdsterraVisitor:
             return 0
 
 # ============================================================================
-# STEALTH BROWSER
+# SIMPLE BROWSER FOR GITHUB ACTIONS
 # ============================================================================
 
-class StealthBrowser:
-    """Undetectable browser for Adsterra"""
+class SimpleBrowser:
+    """Simple browser that works in GitHub Actions"""
     
     def __init__(self):
         self.driver = None
     
-    def create_stealth_driver(self) -> webdriver.Chrome:
-        """Create stealth browser optimized for Adsterra"""
+    def create_driver(self) -> webdriver.Chrome:
+        """Create simple browser for GitHub Actions"""
         
-        options = uc.ChromeOptions()
+        options = Options()
         
-        # Headless for GitHub Actions
+        # Essential options for GitHub Actions
         if GITHUB_ACTIONS:
             options.add_argument('--headless=new')
+            options.add_argument('--no-sandbox')
+            options.add_argument('--disable-dev-shm-usage')
+            options.add_argument('--disable-gpu')
+        else:
+            options.add_argument('--headless=new')
         
-        # Essential stealth flags
-        stealth_flags = [
-            '--disable-blink-features=AutomationControlled',
-            '--no-sandbox',
-            '--disable-dev-shm-usage',
-            '--disable-gpu',
-            '--disable-extensions',
-            '--disable-plugins',
-            '--disable-popup-blocking',
-            '--disable-notifications',
-            '--no-first-run',
-            '--no-default-browser-check',
-            '--disable-features=TranslateUI',
-            '--disable-background-timer-throttling',
-            '--disable-backgrounding-occluded-windows',
-            '--disable-renderer-backgrounding',
-            '--disable-ipc-flooding-protection',
-            '--disable-client-side-phishing-detection',
-        ]
-        
-        for flag in stealth_flags:
-            options.add_argument(flag)
+        # Basic stealth options
+        options.add_argument('--disable-blink-features=AutomationControlled')
+        options.add_argument('--disable-popup-blocking')
+        options.add_argument('--disable-notifications')
         
         # Random viewport
         viewport = random.choice(HUMAN_BEHAVIOR["viewport_sizes"])
@@ -384,62 +368,48 @@ class StealthBrowser:
         user_agent = random.choice(HUMAN_BEHAVIOR["user_agents"])
         options.add_argument(f'--user-agent={user_agent}')
         
-        # Enable JavaScript and images for ads
-        prefs = {
+        # Enable JavaScript and images
+        options.add_experimental_option("prefs", {
             "profile.default_content_setting_values.notifications": 2,
             "profile.default_content_settings.popups": 0,
             "profile.managed_default_content_settings.images": 1,
             "profile.managed_default_content_settings.javascript": 1,
-            "credentials_enable_service": False,
-            "profile.password_manager_enabled": False,
-        }
-        options.add_experimental_option("prefs", prefs)
-        
-        # Remove automation indicators
-        options.add_experimental_option("excludeSwitches", ["enable-automation", "enable-logging"])
-        options.add_experimental_option('useAutomationExtension', False)
+        })
         
         try:
-            driver = uc.Chrome(
-                options=options,
-                version_main=None,
-                headless=GITHUB_ACTIONS
-            )
+            if GITHUB_ACTIONS:
+                # Use system Chrome in GitHub Actions
+                service = Service('/usr/bin/chromedriver')
+                driver = webdriver.Chrome(service=service, options=options)
+            else:
+                # Use webdriver_manager for local development
+                service = Service(ChromeDriverManager().install())
+                driver = webdriver.Chrome(service=service, options=options)
             
-            # Stealth scripts
-            stealth_scripts = [
-                # Remove webdriver property
-                "Object.defineProperty(navigator, 'webdriver', {get: () => undefined});",
-                # Mock chrome runtime
-                "window.chrome = {runtime: {}};",
-                # Mock permissions
-                "const originalQuery = window.navigator.permissions.query; "
-                "window.navigator.permissions.query = (parameters) => ("
-                "parameters.name === 'notifications' ? "
-                "Promise.resolve({ state: Notification.permission }) : "
-                "originalQuery(parameters));",
-                # Mock plugins
-                "Object.defineProperty(navigator, 'plugins', {get: () => [1, 2, 3, 4, 5]});",
-                # Mock languages
-                "Object.defineProperty(navigator, 'languages', {get: () => ['en-US', 'en']});",
-            ]
-            
-            for script in stealth_scripts:
-                try:
-                    driver.execute_cdp_cmd("Page.addScriptToEvaluateOnNewDocument", {"source": script})
-                except:
-                    pass
-            
-            # Set reasonable timeouts
+            # Set timeouts
             driver.set_page_load_timeout(30)
             driver.set_script_timeout(20)
             
-            logger.info("🚀 Stealth browser created successfully")
+            # Basic stealth script
+            stealth_script = """
+            Object.defineProperty(navigator, 'webdriver', {get: () => undefined});
+            """
+            driver.execute_script(stealth_script)
+            
+            logger.info("🚀 Browser created successfully")
             return driver
             
         except Exception as e:
             logger.error(f"Browser creation failed: {e}")
-            raise
+            
+            # Fallback: try without service
+            try:
+                driver = webdriver.Chrome(options=options)
+                logger.info("✅ Browser created with fallback method")
+                return driver
+            except Exception as e2:
+                logger.error(f"Fallback also failed: {e2}")
+                raise
     
     def close(self):
         """Clean close browser"""
@@ -476,8 +446,8 @@ class AdFraudTester:
             logger.info(f"🎯 Starting visit to: {url}")
             
             # Create browser
-            browser = StealthBrowser()
-            driver = browser.create_stealth_driver()
+            browser = SimpleBrowser()
+            driver = browser.create_driver()
             browser.driver = driver
             
             # Perform natural visit
@@ -584,13 +554,6 @@ def main():
     tester.run_visits(target_visits)
     
     logger.info("🏁 Session completed")
-
-def cleanup():
-    """Cleanup handler"""
-    import warnings
-    warnings.filterwarnings("ignore")
-
-atexit.register(cleanup)
 
 if __name__ == "__main__":
     main()
