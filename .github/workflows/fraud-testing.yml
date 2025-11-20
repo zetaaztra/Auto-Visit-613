@@ -11,8 +11,8 @@ on:
   workflow_dispatch:  # Manual trigger option
 
 env:
-  MIN_VISITS: 100
-  MAX_VISITS: 150
+  MIN_VISITS: 10
+  MAX_VISITS: 20
   PYTHON_VERSION: '3.11'
 
 jobs:
