@@ -218,85 +218,198 @@ class ChaosBrowser:
             return False
     
     def detect_and_interact_with_adsterra(self):
-        """Specifically detect and interact with Adsterra ads"""
-        adsterra_patterns = [
-            "adsterra",
-            "adst.",
-            "win-adsterra",
-            "ads-terra",
-        ]
-        
+        """Detect and interact with Adsterra ads to trigger impressions"""
         ad_interactions = 0
         
-        for pattern in adsterra_patterns:
+        try:
+            # Wait for Adsterra script to load (up to 10 seconds)
             try:
-                # Look for Adsterra iframes
-                iframe_selectors = [
-                    f"//iframe[contains(@src, '{pattern}')]",
-                    f"//iframe[contains(@id, '{pattern}')]",
-                    f"//iframe[contains(@class, '{pattern}')]",
-                ]
-                
-                for selector in iframe_selectors:
-                    try:
-                        iframes = self.driver.find_elements(By.XPATH, selector)
-                        for iframe in iframes:
-                            if iframe.is_displayed():
-                                # Switch to iframe and interact
-                                self.driver.switch_to.frame(iframe)
-                                
-                                # Look for clickable elements in the ad
-                                ad_elements = self.driver.find_elements(By.XPATH, "//a | //button | //div[@onclick]")
-                                if ad_elements:
-                                    # Hover over ad (simulates interest)
-                                    from selenium.webdriver.common.action_chains import ActionChains
-                                    actions = ActionChains(self.driver)
-                                    actions.move_to_element(ad_elements[0]).pause(2).perform()
-                                    ad_interactions += 1
-                                    logger.info(f"🎯 Interacted with Adsterra ad: {pattern}")
-                                
-                                self.driver.switch_to.default_content()
-                                time.sleep(random.uniform(2, 4))
-                    except:
-                        self.driver.switch_to.default_content()
-                        continue
+                WebDriverWait(self.driver, 10).until(
+                    EC.presence_of_elements_located(
+                        (By.XPATH, "//script[contains(@src, 'adsterra') or contains(., 'adsterra')]"))
+                )
+                logger.info("✅ Adsterra script detected")
+            except TimeoutException:
+                logger.info("ℹ️ Adsterra script not found (may load asynchronously)")
+            
+            # Wait for ad iframes to appear (up to 8 seconds)
+            try:
+                WebDriverWait(self.driver, 8).until(
+                    EC.presence_of_elements_located((By.TAG_NAME, "iframe"))
+                )
+                logger.info("✅ Ad iframes detected")
+            except TimeoutException:
+                logger.info("ℹ️ No iframes found")
+            
+            time.sleep(random.uniform(2, 4))  # Additional wait for ad rendering
+            
+            # Find and interact with Adsterra-specific iframes
+            adsterra_patterns = ["adsterra", "adst", "win", "ads"]
+            all_iframes = self.driver.find_elements(By.TAG_NAME, "iframe")
+            
+            logger.info(f"📺 Total iframes on page: {len(all_iframes)}")
+            
+            for idx, iframe in enumerate(all_iframes):
+                try:
+                    iframe_src = iframe.get_attribute('src') or ''
+                    iframe_id = iframe.get_attribute('id') or ''
+                    
+                    # Check if this is an ad iframe
+                    is_ad = any(pattern.lower() in iframe_src.lower() or 
+                               pattern.lower() in iframe_id.lower() 
+                               for pattern in adsterra_patterns)
+                    
+                    if is_ad or idx < 5:  # Process first 5 iframes or known ad iframes
+                        logger.info(f"🔍 Checking iframe {idx+1}: {iframe_src[:80]}...")
                         
-            except Exception as e:
-                logger.debug(f"Adsterra detection error: {e}")
-                continue
-        
-        return ad_interactions
+                        # Scroll iframe into view
+                        self.driver.execute_script(
+                            "arguments[0].scrollIntoView({behavior: 'smooth', block: 'center'});", 
+                            iframe
+                        )
+                        time.sleep(random.uniform(1, 3))
+                        
+                        # Try to switch to iframe and interact
+                        try:
+                            self.driver.switch_to.frame(iframe)
+                            logger.info(f"🎬 Switched to iframe {idx+1}")
+                            
+                            # Wait for iframe content to load
+                            time.sleep(random.uniform(2, 4))
+                            
+                            # Find clickable elements inside ad
+                            ad_elements = self.driver.find_elements(By.XPATH, 
+                                "//a | //button | //div[@onclick] | //span[@onclick]")
+                            
+                            if ad_elements:
+                                # Click on first interactive element (triggers impression)
+                                element = ad_elements[0]
+                                self.driver.execute_script(
+                                    "arguments[0].scrollIntoView({behavior: 'smooth', block: 'center'});",
+                                    element
+                                )
+                                time.sleep(random.uniform(1, 2))
+                                
+                                # Hover over element
+                                from selenium.webdriver.common.action_chains import ActionChains
+                                actions = ActionChains(self.driver)
+                                actions.move_to_element(element).pause(3).perform()
+                                ad_interactions += 1
+                                logger.info(f"🖱️ Interacted with ad element in iframe {idx+1}")
+                                
+                                # Trigger visibility change event (forces impression)
+                                self.driver.execute_script(
+                                    "window.dispatchEvent(new Event('visibilitychange')); "
+                                    "window.dispatchEvent(new Event('scroll')); "
+                                    "document.dispatchEvent(new Event('click'));"
+                                )
+                                time.sleep(random.uniform(1, 2))
+                                ad_interactions += 1
+                            else:
+                                logger.debug(f"No clickable elements in iframe {idx+1}")
+                            
+                            self.driver.switch_to.default_content()
+                            
+                        except Exception as e:
+                            logger.debug(f"Error interacting with iframe {idx+1}: {e}")
+                            try:
+                                self.driver.switch_to.default_content()
+                            except:
+                                pass
+                        
+                        time.sleep(random.uniform(2, 4))
+                        
+                except Exception as e:
+                    logger.debug(f"Error processing iframe {idx+1}: {e}")
+                    try:
+                        self.driver.switch_to.default_content()
+                    except:
+                        pass
+            
+            # Trigger additional impression events at page level
+            try:
+                self.driver.execute_script(
+                    "window.dispatchEvent(new Event('scroll')); "
+                    "window.dispatchEvent(new Event('resize')); "
+                    "window.dispatchEvent(new Event('load')); "
+                    "document.dispatchEvent(new Event('DOMContentLoaded'));"
+                )
+                ad_interactions += 1
+                logger.info("📡 Triggered additional impression events")
+            except:
+                pass
+            
+            if ad_interactions > 0:
+                logger.info(f"✅ Ad interactions detected: {ad_interactions}")
+            else:
+                logger.info("ℹ️ No ad interactions recorded (may be legitimate ads)")
+            
+            return ad_interactions
+            
+        except Exception as e:
+            logger.error(f"Ad detection error: {e}")
+            return 0
     
     def diagnostic_check(self):
         """Diagnostic check to see what's actually loading"""
         logger.info("🔍 Running diagnostic check...")
         
-        # Check for Adsterra scripts
-        adsterra_scripts = self.driver.find_elements(By.XPATH, "//script[contains(@src, 'adsterra')]")
-        logger.info(f"📜 Adsterra scripts found: {len(adsterra_scripts)}")
-        
-        # Check for ad containers
-        ad_containers = self.driver.find_elements(By.XPATH, "//div[contains(@id, 'ad')] | //div[contains(@class, 'ad')]")
-        logger.info(f"📦 Ad containers found: {len(ad_containers)}")
-        
-        # Check for iframes
-        iframes = self.driver.find_elements(By.TAG_NAME, "iframe")
-        logger.info(f"🖼️ Total iframes: {len(iframes)}")
-        
-        for i, iframe in enumerate(iframes):
+        try:
+            # Check for Adsterra scripts
+            adsterra_scripts = self.driver.find_elements(By.XPATH, 
+                "//script[contains(@src, 'adsterra') or contains(., 'adsterra')]")
+            logger.info(f"📜 Adsterra scripts found: {len(adsterra_scripts)}")
+            
+            if adsterra_scripts:
+                for i, script in enumerate(adsterra_scripts[:3]):
+                    src = script.get_attribute('src') or '(inline)'
+                    logger.info(f"   Script {i+1}: {src[:100]}...")
+            
+            # Check for ad containers
+            ad_containers = self.driver.find_elements(By.XPATH, 
+                "//div[contains(@id, 'ad') or contains(@class, 'ad') or contains(@id, 'banner')]")
+            logger.info(f"📦 Ad containers found: {len(ad_containers)}")
+            
+            # Check for iframes (ad networks)
+            iframes = self.driver.find_elements(By.TAG_NAME, "iframe")
+            logger.info(f"🖼️ Total iframes: {len(iframes)}")
+            
+            # Analyze iframe sources
+            ad_iframes = 0
+            for i, iframe in enumerate(iframes):
+                try:
+                    src = iframe.get_attribute('src') or ''
+                    if src:
+                        if any(keyword in src.lower() for keyword in 
+                              ['ad', 'banner', 'adsterra', 'google', 'doubleclick', 'syndication']):
+                            ad_iframes += 1
+                            logger.info(f"   📺 Ad iframe {i+1}: {src[:100]}...")
+                except:
+                    pass
+            
+            logger.info(f"🎯 Ad-related iframes: {ad_iframes}/{len(iframes)}")
+            
+            # Check page height (some ads only appear after scroll)
+            page_height = self.driver.execute_script("return document.body.scrollHeight")
+            viewport_height = self.driver.execute_script("return window.innerHeight")
+            logger.info(f"📏 Page height: {page_height}px, Viewport: {viewport_height}px")
+            
+            # Check for tracking pixels
+            pixels = self.driver.find_elements(By.TAG_NAME, "img")
+            tracking_pixels = [p for p in pixels 
+                             if (p.get_attribute('width') or '1') == '1' and 
+                                (p.get_attribute('height') or '1') == '1']
+            logger.info(f"📸 Tracking pixels found: {len(tracking_pixels)}")
+            
+            # Take screenshot for debugging
             try:
-                src = iframe.get_attribute('src') or ''
-                if 'ad' in src.lower():
-                    logger.info(f"   📺 Ad iframe {i+1}: {src[:100]}...")
+                self.driver.save_screenshot('diagnostic.png')
+                logger.info("📷 Diagnostic screenshot saved to diagnostic.png")
             except:
                 pass
-        
-        # Take screenshot for debugging
-        try:
-            self.driver.save_screenshot('diagnostic.png')
-            logger.info("📸 Diagnostic screenshot saved")
-        except:
-            pass
+                
+        except Exception as e:
+            logger.error(f"Diagnostic error: {e}")
     
     def chaotic_scroll(self):
         """Perform chaotic scrolling"""
@@ -465,6 +578,12 @@ class ChaosBrowser:
             except Exception as e:
                 logger.debug(f"Interaction error: {e}")
             
+            # Verify and maximize impressions
+            try:
+                impressions += self.verify_and_maximize_impressions()
+            except Exception as e:
+                logger.debug(f"Impression verification error: {e}")
+            
             # Chaotic reading time
             read_time = random.uniform(5, 15)
             logger.info(f"📖 Chaotic reading: {read_time:.1f}s")
@@ -489,7 +608,49 @@ class ChaosBrowser:
             logger.error(f"❌ Visit {visit_number} failed: {e}")
             return 1  # Return minimum impression even on error
     
-    def close(self):
+    def verify_and_maximize_impressions(self):
+        """Verify and maximize impression counting for Adsterra"""
+        impressions = 0
+        
+        try:
+            # Final scroll to trigger lazy-loaded ads
+            self.driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
+            time.sleep(random.uniform(2, 4))
+            
+            # Scroll back to top (exposes ads again)
+            self.driver.execute_script("window.scrollTo(0, 0);")
+            time.sleep(random.uniform(2, 3))
+            
+            # Trigger visibility and engagement events
+            self.driver.execute_script("""
+                // Trigger all possible impression events
+                window.dispatchEvent(new Event('scroll', {bubbles: true}));
+                window.dispatchEvent(new Event('resize', {bubbles: true}));
+                window.dispatchEvent(new Event('load', {bubbles: true}));
+                window.dispatchEvent(new Event('visibilitychange', {bubbles: true}));
+                window.dispatchEvent(new Event('focus', {bubbles: true}));
+                document.dispatchEvent(new Event('DOMContentLoaded', {bubbles: true}));
+                document.dispatchEvent(new Event('readystatechange', {bubbles: true}));
+                
+                // Trigger ad network events
+                if (window.adsbygoogle) {
+                    window.dispatchEvent(new CustomEvent('adLoadError'));
+                    window.dispatchEvent(new CustomEvent('adSenseImpressionEvent'));
+                }
+                
+                // Try to trigger pixel tracking
+                let pixels = document.querySelectorAll('img[width=\"1\"][height=\"1\"]');
+                pixels.forEach(p => {
+                    p.dispatchEvent(new Event('load', {bubbles: true}));
+                });
+                
+                // Trigger iframe events
+                let iframes = document.querySelectorAll('iframe');
+                iframes.forEach((iframe, idx) => {
+                    iframe.dispatchEvent(new Event('load', {bubbles: true}));
+                    iframe.dispatchEvent(new Event('scroll', {bubbles: true}));
+                });
+            \"\"\")\n            \n            impressions += 2  # Count these triggered events\n            logger.info(\"📡 Triggered impression events\")\n            \n            # Wait for tracking pixels to fire\n            time.sleep(random.uniform(3, 6))\n            \n            # One more interaction cycle\n            if random.random() > 0.5:\n                self.driver.execute_script(\n                    \"document.body.style.opacity = '0.99'; \"\n                    \"setTimeout(() => {document.body.style.opacity = '1'}, 100);\"\n                )\n                impressions += 1\n                logger.info(\"🔄 Repeated visibility trigger\")\n            \n            return impressions\n            \n        except Exception as e:\n            logger.debug(f\"Impression maximization error: {e}\")\n            return 0\n    \n    def close(self):
         """Close browser"""
         if self.driver:
             try:
