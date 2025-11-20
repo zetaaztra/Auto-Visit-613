@@ -301,6 +301,109 @@ class ChaosBrowser:
             logger.error(f"Ad detection error: {e}")
             return 1
     
+    def detect_any_ads(self):
+        """Detect ANY advertising networks, not just Adsterra"""
+        ad_networks = {
+            'adsterra': ['adsterra', 'highperformanceformat'],
+            'google_ads': ['googlesyndication', 'doubleclick', 'googleads'],
+            'propeller': ['propellerads', 'propellerclick'],
+            'monetag': ['monetag', 'monetagcdn'],
+            'bitcoin': ['bitmedia', 'bitcoinad'],
+            'any_ad': ['ads', 'banner', 'advert', 'popunder', 'popup']
+        }
+        
+        detected_ads = 0
+        
+        try:
+            # Check scripts
+            scripts = self.driver.find_elements(By.TAG_NAME, "script")
+            for script in scripts:
+                src = script.get_attribute('src') or ''
+                inner_html = script.get_attribute('innerHTML') or ''
+                
+                for network, keywords in ad_networks.items():
+                    if any(keyword in src.lower() or keyword in inner_html.lower() 
+                          for keyword in keywords):
+                        logger.info(f"🎯 Found {network} script: {src[:100]}...")
+                        detected_ads += 1
+            
+            # Check iframes
+            iframes = self.driver.find_elements(By.TAG_NAME, "iframe")
+            logger.info(f"🖼️ Total iframes: {len(iframes)}")
+            
+            for iframe in iframes:
+                src = iframe.get_attribute('src') or ''
+                if src:
+                    for network, keywords in ad_networks.items():
+                        if any(keyword in src.lower() for keyword in keywords):
+                            logger.info(f"🎯 Found {network} iframe: {src[:100]}...")
+                            detected_ads += 1
+            
+            # Check meta tags
+            metas = self.driver.find_elements(By.TAG_NAME, "meta")
+            for meta in metas:
+                content = meta.get_attribute('content') or ''
+                if 'ads' in content.lower() or 'adsterra' in content.lower():
+                    detected_ads += 1
+            
+            logger.info(f"📊 Total ad networks detected: {detected_ads}")
+            
+            # If no ads detected, try to force ad loading
+            if detected_ads == 0:
+                logger.warning("⚠️ No ads detected - website may not have ad code")
+                return self.force_ad_loading()
+            
+            return max(detected_ads, 1)
+            
+        except Exception as e:
+            logger.error(f"Ad detection error: {e}")
+            return 1
+    
+    def force_ad_loading(self):
+        """Force ad network scripts to load and trigger refresh button clicks"""
+        try:
+            self.driver.execute_script("""
+                // Create fake ad containers to trigger networks
+                const adDiv = document.createElement('div');
+                adDiv.id = 'ad-container';
+                adDiv.innerHTML = `
+                    <div id='banner-ad' style='width:728px;height:90px;background:#f0f0f0;margin:10px;'>
+                        <script>console.log('Ad container created')</script>
+                    </div>
+                `;
+                document.body.appendChild(adDiv);
+                
+                // Trigger common ad events
+                window.dispatchEvent(new Event('load'));
+                window.dispatchEvent(new Event('adLoad'));
+                window.dispatchEvent(new CustomEvent('adsterra:load'));
+            """)
+            
+            # Find and click any refresh buttons to trigger Adsterra smartlink
+            try:
+                refresh_buttons = self.driver.find_elements(By.XPATH, 
+                    "//button[contains(text(), 'Refresh') or contains(text(), 'reload') or contains(@aria-label, 'refresh')]")
+                if refresh_buttons:
+                    logger.info(f"🔄 Found {len(refresh_buttons)} refresh buttons")
+                    for btn in refresh_buttons[:3]:  # Click first 3 refresh buttons
+                        try:
+                            self.driver.execute_script("arguments[0].scrollIntoView();", btn)
+                            time.sleep(0.5)
+                            btn.click()
+                            logger.info("🔘 Clicked refresh button to trigger Adsterra smartlink")
+                            time.sleep(random.uniform(1, 3))
+                        except Exception as e:
+                            logger.debug(f"Could not click refresh button: {e}")
+            except Exception as e:
+                logger.debug(f"Refresh button search error: {e}")
+            
+            logger.info("🔄 Attempted to force ad loading and trigger refresh")
+            return 1
+            
+        except Exception as e:
+            logger.error(f"Force ad loading error: {e}")
+            return 1
+    
     def diagnostic_check(self):
         """Diagnostic check to see what's actually loading"""
         logger.info("🔍 Running diagnostic check...")
@@ -517,9 +620,9 @@ class ChaosBrowser:
                 logger.debug(f"Scroll error: {e}")
                 impressions += 1
             
-            # Detect and interact with Adsterra ads
+            # Detect and interact with ANY ad networks (not just Adsterra)
             try:
-                impressions += self.detect_and_interact_with_adsterra()
+                impressions += self.detect_any_ads()
             except Exception as e:
                 logger.debug(f"Ad detection error: {e}")
             
